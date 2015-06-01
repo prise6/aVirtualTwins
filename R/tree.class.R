@@ -1,5 +1,8 @@
 # VT.TREE.CLASS -----------------------------------------------------------
 
+#' A reference class to compute subgroups by classifiation tree
+#' 
+#' @include tree.R
 VT.tree.class <- setRefClass(
   Class = "VT.tree.class",
   
@@ -23,7 +26,7 @@ VT.tree.class <- setRefClass(
       
       data  <- .self$getData()  
       if(sum(data[,1]) != 0){
-        .self$tree <- rpart(as.formula(paste(.self$name, ".", sep = "~")), data = data, method = "class", ...)
+        .self$tree <- rpart::rpart(as.formula(paste(.self$name, ".", sep = "~")), data = data, method = "class", ...)
         .self$Ahat <- as.numeric(predict(.self$tree, data, type = "class")) - 1
       }else{
         .self$Ahat <- .self$outcome

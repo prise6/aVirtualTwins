@@ -1,6 +1,14 @@
 # VT.FOREST.DOUBLE --------------------------------------------------------
 # IF RUNNING DOUBLE FOREST COMPUTATION
 
+#' A reference class to compute twins via double random forests
+#' 
+#' @include forest.R
+#' 
+#' @field model_trt1 a caret/RandomForest/randomForest object for treatment T = 1
+#' @field model_trt0 a caret/RandomForest/randomForest object for treatment T = 0
+#' 
+#' @import methods
 VT.forest.double <- setRefClass(
   Class = "VT.forest.double",
   
@@ -23,6 +31,7 @@ VT.forest.double <- setRefClass(
     },
     
     computeTwin1 = function(){
+      "Compute twin1 with OOB predictions from double forests"
       # Model with treatment (1)
       .self$twin1[.self$vt.object$data[, 2] == 1] <- VT.predict(rfor = .self$model_trt1, type = .self$vt.object$type)
       
@@ -33,6 +42,7 @@ VT.forest.double <- setRefClass(
     },
     
     computeTwin2 = function(){
+      "Compute twin2 by the other part of data in the other forest"
       # Model with treatment (1)
       .self$twin2[.self$vt.object$data[, 2] == 1] <- VT.predict(.self$model_trt0, newdata = .self$vt.object$getX(1, interactions = F), type = .self$vt.object$type)
       

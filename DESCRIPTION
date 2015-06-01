@@ -7,3 +7,24 @@ Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
+Imports:
+    rpart
+Suggests:
+    randomForest,
+    caret,
+    party
+Collate:
+    'VirtualTwins.R'
+    'object.R'
+    'difft.R'
+    'setClass.R'
+    'predict.R'
+    'forest.R'
+    'forest.double.R'
+    'forest.fold.R'
+    'forest.one.R'
+    'incidences.R'
+    'tools.R'
+    'tree.R'
+    'tree.class.R'
+    'tree.reg.R'

@@ -1,6 +1,8 @@
-
-
 # VT.TREE.REG -------------------------------------------------------------
+
+#' @include tree.R
+#' A reference class to compute subgroups by regression tree with rpart package
+#' 
 
 VT.tree.reg <- setRefClass(
   Class = "VT.tree.reg",
@@ -21,7 +23,7 @@ VT.tree.reg <- setRefClass(
       
       data  <- .self$getData()
       
-      .self$tree <- rpart(as.formula(paste(.self$name, ".", sep = "~")), data = data, ...)
+      .self$tree <- rpart::rpart(as.formula(paste(.self$name, ".", sep = "~")), data = data, ...)
       
       if(.self$sens == ">")
         res <- ifelse(predict(.self$tree) >= (.self$threshold), 1, 0)

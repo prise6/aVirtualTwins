@@ -1,5 +1,6 @@
 # INCIDENCE TABLES FUNCTION /!\ important
 
+
 setGeneric("VT.incidences",
            function(vt.difft, select, rr.snd){ standardGeneric("VT.incidences") }
 )

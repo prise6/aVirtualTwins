@@ -1,13 +1,10 @@
 # FORESTS -----------------------------------------------------------------
 
-# Objet enfant de VT.difft
-# Objet Parent de VT.forest.one & VT.forest.double, Abstract class : ne doit pas etre instanciée
-# twin1 - Proba du "oui" de la réponse (modalité d'intéret codé par "o" ou 1 contre "n" ou 0 dans le cas binaire)
-#  sachant le vrai traitement
-# twin2 - Proba du "oui" [...] sachant le traitement opposé
-# difft - différence de twin1 - twin2 SI le vrai traitement == 1 SINON twin2 - twin1
-#
-# $run() - lance le calcul des probas
+#' A abstract reference class to compute twin via random forests
+#' 
+#' @include difft.R predict.R
+#' 
+#' @import methods 
 VT.forest <- setRefClass(
   Class = "VT.forest",
   
@@ -15,6 +12,7 @@ VT.forest <- setRefClass(
   
   methods = list(  
     run = function(){
+      "Compute twin1 and twin2 computation. Switch treatment if necessary."
       .self$computeTwin1()
       
       if(inherits(.self, "VT.forest.one")) .self$vt.object$switchTreatment() #if one forest
@@ -31,12 +29,14 @@ VT.forest <- setRefClass(
     },
     
     checkModel = function(model){
+      "Checking model class: Must be : train, RandomForest, randomForest"
       if(!(inherits(model, "train") | inherits(model, "RandomForest") | inherits(model, "randomForest"))){
         stop("Model is not recognized. Must be : train, RandomForest, randomForest")
       }
     },
     
     getFullData = function(){
+      "Return twin1, twin2 and difft in column"
       if(length(.self$twin1) != nrow(.self$vt.object$data)) stop("Twin1 must have same length as data")
       if(length(.self$twin2) != nrow(.self$vt.object$data)) stop("Twin2 must have same length as data")
       

@@ -1,20 +1,17 @@
 # TREES COMPUTATIONS ------------------------------------------------------
-
-# outcome - variable à expliquer par l'arbre (continue ou binaire)
-# threshold - seuil à dépasser par difft
-# screening - override de vt.forest$screening sinon prend la valeur de vt.forest$screening
-# name - nom de l'arbre
-# tree - objet rpart (l'arbre en lui même)
-# Ahat - indicatrice des observations appartement à Ahat (toujours en fonction du treshold)
-#         NE PAS OUBLIER QUE CELA DEPEND EGALEMENT DE LA FORET ASSOCIEE
-#
-# $getData() - les variables explicatives de l'arbre: soit les X, soit intersections de X et vt.forest$varimp
-# $run(...) - lance l'arbre, en options les paramètre de rpart(...)
-# $getInfos() - Résume threshold, delta, sizeof Ahat.
-# $getRules() - Récupère les incidences, les règles, les stats de chaques noeuds (terminaux ou non, favorable ou non)
-# $getIncidences() - Récupère un tableau d'incidence d'une rule
-# $getAhatIncidence - Récupère le tableau d'incidence de Ahat
-# $getAhatQualty - Récupère la qualité de Ahat (snd, resub)
+#' An abstract reference class to compute tree
+#' 
+#' @include difft.R setClass.R
+#' 
+#' @field vt.difft VT.difft object
+#' @field outcome vector
+#' @field threshold numeric Threshold for difft (c)
+#' @field screening logical TRUE if using varimp (default is VT.object screening field) 
+#' @field sens character Sens can be ">" (default) or "<". Meaning : difft > threshold or difft < threshold
+#' @field name character Names of the tree
+#' @field tree rpart Rpart object to construct the tree
+#' @field Ahat vector Indicator of beglonging to Ahat
+#'  
 VT.tree <- setRefClass(
   Class = "VT.tree",
   
@@ -122,7 +119,7 @@ VT.tree <- setRefClass(
       if (length(frm) == 0) stop("VT.tree : no tree");
       if (ncol(frm)==0) stop("VT.tree : no rules");
       
-      pth <- path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
+      pth <- rpart::path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
       # Delete 'root' node des règles
       pth <- lapply(pth, FUN = function(d) return(d[-1]))
       

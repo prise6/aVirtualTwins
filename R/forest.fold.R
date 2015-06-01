@@ -1,5 +1,15 @@
 # VT.FOREST.FOLD ----------------------------------------------------------
 
+#' A reference class to compute twins via k random forest
+#' 
+#' @include forest.R
+#' 
+#' @field interactions logical set TRUE if model has been computed with interactions 
+#' @field fold numeric Number of fold, i.e. number of forest
+#' @field ratio numeric 
+#' @field groups vector Define which observations belong to which group 
+#' 
+#' @import methods
 VT.forest.fold <- setRefClass(
   Class = "VT.forest.fold",
   
