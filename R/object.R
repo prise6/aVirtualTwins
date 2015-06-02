@@ -1,19 +1,55 @@
 # VT.OBJECT ---------------------------------------------------------------
 
+#' VirtualTwins.object
+#' 
 #' A Reference Class to deal with RCT dataset
 #' 
-#' @field data A data.frame de la forme \eqn{Y,T,X_{1}, \ldots, X_{p}}. Y must
-#'   be two levels factor if type is binary. T must be numeric or integer.
-#' @field alpha no usefull now, set to 1
-#' @field screening logical, set to FALSE. Se TRUE to use varimp in trees
-#'   computation
-#' @field varimp character vector of important variables to use in trees
-#'   computation
-#' @field delta numeric representing the difference of incidence between
-#'   treatments
-#' @field type character : binary or continous. Only binary is possible.
+#' Currently working with binary response only. Continous will come, one day.
+#' Two-levels treatment only as well.
 #' 
+#' \code{data} field should be as described, however if virtual twins won't used
+#' interactions, there is no need to transform factors. A tool function to 
+#' transform factor will come soon.
+#' 
+#' 
+#' @field data Data.frame with format: \eqn{Y,T,X_{1}, \ldots, X_{p}}. Y must be
+#'   two levels factor if type is binary. T must be numeric or integer.
+#' @field alpha Numeric, no need in this current version. Set to \code{1}.
+#' @field screening Logical, set to \code{FALSE} Set to \code{TRUE} to use \code{varimp} in trees 
+#'   computation.
+#' @field varimp Character vector of important variables to use in trees 
+#'   computation.
+#' @field delta Numeric representing the difference of incidence between 
+#'   treatments.
+#' @field type Character : binary or continous. Only binary is currently 
+#'   available.
+#'   
 #' @import methods
+#'   
+#' @name VT.object
+#'   
+#' @examples
+#' # Default use :
+#' vt.o <- VT.object$new(data = my.rct.dataset)
+#' 
+#' # Getting data
+#' vt.o$data
+#' 
+#' # or getting predictor with interactions
+#' vt.o$getX(interactions = T)
+#' 
+#' # or getting X|T = 1
+#' vt.o$getX(trt = 1)
+#' 
+#' # or getting Y|T = 0
+#' vt.o$getY(0)
+#' 
+#' # Print incidences
+#' vt.o$getIncidences()
+#' # ...
+#' 
+#' @seealso \code{\linkS4class{VT.difft}}
+#'   
 VT.object <- setRefClass(
   Class = "VT.object",
   
@@ -44,8 +80,8 @@ VT.object <- setRefClass(
     },
     
     getX = function(interactions = T, trt = NULL){
-      "Return predictors {T,X,X*T,X*(1-T)}. Or {T,X} if interactions is FALSE.
-        If trt is not NULL, return predictors for T=trt"
+      "Return predictors (T,X,X*T,X*(1-T)). Or (T,X) if interactions is FALSE.
+        If trt is not NULL, return predictors for T = trt"
       # retour les prédicteurs si trt n'est pas null
       if(!is.null(trt)) return(.self$data[.self$data[,2] == trt, -c(1,2)])
       # retourne les predicteurs*traitement peut importe le traitement si interactions est à TRUE
@@ -55,7 +91,7 @@ VT.object <- setRefClass(
     },
     
     getY = function(trt = NULL){
-      "Return outcome. If trt is not NULL, return outcome for T=trt."
+      "Return outcome. If trt is not NULL, return outcome for T = trt."
       if(is.null(trt)) return(.self$data[, 1])
       return(.self$data[.self$data[,2] == trt, 1])
     },
