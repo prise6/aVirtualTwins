@@ -23,6 +23,7 @@ VT.tree <- setRefClass(
     sens = "character",
     name = "character",
     tree = "rpart",
+    competitors = "data.frame",
     Ahat = "vector"
   ),
   
@@ -83,12 +84,16 @@ VT.tree <- setRefClass(
       return(invisible(NULL))
     },
     
-    getRules = function(only.leaf = F, only.fav = F, tables = T, verbose = T){
+    getRules = function(only.leaf = F, only.fav = F, tables = T, verbose = T, compete = F){
+      
+      # On crée le tableau des competitors
+      if(isTRUE(compete))
+        comp.df <- .self$createCompetitors()
       
       # On supprime le root node, inutile pour les stats d'incidences et autres...
       full.frame <- .self$tree$frame[-1, ]
       
-      if (only.fav == T){  
+      if (only.fav == T){
         if(inherits(.self, "VT.tree.reg")){
           if(.self$sens == ">"){
             frm.only.fav <- full.frame[full.frame$yval >= (.self$threshold), ]
@@ -120,18 +125,44 @@ VT.tree <- setRefClass(
       if (length(frm) == 0) stop("VT.tree : no tree");
       if (ncol(frm)==0) stop("VT.tree : no rules");
       
-      pth <- rpart::path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
-      # Delete 'root' node from rules
+      pth <- path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
+      # Delete 'root' node des règles
       pth <- lapply(pth, FUN = function(d) return(d[-1]))
       
-      depth <- 0
-      nodes <- names(pth)
+      nodes <- c()
+      if(isTRUE(compete)){
+        comp <- comp.df$path    
+        for(i in names(pth)){
+          tmp <- length(comp[comp == i][-1])
+          if(tmp>0){
+            tmp <- 1:tmp
+            tmp <- paste(i, tmp, sep = ".")
+            nodes <- c(nodes, i, tmp)
+          }else
+            nodes <- c(nodes, i)
+        }
+      }else
+        nodes <- names(pth)
+      
       rules <- data.frame(replicate(6, character(0), simplify = T), replicate(2, numeric(0), simplify = T), stringsAsFactors = F)
       
       colnames(rules) <- c("Subgroup", "Subgroup size", "Treatement event rate", "Control event rate",
                            "Treatment sample size", "Control sample size", "RR (resub)", "RR (snd)")
       for(i in nodes){
-        pth.text <- paste(pth[[i]], collapse = " & ")
+        is.comp <- FALSE
+        if (isTRUE(length(grep("^\\d+\\.\\d+$", i)) > 0)){
+          tmp.str <- strsplit(x = i, split = ".", fixed = T)[[1]]
+          tmp.path <- as.numeric(tmp.str[1])
+          tmp.path.str <- tmp.str[1]
+          tmp.comp <- as.numeric(tmp.str[2])
+          l <- length(pth[[tmp.path.str]])
+          pth.text.c <- c(pth[[tmp.path.str]][-l], comp.df[comp.df$path == tmp.path, ][(tmp.comp+1), "string"])
+          pth.text  <- paste(pth.text.c, collapse = " & ") 
+          is.comp <- TRUE
+        }else{
+          pth.text <- paste(pth[[i]], collapse = " & ")
+        }
+        
         incid <- .self$getIncidences(pth.text)
         
         rules[i, 1] <- pth.text
@@ -147,23 +178,29 @@ VT.tree <- setRefClass(
           cat("----------------------------\n")
           cat(sprintf("| Rule number %s : ", i))
           
-          
-          if(inherits(.self, "VT.tree.reg")){
-            cat(sprintf("Y val = %0.3f \n", frm[i, ]$yval))
-          }else{
-            cat(sprintf("Y val = %i \n", frm[i, ]$yval))
+          if(isTRUE(!is.comp)){
+            if(inherits(.self, "VT.tree.reg")){
+              cat(sprintf("Y val = %0.3f \n", frm[i, ]$yval))
+            }else{
+              cat(sprintf("Y val = %i \n", frm[i, ]$yval))
+            }
+            
+            cat("----------------------------\n")
+            
+            cat(sprintf("[n = %i", frm[i, ]$n))
+            cat(sprintf(", loss = %s, prob = %0.2f",
+                        frm[i, ]$dev,
+                        frm[i, ]$yval2[, 5]))
+            
+            cat("] \n")        
+            cat("\t\t")
+            cat(pth[[i]], sep="\n\t\t")
+            
+          } else {
+            cat("\n----------------------------\n")
+            cat("\t\t")
+            cat(pth.text.c, sep="\n\t\t")
           }
-          
-          cat("----------------------------\n")
-          
-          cat(sprintf("[n = %i", frm[i, ]$n))
-          cat(sprintf(", loss = %s, prob = %0.2f",
-                      frm[i, ]$dev,
-                      frm[i, ]$yval2[, 5]))
-          
-          cat("] \n")        
-          cat("\t\t")
-          cat(pth[[i]], sep="\n\t\t")
           
           if(isTRUE(tables)){
             cat("\n")
@@ -185,6 +222,33 @@ VT.tree <- setRefClass(
       }
       
       return(invisible(rules))
+    },
+    
+    createCompetitors = function(){
+      
+      fr  <- .self$tree$frame
+      fr  <- fr[fr$var != "<leaf>",]
+      sp  <- .self$tree$splits
+      sp <- as.data.frame(sp)
+      sp$var <- row.names(sp)
+      row.names(sp) <- NULL
+      
+      sp$path <- rep(as.numeric(row.names(fr)), (fr$ncompete+fr$nsurrogate+1))
+      sp$string <- paste(sp$var, ifelse(sp$ncat == -1L, "<", ">="), round(sp$index, digits = 3))
+      
+      sp <- with(sp, sp[adj==0, ])
+      sp <- with(sp, sp[, -5])
+      
+      sp.2 <- sp.3 <- sp
+      sp.2$path <- sp$path*2
+      sp.2$string <- paste(sp.2$var, ifelse(sp.2$ncat == -1L, "<", ">="), round(sp.2$index, digits = 3))
+      
+      sp.3$path <- sp$path*2+1
+      sp.3$string <- paste(sp.3$var, ifelse(sp.3$ncat == -1L, ">=", "<"), round(sp.3$index, digits = 3))
+      
+      .self$competitors <- rbind(sp.2, sp.3)
+      
+      return(invisible(.self$competitors))
     },
     
     getIncidences = function(rule, rr.snd = T){
