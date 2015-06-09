@@ -53,6 +53,7 @@ VT.tree <- setRefClass(
     },
     
     computeNameOfTree = function(type){
+      return(type)
       if(.self$threshold < 0 ){
         threshold.chr <- paste0("m", -.self$threshold)
       }else{
@@ -120,7 +121,7 @@ VT.tree <- setRefClass(
       if (ncol(frm)==0) stop("VT.tree : no rules");
       
       pth <- rpart::path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
-      # Delete 'root' node des règles
+      # Delete 'root' node from rules
       pth <- lapply(pth, FUN = function(d) return(d[-1]))
       
       depth <- 0
