@@ -1,18 +1,22 @@
 Package: VirtualTwins
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Adaptation of Virtual Twins method from Jared Foster.
+Version: 0.0.0.1000
 Date: 2015-05-31
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: François Vieille
+Maintainer: <vieille.francois@gmail.com>
+Description: Research of subgroups in random clinical trials with binary
+    outcome and two treatments groups.
+License: MIT
 Imports:
-    rpart
+    rpart,
+    party
 Suggests:
     randomForest,
-    caret,
-    party
+    caret
+Depends:
+    R (>= 3.2.0),
+    methods
 Collate:
     'VirtualTwins.R'
     'object.R'
@@ -23,6 +27,7 @@ Collate:
     'forest.double.R'
     'forest.fold.R'
     'forest.one.R'
+    'formatRCTDataset.R'
     'incidences.R'
     'tools.R'
     'tree.R'

@@ -17,6 +17,7 @@
 #'   
 #' @include setClass.R
 #' @importClassesFrom party RandomForest
+#' 
 setGeneric("VT.predict",
            function(rfor, newdata, type){standardGeneric("VT.predict")}
 )
@@ -29,7 +30,7 @@ setMethod(
     if(! type %in% c("binary", "continous")) stop("Type must be Binary or continous")
     if(type == "binary"){
       if(!requireNamespace("party", quietly = TRUE)) stop("Party package must be loaded.")
-      tmp <- predict.RandomForest(rfor, OOB = T, type = "prob")      
+      tmp <- party:::predict.RandomForest(rfor, OOB = T, type = "prob")      
       tmp <- unlist(tmp)
       tmp <- tmp[seq(2, length(tmp), 2)]      
     }else{
@@ -49,7 +50,7 @@ setMethod(
     if(! type %in% c("binary", "continous")) stop("Type must be Binary or continous")
     if(type == "binary"){
       if(!requireNamespace("party", quietly = TRUE)) stop("Party package must be loaded.")
-      tmp <- predict.RandomForest(rfor, newdata = newdata, type = "prob")
+      tmp <- party:::predict.RandomForest(rfor, newdata = newdata, type = "prob")
       tmp <- unlist(tmp)
       tmp <- tmp[seq(2, length(tmp), 2)]      
     }else{
@@ -71,7 +72,7 @@ setMethod(
       # no longer available in all version ?!
       # tmp <- rfor$vote[, 2] # get the "o" prob
       if(!requireNamespace("randomForest", quietly = TRUE)) stop("randomForest package must be loaded.")
-      tmp <- predict.randomForest(rfor, type = "prob")[, 2] # We want to get the "o" prob
+      tmp <- randomForest:::predict.randomForest(rfor, type = "prob")[, 2] # We want to get the "o" prob
     }else{
       message("continous is not done yet")
       tmp <- NULL
@@ -88,7 +89,7 @@ setMethod(
     if(! type %in% c("binary", "continous")) stop("Type must be Binary or continous")
     if(type == "binary"){
       if(!requireNamespace("randomForest", quietly = TRUE)) stop("randomForest package must be loaded.")
-      tmp <- predict.randomForest(rfor, newdata = newdata, type = "prob")[, 2] # We want to get the "o" prob
+      tmp <- randomForest:::predict.randomForest(rfor, newdata = newdata, type = "prob")[, 2] # We want to get the "o" prob
     }else{
       message("continous is not done yet")
       tmp <- NULL
@@ -102,7 +103,7 @@ setMethod(
   f = "VT.predict",
   signature = c(rfor = "train", newdata = "ANY", type = "character"),
   function(rfor, newdata, type = "binary"){
-    if(!requireNamespace("caret", quietly = TRUE)) stop("randomForest package must be loaded.")
+    if(!requireNamespace("caret", quietly = TRUE)) stop("caret package must be loaded.")
     return(VT.predict(rfor$finalModel, newdata, type))
   }
 )
@@ -112,7 +113,7 @@ setMethod(
   f = "VT.predict",
   signature = c(rfor = "train", newdata = "missing", type = "character"),
   function(rfor, type = "binary"){
-    if(!requireNamespace("caret", quietly = TRUE)) stop("randomForest package must be loaded.")
+    if(!requireNamespace("caret", quietly = TRUE)) stop("caret package must be loaded.")
     return(VT.predict(rfor=rfor$finalModel, type=type))
   }
 )
