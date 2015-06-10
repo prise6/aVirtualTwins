@@ -29,11 +29,12 @@
 #' @name VT.object
 #'   
 #' @examples
+#' \dontrun{
 #' # Default use :
 #' vt.o <- VT.object$new(data = my.rct.dataset)
 #' 
 #' # Getting data
-#' vt.o$data
+#' head(vt.o$data)
 #' 
 #' # or getting predictor with interactions
 #' vt.o$getX(interactions = T)
@@ -46,7 +47,7 @@
 #' 
 #' # Print incidences
 #' vt.o$getIncidences()
-#' # ...
+#' }
 #' 
 #' @seealso \code{\linkS4class{VT.difft}}
 #'   
