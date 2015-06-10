@@ -1,14 +1,29 @@
 # VT.FOREST.FOLD ----------------------------------------------------------
 
+#' Difft via k random forests
+#' 
 #' A reference class to compute twins via k random forest
 #' 
+#' \code{VT.forest.fold} extends \code{VT.forest}
+#' 
+#' Twins are estimated by k-fold cross validation. A forest is computed on k-1/k
+#' of the data and then used to estimate twin1 and twin2 on 1/k of the left 
+#' data.
+#' 
 #' @include forest.R
-#' 
-#' @field interactions logical set TRUE if model has been computed with interactions 
-#' @field fold numeric Number of fold, i.e. number of forest
-#' @field ratio numeric 
-#' @field groups vector Define which observations belong to which group 
-#' 
+#'   
+#' @field interactions logical set TRUE if model has been computed with 
+#'   interactions
+#' @field fold numeric, number of fold, i.e. number of forest (k)
+#' @field ratio numeric experimental, use to balance sampsize. Defaut to 1.
+#' @field groups vector Define which observations belong to which group
+#' @field ... field from parent class : \linkS4class{VT.forest}
+#'   
+#' @name VT.forest.fold
+#'   
+#' @seealso \code{\link{VT.difft}}, \code{\link{VT.forest}}, 
+#'   \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
+#'   
 #' @import methods
 VT.forest.fold <- setRefClass(
   Class = "VT.forest.fold",
@@ -59,6 +74,7 @@ VT.forest.fold <- setRefClass(
         samp2 <- Yeff[2]
         samp1 <- sampmin
       }
+      if(!requireNamespace("randomForest", quietly = TRUE)) stop("randomForest package must be loaded.")
       rf <- randomForest(x = X, y = Y, sampsize = c(samp1, samp2), keep.forest = T, ...)
       
       .self$computeTwin1(rf, group)

@@ -1,13 +1,26 @@
 # VT.FOREST.ONE -----------------------------------------------------------
 # IF RUNNING ONE FOREST COMPUTATION
 
+#' Difft by one random forest
+#' 
 #' A reference class to compute twins via one random forest
+#' 
+#' \code{VT.forest.one} extends \code{VT.forest}.
+#' 
+#' OOB predictions are used to estimate \eqn{E(Y|T = real treatment)}. Then, 
+#' treatement is switched, it means that 1 becomes 0 and 0 becomes 1. We use 
+#' again \code{model} to estimate \eqn{E(Y|T = the other treatment)}. This is
+#' what \code{computeTwin1()} and \code{computeTwin2()} functions do.
 #' 
 #' @include forest.R
 #' 
-#' @field model ANY a caret/RandomForest/randomForest class object
+#' @field model is a caret/RandomForest/randomForest class object
 #' @field interactions logical set TRUE if model has been computed with interactions 
-#' @field ... field from parent class : VT.forest
+#' @field ... field from parent class : \linkS4class{VT.forest}
+#' 
+#' @seealso \code{\link{VT.difft}}, \code{\link{VT.forest}}, \code{\link{VT.forest.double}}
+#' 
+#' @name VT.forest.one
 #' 
 #' @import methods
 VT.forest.one <- setRefClass(

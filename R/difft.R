@@ -12,7 +12,7 @@
 #'   
 #' @field vt.object VT.object (refClass) representing data
 #' @field twin1 vector of \eqn{E(Y|T = real treatment)}
-#' @field twin2 vector of \eqn{E(Y|T = anoher treatment)}
+#' @field twin2 vector of \eqn{E(Y|T = another treatment)}
 #' @field difft vector of difference between twin1 and twin2
 #'   
 #' @name VT.difft

@@ -1,10 +1,20 @@
 # FORESTS -----------------------------------------------------------------
 
-#' A abstract reference class to compute twin via random forests
+#' Difft by Random Forest
 #' 
+#' An abstract reference class to compute twin via random forests
+#'  
+#' \code{VT.forest} extends \code{VT.difft}
+#' 
+#' @field ... see fields of \linkS4class{VT.difft}
+#'   
 #' @include difft.R predict.R
+#'   
+#' @name VT.forest
 #' 
-#' @import methods 
+#' @seealso \code{\link{VT.difft}}, \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
+#'   
+#' @import methods
 VT.forest <- setRefClass(
   Class = "VT.forest",
   
@@ -12,7 +22,7 @@ VT.forest <- setRefClass(
   
   methods = list(  
     run = function(){
-      "Compute twin1 and twin2 computation. Switch treatment if necessary."
+      "Compute twin1 and twin2 estimation. Switch treatment if necessary."
       .self$computeTwin1()
       
       if(inherits(.self, "VT.forest.one")) .self$vt.object$switchTreatment() #if one forest
