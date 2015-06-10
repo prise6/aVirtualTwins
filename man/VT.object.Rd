@@ -54,11 +54,12 @@ If trt is not NULL, return predictors for T = trt}
 \item{\code{switchTreatment()}}{Switch treatment value.}
 }}
 \examples{
+\dontrun{
 # Default use :
 vt.o <- VT.object$new(data = my.rct.dataset)
 
 # Getting data
-vt.o$data
+head(vt.o$data)
 
 # or getting predictor with interactions
 vt.o$getX(interactions = T)
@@ -71,7 +72,7 @@ vt.o$getY(0)
 
 # Print incidences
 vt.o$getIncidences()
-# ...
+}
 }
 \seealso{
 \code{\linkS4class{VT.difft}}
