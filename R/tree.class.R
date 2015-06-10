@@ -3,6 +3,8 @@
 #' A reference class to compute subgroups by classifiation tree
 #' 
 #' @include tree.R
+#' 
+#' @import methods
 VT.tree.class <- setRefClass(
   Class = "VT.tree.class",
   

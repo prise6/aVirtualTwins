@@ -8,7 +8,7 @@ vt.getQAOriginal <- function(response, trt, ahat){
       sum(response*ahat*(1-trt))/sum(ahat*(1-trt)) - 
       (sum(response*trt)/sum(trt) - 
          sum(response*(1-trt))/sum(1-trt))  
-  }
+ } 
   return(tmp)
 }
 
@@ -32,7 +32,6 @@ vt.getIncidence <- function(df){
   return(table.res)
 }
 
-
 vt.rr.snd <- function(vt.difft, selected){
   if(sum(selected) == 0){
     return(0)
@@ -41,3 +40,7 @@ vt.rr.snd <- function(vt.difft, selected){
            /(sum(vt.difft$twin1*selected*(1-vt.difft$vt.object$data[, 2]))/sum(selected*(1-vt.difft$vt.object$data[, 2]))))
   }
 }
+
+
+
+

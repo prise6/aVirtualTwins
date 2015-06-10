@@ -12,6 +12,7 @@
 #' @field tree rpart Rpart object to construct the tree
 #' @field Ahat vector Indicator of beglonging to Ahat
 #'  
+#' @import methods
 VT.tree <- setRefClass(
   Class = "VT.tree",
   
