@@ -3,7 +3,7 @@ Type: Package
 Title: Adaptation of Virtual Twins method from Jared Foster.
 Version: 0.0.0.1000
 Date: 2015-05-31
-Author: François Vieille
+Author: Francois Vieille
 Maintainer: <vieille.francois@gmail.com>
 Description: Research of subgroups in random clinical trials with binary
     outcome and two treatments groups.

@@ -8,6 +8,8 @@
 #' 
 #' @name VT.tree.class
 #' 
+#' @export VT.tree.class
+#' 
 #' @import methods
 VT.tree.class <- setRefClass(
   Class = "VT.tree.class",

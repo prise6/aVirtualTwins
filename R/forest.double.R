@@ -23,10 +23,12 @@
 #'   1
 #' @field model_trt0 a caret/RandomForest/randomForest object for treatment T =
 #'   0
-#' @field ... field from parent class : \linkS4class{VT.forest}
+#' @field ... field from parent class : \code{\link{VT.forest}}
 #'   
 #' @seealso \code{\link{VT.difft}}, \code{\link{VT.forest}},
 #'   \code{\link{VT.forest.one}}
+#'   
+#' @export VT.forest.double
 #'   
 #' @name VT.forest.double
 #'   

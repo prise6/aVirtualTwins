@@ -17,6 +17,8 @@
 #'   
 #' @name VT.difft
 #'  
+#' @export VT.difft
+#'  
 #' @seealso \code{\link{VT.forest}}, \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
 #' 
 #' @import methods

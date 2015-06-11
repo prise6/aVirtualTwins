@@ -4,19 +4,18 @@
 #' 
 #' A Reference Class to deal with RCT dataset
 #' 
-#' Currently working with binary response only. Continous will come, one day.
+#' Currently working with binary response only. Continous will come, one day. 
 #' Two-levels treatment only as well.
 #' 
 #' \code{data} field should be as described, however if virtual twins won't used
-#' interactions, there is no need to transform factors. A tool function to 
-#' transform factor will come soon.
+#' interactions, there is no need to transform factors. See
+#' \link{formatRCTDataset} for more details.
 #' 
 #' 
 #' @field data Data.frame with format: \eqn{Y,T,X_{1}, \ldots, X_{p}}. Y must be
 #'   two levels factor if type is binary. T must be numeric or integer.
-#' @field alpha Numeric, no need in this current version. Set to \code{1}.
-#' @field screening Logical, set to \code{FALSE} Set to \code{TRUE} to use \code{varimp} in trees 
-#'   computation.
+#' @field screening Logical, set to \code{FALSE} Set to \code{TRUE} to use
+#'   \code{varimp} in trees computation.
 #' @field varimp Character vector of important variables to use in trees 
 #'   computation.
 #' @field delta Numeric representing the difference of incidence between 
@@ -27,6 +26,8 @@
 #' @import methods
 #'   
 #' @name VT.object
+#'   
+#' @export VT.object
 #'   
 #' @examples
 #' \dontrun{
@@ -49,14 +50,13 @@
 #' vt.o$getIncidences()
 #' }
 #' 
-#' @seealso \code{\linkS4class{VT.difft}}
+#' @seealso \code{\link{VT.difft}}
 #'   
 VT.object <- setRefClass(
   Class = "VT.object",
   
   fields = list(
     data = "data.frame",
-    alpha = "numeric",
     screening = "logical",
     varimp = "character",
     delta = "numeric",
@@ -64,14 +64,12 @@ VT.object <- setRefClass(
   ),
   
   methods = list(
-    initialize = function(screening = F, alpha = 1, type = "binary", ...){
+    initialize = function(screening = F, type = "binary", ...){
       
       .self$screening <- screening
       
       .self$type <- type
-      
-      .self$alpha <- alpha
-      
+            
       .self$initFields(...)
     },
     

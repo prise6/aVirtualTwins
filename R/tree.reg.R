@@ -6,6 +6,8 @@
 #'
 #' @include tree.R
 #' 
+#' @export VT.tree.reg
+#' 
 #' @name VT.tree.reg
 
 VT.tree.reg <- setRefClass(

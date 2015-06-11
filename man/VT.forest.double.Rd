@@ -29,7 +29,7 @@ This is what \code{computeTwin2()} does.
 \item{\code{model_trt0}}{a caret/RandomForest/randomForest object for treatment T =
 0}
 
-\item{\code{...}}{field from parent class : \linkS4class{VT.forest}}
+\item{\code{...}}{field from parent class : \code{\link{VT.forest}}}
 }}
 \section{Methods}{
 

@@ -22,6 +22,8 @@
 #' 
 #' @name VT.forest.one
 #' 
+#' @export VT.forest.one
+#' 
 #' @import methods
 VT.forest.one <- setRefClass(
   Class = "VT.forest.one",

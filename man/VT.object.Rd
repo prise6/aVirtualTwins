@@ -12,8 +12,8 @@ Currently working with binary response only. Continous will come, one day.
 Two-levels treatment only as well.
 
 \code{data} field should be as described, however if virtual twins won't used
-interactions, there is no need to transform factors. A tool function to
-transform factor will come soon.
+interactions, there is no need to transform factors. See
+\link{formatRCTDataset} for more details.
 }
 \section{Fields}{
 
@@ -21,10 +21,8 @@ transform factor will come soon.
 \item{\code{data}}{Data.frame with format: \eqn{Y,T,X_{1}, \ldots, X_{p}}. Y must be
 two levels factor if type is binary. T must be numeric or integer.}
 
-\item{\code{alpha}}{Numeric, no need in this current version. Set to \code{1}.}
-
-\item{\code{screening}}{Logical, set to \code{FALSE} Set to \code{TRUE} to use \code{varimp} in trees
-computation.}
+\item{\code{screening}}{Logical, set to \code{FALSE} Set to \code{TRUE} to use
+\code{varimp} in trees computation.}
 
 \item{\code{varimp}}{Character vector of important variables to use in trees
 computation.}
@@ -75,6 +73,6 @@ vt.o$getIncidences()
 }
 }
 \seealso{
-\code{\linkS4class{VT.difft}}
+\code{\link{VT.difft}}
 }
 
