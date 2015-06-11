@@ -102,7 +102,6 @@ formatRCTDataset <- function(dataset, outcome.field, treatment.field, interactio
   }
   
   colnames.order <- c(outcome.field, treatment.field, predictors.next)
-  cat(colnames.order)
   d <- d[, colnames.order]
   
   return(invisible(d))
