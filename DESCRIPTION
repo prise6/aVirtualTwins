@@ -19,6 +19,7 @@ Depends:
     methods
 Collate:
     'VirtualTwins.R'
+    'data.R'
     'object.R'
     'difft.R'
     'setClass.R'

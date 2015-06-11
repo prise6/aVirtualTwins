@@ -13,9 +13,6 @@ VirtualTwins is written mainly with reference classes. Briefly, there is three k
  \item \code{\link{VT.tree}} class to find subgroups from \code{\link{difft}} by CART trees. \code{\link{VT.tree.class}} and \code{\link{VT.tree.reg}} extend it.
 }
 }
-\details{
-\encoding{UTF-8}
-}
 \section{TODO LIST}{
 
 \emph{last update : 11.06.2015}
