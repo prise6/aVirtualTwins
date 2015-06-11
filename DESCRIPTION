@@ -15,7 +15,7 @@ Suggests:
     randomForest,
     caret
 Depends:
-    R (>= 3.2.0),
+    R (>= 3.0.0),
     methods
 Collate:
     'VirtualTwins.R'

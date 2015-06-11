@@ -22,7 +22,7 @@ An abstract reference class to compute twin via random forests
 
 \item{\code{getFullData()}}{Return twin1, twin2 and difft in column}
 
-\item{\code{run()}}{Compute twin1 and twin2 computation. Switch treatment if necessary.}
+\item{\code{run()}}{Compute twin1 and twin2 estimation. Switch treatment if necessary.}
 }}
 \seealso{
 \code{\link{VT.difft}}, \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}

@@ -15,8 +15,11 @@
 #'   
 #' @return vector \eqn{E(Y=1)}
 #'   
+#'
 #' @include setClass.R
 #' @importClassesFrom party RandomForest
+#' 
+#' @name VT.predict
 #' 
 setGeneric("VT.predict",
            function(rfor, newdata, type){standardGeneric("VT.predict")}

@@ -31,7 +31,7 @@ interactions}
 \section{Methods}{
 
 \describe{
-\item{\code{run()}}{Compute twin1 and twin2 computation. Switch treatment if necessary.}
+\item{\code{run()}}{Compute twin1 and twin2 estimation. Switch treatment if necessary.}
 }}
 \seealso{
 \code{\link{VT.difft}}, \code{\link{VT.forest}},

@@ -1,17 +1,47 @@
-# TREES COMPUTATIONS ------------------------------------------------------
+#' Tree to find subgroup
+#' 
 #' An abstract reference class to compute tree
 #' 
-#' @include difft.R setClass.R
+#' \code{VT.tree.class} and \code{VT.tree.reg} are children of \code{VT.tree}.
+#' \code{VT.tree.class} and \code{VT.tree.reg} try to find a strong association 
+#' between \code{difft} (in \code{VT.difft} object) and RCT variables.
 #' 
-#' @field vt.difft VT.difft object
-#' @field outcome vector
-#' @field threshold numeric Threshold for difft (c)
-#' @field screening logical TRUE if using varimp (default is VT.object screening field) 
-#' @field sens character Sens can be ">" (default) or "<". Meaning : difft > threshold or difft < threshold
+#' In \code{VT.tree.reg}, a regression tree is computed on \code{difft} values. 
+#' Then, thanks to the \code{threshold} it flags leafs of the \code{tree} which 
+#' are above the \code{threshold} (when \code{sens} is ">"). Or it flags leafs 
+#' which are below the \code{threshold} (when \code{sens} = "<").
+#' 
+#' In \code{VT.tree.class}, it first flags \code{difft} above or below 
+#' (depending on the \code{sens}) the given \code{threshold}. Then a 
+#' classification tree is computed to find which variables explain flagged 
+#' \code{difft}.
+#' 
+#' To sum up, \code{VT.tree} try to understand which variables are associated 
+#' with a big change of \code{difft}.
+#' 
+#' Results are shown with \code{getRules()} function. \code{only.leaf} parameter
+#' allows to obtain only the leaf of the \code{tree}. \code{only.fav} parameter 
+#' select only favorable nodes. \code{tables} shows incidence table of the rule.
+#' \code{verbose} allow \code{getRules()} to be quiet. And \code{compete} show
+#' also rules with \code{maxcompete} competitors from the \code{tree}.
+#' 
+#' @include difft.R setClass.R
+#'   
+#' @field vt.difft \code{VT.difft} object
+#' @field outcome outcome vector from \code{rpart} function
+#' @field threshold numeric Threshold for difft calculation (c)
+#' @field screening Logical. TRUE if using varimp. Default is VT.object 
+#'   screening field
+#' @field sens character Sens can be ">" (default) or "<". Meaning : 
+#'   \code{difft} > \code{threshold} or \code{difft} < \code{threshold}
 #' @field name character Names of the tree
 #' @field tree rpart Rpart object to construct the tree
 #' @field Ahat vector Indicator of beglonging to Ahat
-#'  
+#'   
+#' @seealso \code{\link{VT.tree.reg}}, \code{\link{VT.tree.class}}
+#'   
+#' @name VT.tree
+#'   
 #' @import methods
 VT.tree <- setRefClass(
   Class = "VT.tree",
@@ -29,7 +59,7 @@ VT.tree <- setRefClass(
   ),
   
   methods = list(
-    initialize = function(vt.difft = VT.difft(), threshold = 0.05, sens = ">", screening = NULL){        
+    initialize = function(vt.difft = VT.difft(), threshold = 0.05, sens = ">", screening = NULL){
       .self$vt.difft <- vt.difft
       
       .self$threshold <- threshold
@@ -41,6 +71,7 @@ VT.tree <- setRefClass(
     },
     
     getData = function(){
+      "Return data used for tree computation"
       d <- .self$vt.difft$vt.object$data[, 3:ncol(.self$vt.difft$vt.object$data)]
       
       if(.self$screening == T){
@@ -55,6 +86,7 @@ VT.tree <- setRefClass(
     },
     
     computeNameOfTree = function(type){
+      "return label of response variable of the tree"
       return(type)
       if(.self$threshold < 0 ){
         threshold.chr <- paste0("m", -.self$threshold)
@@ -66,11 +98,13 @@ VT.tree <- setRefClass(
       return(paste(type, tmp[1], tmp[2], sep = ""))
     },
     
-    run = function(){
+    run = function(...){
+      "Compute tree with rpart parameters"
       if(length(.self$vt.difft$difft) == 0) stop("VT.difft::difft is an empty vector")
     },
     
     getInfos = function(){
+      "Return infos about tree"
       cat("\n")
       cat(sprintf("Threshold = %0.4f", .self$threshold))
       cat("\n")
@@ -86,6 +120,7 @@ VT.tree <- setRefClass(
     },
     
     getRules = function(only.leaf = F, only.fav = F, tables = T, verbose = T, compete = F){
+      "Retrun subgroups discovered by the tree. See details."
       
       # On crée le tableau des competitors
       if(isTRUE(compete))
@@ -226,6 +261,7 @@ VT.tree <- setRefClass(
     },
     
     createCompetitors = function(){
+      "Create competitors table"
       
       fr  <- .self$tree$frame
       fr  <- fr[fr$var != "<leaf>",]
@@ -253,10 +289,12 @@ VT.tree <- setRefClass(
     },
     
     getIncidences = function(rule, rr.snd = T){
+      "Return incidence of the rule"
       return(VT.incidences(.self$vt.difft, rule, rr.snd))
     },
     
     getAhatIncidence = function(){
+      "Return Ahat incidence"
       if(sum(.self$Ahat)!=0){
         
         table.inc <- VT.incidences(vt.object = .self$vt.difft$vt.object, select = .self$Ahat)
@@ -279,6 +317,7 @@ VT.tree <- setRefClass(
     },
     
     getAhatQuality = function(){
+      "Return Ahat quality"
       
       resub <- vt.getQAOriginal(.self$Ahat, response = .self$vt.difft$vt.object$getY(), trt = .self$vt.difft$vt.object$data[, 2])
       

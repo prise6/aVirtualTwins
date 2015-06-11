@@ -20,7 +20,7 @@ favorable outcome is 1. Then, \deqn{difft_i = twin1_i - twin2_i IF T_i =
 
 \item{\code{twin1}}{vector of \eqn{E(Y|T = real treatment)}}
 
-\item{\code{twin2}}{vector of \eqn{E(Y|T = anoher treatment)}}
+\item{\code{twin2}}{vector of \eqn{E(Y|T = another treatment)}}
 
 \item{\code{difft}}{vector of difference between twin1 and twin2}
 }}

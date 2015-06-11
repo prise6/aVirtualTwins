@@ -1,8 +1,12 @@
 # VT.TREE.CLASS -----------------------------------------------------------
 
-#' A reference class to compute subgroups by classifiation tree
+#' Classification tree to find subgroups
+#'
+#' See \code{\link{VT.tree}}
 #' 
 #' @include tree.R
+#' 
+#' @name VT.tree.class
 #' 
 #' @import methods
 VT.tree.class <- setRefClass(
@@ -24,6 +28,7 @@ VT.tree.class <- setRefClass(
     },
     
     run = function(...){
+      "VT.tree.class:run(...) Compute classification tree with rpart parameters"
       callSuper()
       
       data  <- .self$getData()  
