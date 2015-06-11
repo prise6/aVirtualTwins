@@ -5,7 +5,7 @@
 #' \itemize{
 #'  \item \code{\link{VT.object}} class to represent RCT dataset used by VirtualTwins. To format correctly RCT dataset, use \code{\link{formatRCTDataset}}.
 #'  \item \code{\link{VT.difft}} class to compute difference between twins. Family \code{\link{VT.forest}} extends it to compute twins by random forest.
-#'  \item \code{\link{VT.tree}} class to find subgroups from \code{\link{difft}} by CART trees. \code{\link{VT.tree.class}} and \code{\link{VT.tree.reg}} extend it.
+#'  \item \code{\link{VT.tree}} class to find subgroups from \code{difft} by CART trees. \code{\link{VT.tree.class}} and \code{\link{VT.tree.reg}} extend it.
 #' }
 #'  
 #' @section TODO LIST:

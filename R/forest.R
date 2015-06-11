@@ -6,7 +6,7 @@
 #'  
 #' \code{VT.forest} extends \code{VT.difft}
 #' 
-#' @field ... see fields of \linkS4class{VT.difft}
+#' @field ... see fields of \code{\link{VT.difft}}
 #'   
 #' @include difft.R predict.R
 #'   

@@ -16,7 +16,7 @@
 #' 
 #' @field model is a caret/RandomForest/randomForest class object
 #' @field interactions logical set TRUE if model has been computed with interactions 
-#' @field ... field from parent class : \linkS4class{VT.forest}
+#' @field ... field from parent class : \code{\link{VT.forest}}
 #' 
 #' @seealso \code{\link{VT.difft}}, \code{\link{VT.forest}}, \code{\link{VT.forest.double}}
 #' 

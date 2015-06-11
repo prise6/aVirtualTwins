@@ -26,7 +26,7 @@ interactions}
 
 \item{\code{groups}}{vector Define which observations belong to which group}
 
-\item{\code{...}}{field from parent class : \linkS4class{VT.forest}}
+\item{\code{...}}{field from parent class : \code{\link{VT.forest}}}
 }}
 \section{Methods}{
 

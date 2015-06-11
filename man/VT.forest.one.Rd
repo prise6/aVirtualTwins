@@ -22,7 +22,7 @@ what \code{computeTwin1()} and \code{computeTwin2()} functions do.
 
 \item{\code{interactions}}{logical set TRUE if model has been computed with interactions}
 
-\item{\code{...}}{field from parent class : \linkS4class{VT.forest}}
+\item{\code{...}}{field from parent class : \code{\link{VT.forest}}}
 }}
 \section{Methods}{
 

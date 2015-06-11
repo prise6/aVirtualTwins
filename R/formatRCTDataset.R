@@ -27,6 +27,8 @@
 #' \dontrun{
 #' data.format <- formatRCTDataset(data, "outcome", "treatment", TRUE)
 #' } 
+#'
+#'  
 #'   
 #' @export
 formatRCTDataset <- function(dataset, outcome.field, treatment.field, interactions = TRUE){

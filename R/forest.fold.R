@@ -17,7 +17,7 @@
 #' @field fold numeric, number of fold, i.e. number of forest (k)
 #' @field ratio numeric experimental, use to balance sampsize. Defaut to 1.
 #' @field groups vector Define which observations belong to which group
-#' @field ... field from parent class : \linkS4class{VT.forest}
+#' @field ... field from parent class : \code{\link{VT.forest}}
 #'   
 #' @name VT.forest.fold
 #'   

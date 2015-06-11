@@ -13,7 +13,7 @@ An abstract reference class to compute twin via random forests
 \section{Fields}{
 
 \describe{
-\item{\code{...}}{see fields of \linkS4class{VT.difft}}
+\item{\code{...}}{see fields of \code{\link{VT.difft}}}
 }}
 \section{Methods}{
 
