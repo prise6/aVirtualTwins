@@ -112,7 +112,6 @@ VT.object <- setRefClass(
       }else{
         .self$data[, 2] <- as.numeric(.self$data[, 2])
       }
-      cat("witch \n")
       return(TRUE)
     },
     
