@@ -6,7 +6,7 @@
 #' \href{http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis}{SIDES
 #' method}.
 #' 
-#' \code{Sepsis} contains simulated data on 454 subjects with a binary outcome 
+#' \code{Sepsis} contains simulated data on 470 subjects with a binary outcome 
 #' survival, that stores survival status for patient after 28 days of treatment,
 #' value of 1 for subjects who died after 28 days and 0 otherwise. There are 11 
 #' covariates, listed below, all of which are numerical variables.
@@ -16,7 +16,7 @@
 #' 
 #' True subgroup is \emph{PRAPACHE <= 26 & AGE <= 49.80}
 #' 
-#' @format 454 patients and 13 variables.
+#' @format 470 patients and 13 variables.
 #' \describe{
 #'  \item{survival}{binary outcome}
 #'  \item{THERAPY}{1 for active treatment, 0 for control treatment}
