@@ -54,7 +54,7 @@ formatRCTDataset <- function(dataset, outcome.field, treatment.field, interactio
   if(!is.numeric(treatment) & !is.integer(treatment)) treatment <- as.numeric(treatment)
   if(!( length(unique(treatment)) == 2L & all(c(0,1) %in% unique(treatment)) ))
     stop(sprintf("%s, response must be numeric:\n 0 = no treatment \n 1 = treatment \n", treatment.field))
-  d[, treatment.field.wich] <- treatment
+  d[, treatment.field.which] <- treatment
   
   predictors <- colnames(dataset)[-c(outcome.field.which, treatment.field.which)]
   
