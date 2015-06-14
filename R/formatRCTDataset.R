@@ -47,12 +47,14 @@ formatRCTDataset <- function(dataset, outcome.field, treatment.field, interactio
   outcome <- d[, outcome.field.which]
   if(!is.factor(outcome)) outcome <- as.factor(outcome)
   if(!length(levels(outcome)) == 2L) stop(sprintf("outcome %s must be binary", outcome.field))
-  cat(sprintf("\"%s\" will be the favorable outcome \n", levels(outcome)[2]))    
+  cat(sprintf("\"%s\" will be the favorable outcome \n", levels(outcome)[2]))
+  d[, outcome.field.which] <- outcome
   
   treatment <- d[, treatment.field.which]
   if(!is.numeric(treatment) & !is.integer(treatment)) treatment <- as.numeric(treatment)
   if(!( length(unique(treatment)) == 2L & all(c(0,1) %in% unique(treatment)) ))
     stop(sprintf("%s, response must be numeric:\n 0 = no treatment \n 1 = treatment \n", treatment.field))
+  d[, treatment.field.wich] <- treatment
   
   predictors <- colnames(dataset)[-c(outcome.field.which, treatment.field.which)]
   
