@@ -101,6 +101,17 @@ VT.object <- setRefClass(
       return(data.frame(cbind(.self$data[,-1], tmp*.self$data[, 2], tmp*(1 - .self$data[, 2]))))
     },
     
+    getData = function(interactions = F){
+      "Return dataset. If interactions is set to T, return data with treatement interactions"
+      if(!isTRUE(interactions))
+        return(.self$data)
+      else{
+        data.int <- cbind(.self$data[, 1], .self$getX(T))
+        colnames(data.int)[1] <- colnames(.self$data)[1]
+        return(data.int)
+      }
+    },
+    
     switchTreatment = function(){
       "Switch treatment value."
       cl <- class(.self$data[, 2])
@@ -127,9 +138,14 @@ VT.object <- setRefClass(
       }
     },
     
-    getIncidences = function(){
-      "Return incidence table of data."
-      return(vt.getIncidence(.self$data))
+    # Hack of VT.incidences
+    getIncidences = function(rule = NULL){
+      "Return incidence table of data if rule set to NULL. Otherwise return incidence for the rule."
+      hack.difft <- VT.difft$new(.self)
+      if(is.null(rule))  
+        return(vt.getIncidence(.self$data))
+      else
+        return(VT.incidences(hack.difft, rule, F))
     }
   )
 )
