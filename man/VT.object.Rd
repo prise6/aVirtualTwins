@@ -38,6 +38,8 @@ treatments.}
 \describe{
 \item{\code{computeDelta()}}{Compute delta value.}
 
+\item{\code{getData(interactions = F)}}{Return dataset. If interactions is set to T, return data with treatement interactions}
+
 \item{\code{getFormula()}}{Return formula : Y~T+X1+...+Xp. Usefull for cforest function.}
 
 \item{\code{getIncidences(rule = NULL)}}{Return incidence table of data if rule set to NULL. Otherwise return incidence for the rule.}
