@@ -13,7 +13,8 @@ Imports:
     party
 Suggests:
     randomForest,
-    caret
+    caret,
+    knitr
 Depends:
     R (>= 3.0.0),
     methods
@@ -30,7 +31,9 @@ Collate:
     'forest.one.R'
     'formatRCTDataset.R'
     'incidences.R'
+    'object.wrapper.R'
     'tools.R'
     'tree.R'
     'tree.class.R'
     'tree.reg.R'
+VignetteBuilder: knitr
