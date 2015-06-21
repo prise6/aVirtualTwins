@@ -35,7 +35,7 @@ library(VirtualTwins)
 
 ## Help
 
-*_Vignette is really not finished ... _
+* _Vignette is really not finished ..._
 
 See vignettes/full-example.Rmd
 or when installed : 
