@@ -1,7 +1,7 @@
 Package: VirtualTwins
 Type: Package
 Title: Adaptation of Virtual Twins method from Jared Foster.
-Version: 0.0.0.1000
+Version: 0.0.0.2
 Date: 2015-05-31
 Author: Francois Vieille
 Maintainer: <vieille.francois@gmail.com>
