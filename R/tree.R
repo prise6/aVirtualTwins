@@ -120,11 +120,17 @@ VT.tree <- setRefClass(
     },
     
     getRules = function(only.leaf = F, only.fav = F, tables = T, verbose = T, compete = F){
-      "Retrun subgroups discovered by the tree. See details."
+      "Return subgroups discovered by the tree. See details."
       
-      # On crée le tableau des competitors
-      if(isTRUE(compete))
-        comp.df <- .self$createCompetitors()
+      # No tree ?
+      if (length(.self$tree) == 0){
+        warning("VT.tree : no tree"); return(invisible(NULL));
+      }
+      
+      # No rules ?
+      if(nrow(.self$tree$frame) < 2){
+        warning("VT.tree : no nodes"); return(invisible(NULL));
+      }
       
       # On supprime le root node, inutile pour les stats d'incidences et autres...
       full.frame <- .self$tree$frame[-1, ]
@@ -157,9 +163,10 @@ VT.tree <- setRefClass(
         frm  <- full.frame
       }
       
-      # Le cas où l'arbre est vide ou n'existe pas:
-      if (length(frm) == 0) stop("VT.tree : no tree");
-      if (ncol(frm)==0) stop("VT.tree : no rules");
+      # Le cas où l'arbre est vide ou n'existe pas:  
+      if (ncol(frm) == 0){
+        warning("VT.tree : no rules"); return(invisible(NULL));
+      }
       
       pth <- path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
       # Delete 'root' node des règles
@@ -167,6 +174,7 @@ VT.tree <- setRefClass(
       
       nodes <- c()
       if(isTRUE(compete)){
+        comp.df <- .self$createCompetitors()
         comp <- comp.df$path    
         for(i in names(pth)){
           tmp <- length(comp[comp == i][-1])
