@@ -1,0 +1,199 @@
+---
+title: "Virtual Twins Examples"
+author: "Francois Vieille"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+The goal of this vignette is to show most of all possibilies with *VT* (for *VirtualTwins*) package. 
+
+*VT* method (Jared Foster and al, 2011) has been created to find subgroup of patients with enhanced treatment effect, if it exists. Theorically, this method can be used for binary and continous outcome. This package only deals with binary outcome in a two arms clinical trial.
+
+*VT* method is based on random forests and regression/classification trees.
+
+I decided to use a simulated dataset called *sepsis* in order to show how *VT* package can be used. Type `?sepsis` to know more about this dataset. Anyway, the true subgroup is `PRAPACHE <= 26 & AGE <= 49.80`.
+
+**NOTE:** This true subgroup is defined with the *lower* event rate (`survival = 1`) in treatement arm. Therefore in following examples we'll search the subgroup with the *highest* event rate, and we know it is `PRAPACHE > 26 & AGE > 49.80`.
+
+# Quick preview 
+
+## Dataset
+
+Data used in *VT* are modelized by $\left\{Y, T, X_1, \ldots, X_{p-2}\right\}$. $p$ is the number of variables.
+
+* $Y$ is a binary outcome. In R, $Y$ is a `factor`. Second level of this factor will be the desirable event. ($Y=1$)
+* $T$ is treatment variable, $T=1$ means _active treatement_, $T=0$ means _control treatment_. In R, $T$ is numeric.
+* $X_i$ is covariables, $X_i$ can be categorical, continous, binary.
+
+**NOTE:** if you run *VT* with interactions, categorical covariables must be transformed into binary variables. 
+
+Type `?formatRCTDataset` for details.
+
+Related functions/classes in VirtualTwins package : `VT.object()`, `vt.data()`, `formatRCTDataset`.
+
+## Method
+
+*VT* is a two steps method but with many possibilities
+
+let $\hat{P_{1i}} = P(Y_i = 1|T_i = 1, X_i)$  
+let $\hat{P_{0i}} = P(Y_i = 1|T_i = 0, X_i)$  
+let $X = \left\{X_1, \ldots, X_{p-2}\right\}$  
+
+### First Step
+* Grow a random forest with data $\left\{Y, T, X \right\}$.  
+* Grow a random forest with interaction treatement / covariable, i.e. $\left\{Y, T, X, XI(T_i=0), XI(T_i=1)\right\}$
+* Grow two random forests, one for each treatement.
+
+From one of these methods you can estimate $\hat{P_{1i}}$ and $\hat{P_{0i}}$.
+
+Related functions/classes in VirtualTwins package : `VT.difft()`, `VT.forest()`, `VT.forest.one()`, `VT.forest.double()`, `VT.forest.fold()`.
+
+### Second Step
+
+Define $Z_i = \hat{P_{1i}} - \hat{P_{0i}}$
+
+* Use regression tree to explain $Z$ by covariables $X$. Then subjects with predicted $Z_i$ greater than some threshold $c$ are considered to define a subgroup.
+* Use classification tree on new variable $Z^{*}$ defined by $Z^{*}_i=1$ if $Z_i > c$ and $Z^{*}_i=0$ otherwise.
+
+The idea is to identify which covariable from $X$ described variation of $Z$.
+
+Related functions/classes in VirtualTwins package : `VT.tree()`, `VT.tree.class()`, `VT.tree.reg()`.
+
+# Sepsis dataset
+
+See __Introduction__.
+
+# Examples
+
+## Create object VirtualTwins
+
+In order to begin the two steps of *VT* method, VirtualTwins package need to be initialized with `vt.data()` function.
+type `?vt.data` for more details.
+
+__NOTE:__ if running VT with interactions between $T$ and $X$, set `interactions = TRUE`.
+
+Code of `vt.data()` : 
+```{r, eval = F}
+vt.data <- function(dataset, outcome.field, treatment.field, interactions = TRUE, ...){
+  data <- formatRCTDataset(dataset, outcome.field, treatment.field, interactions = TRUE)
+  VT.object(data = data, ...)
+}
+```
+
+__Example with Sepsis__
+```{r}
+# load library VT
+library(VirtualTwins)
+# load data sepsis
+data(sepsis)
+# initialize VT.object
+vt.o <- vt.data(sepsis, "survival", "THERAPY", TRUE)
+```
+1 will be the favorable outcome because 1 is the second level of `"survival"` column. It means that $P(Y=1)$ is the probability of interest. Anyway, it's still possible to compute $P(Y=0)$.
+
+__Quick example__
+
+*Sepsis* does not have any categorical variable, following example show how `vt.data` deals with categorical values depending on `interactions` parameter
+```{r}
+# Creation of categorical variable
+cat.x <- rep(1:5, (nrow(sepsis))/5)
+cat.x <- as.factor(cat.x)
+sepsis.tmp <- cbind(sepsis, cat.x)
+vt.o.tmp <- vt.data(sepsis.tmp, "survival", "THERAPY", TRUE)
+```
+
+Dummies variables are created for each category of `cat.x` variable. And `cat.x` is removed from dataset. 
+
+```{r, echo = FALSE}
+rm(vt.o.tmp, cat.x, sepsis.tmp)
+```
+
+
+## Step 1 : compute $\hat{P_{1i}}$ and $\hat{P_{0i}}$
+
+As described earlier, step 1 can be done via differents ways
+
+### Simple Random Forest
+
+Following example used *sepsis* data created in previous part.
+
+To perform simple random forest on `VT.object`, `randomForest`, `caret` and `party` package can be used.
+
+__with `randomForest`__
+```{r}
+# use randomForest::randomForest()
+library(randomForest, verbose = F)
+# Reproducibility
+set.seed(123)
+# Fit rf model 
+# default params
+# set interactions to TRUE if using interaction between T and X
+model.rf <- randomForest(x = vt.o$getX(interactions = T),
+                         y = vt.o$getY())
+# initialize VT.forest.one
+vt.f.rf <- VT.forest.one(vt.o, model.rf)
+```
+
+__with `party`__
+
+`cforest()` can be usefull however computing time is really long. I think there is an issue when giving *cforest object* in Reference Class parameter. Need to fix it.
+
+```{r}
+# # use randomForest::randomForest()
+# library(party, verbose = F)
+# # Reproducibility
+# set.seed(123)
+# # Fit cforest model 
+# # default params
+# # set interactions to TRUE if using interaction between T and X
+# model.cf <- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))
+# # initialize VT.forest.one
+# vt.f.cf <- VT.forest.one(vt.o, model.cf)
+```
+
+__with `caret`__
+
+Using `caret` can be usefull to deal with parallel computing for example. 
+
+__NOTE:__ For `caret` levels of outcome can't be 0, so i'll change levels name into "n"/"y"
+
+```{r}
+# Copy new object
+vt.o.tr <- vt.o$copy()
+# Change levels
+tmp <- ifelse(vt.o.tr$data$survival == 1, "y", "n")
+vt.o.tr$data$survival <- as.factor(tmp)
+rm(tmp)
+# Check new data to be sure
+formatRCTDataset(vt.o.tr$data, "survival", "THERAPY")
+# use caret::train()
+library(caret, verbose = F)
+# Reproducibility
+set.seed(123)
+# fit train model
+fitControl <- trainControl(classProbs = T, method = "none")
+model.tr <- train(x = vt.o.tr$getX(interactions = T),
+                  y = vt.o.tr$getY(),
+                  method = "rf",
+                  tuneGrid = data.frame(mtry = 5),
+                  trControl = fitControl)
+# initialize VT.forest.one
+vt.f.tr <- VT.forest.one(vt.o.tr, model.tr)
+```
+
+
+### Double Random Forest
+
+To perform double random forest on `VT.object`, same packages as simple random forest can be used.
+
+
+
+
+

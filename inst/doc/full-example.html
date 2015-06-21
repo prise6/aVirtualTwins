@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Francois Vieille" />
+
+<meta name="date" content="2015-06-21" />
+
+<title>Virtual Twins Examples</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div id="header">
+<h1 class="title">Virtual Twins Examples</h1>
+<h4 class="author"><em>Francois Vieille</em></h4>
+<h4 class="date"><em>2015-06-21</em></h4>
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The goal of this vignette is to show most of all possibilies with <em>VT</em> (for <em>VirtualTwins</em>) package.</p>
+<p><em>VT</em> method (Jared Foster and al, 2011) has been created to find subgroup of patients with enhanced treatment effect, if it exists. Theorically, this method can be used for binary and continous outcome. This package only deals with binary outcome in a two arms clinical trial.</p>
+<p><em>VT</em> method is based on random forests and regression/classification trees.</p>
+<p>I decided to use a simulated dataset called <em>sepsis</em> in order to show how <em>VT</em> package can be used. Type <code>?sepsis</code> to know more about this dataset. Anyway, the true subgroup is <code>PRAPACHE &lt;= 26 &amp; AGE &lt;= 49.80</code>.</p>
+<p><strong>NOTE:</strong> This true subgroup is defined with the <em>lower</em> event rate (<code>survival = 1</code>) in treatement arm. Therefore in following examples we’ll search the subgroup with the <em>highest</em> event rate, and we know it is <code>PRAPACHE &gt; 26 &amp; AGE &gt; 49.80</code>.</p>
+</div>
+<div id="quick-preview" class="section level1">
+<h1>Quick preview</h1>
+<div id="dataset" class="section level2">
+<h2> Dataset</h2>
+<p>Data used in <em>VT</em> are modelized by <span class="math">\(\left\{Y, T, X_1, \ldots, X_{p-2}\right\}\)</span>. <span class="math">\(p\)</span> is the number of variables.</p>
+<ul>
+<li><span class="math">\(Y\)</span> is a binary outcome. In R, <span class="math">\(Y\)</span> is a <code>factor</code>. Second level of this factor will be the desirable event. (<span class="math">\(Y=1\)</span>)</li>
+<li><span class="math">\(T\)</span> is treatment variable, <span class="math">\(T=1\)</span> means <em>active treatement</em>, <span class="math">\(T=0\)</span> means <em>control treatment</em>. In R, <span class="math">\(T\)</span> is numeric.</li>
+<li><span class="math">\(X_i\)</span> is covariables, <span class="math">\(X_i\)</span> can be categorical, continous, binary.</li>
+</ul>
+<p><strong>NOTE:</strong> if you run <em>VT</em> with interactions, categorical covariables must be transformed into binary variables.</p>
+<p>Type <code>?formatRCTDataset</code> for details.</p>
+<p>Related functions/classes in VirtualTwins package : <code>VT.object()</code>, <code>vt.data()</code>, <code>formatRCTDataset</code>.</p>
+</div>
+<div id="method" class="section level2">
+<h2>Method</h2>
+<p><em>VT</em> is a two steps method but with many possibilities</p>
+<p>let <span class="math">\(\hat{P_{1i}} = P(Y_i = 1|T_i = 1, X_i)\)</span><br />let <span class="math">\(\hat{P_{0i}} = P(Y_i = 1|T_i = 0, X_i)\)</span><br />let <span class="math">\(X = \left\{X_1, \ldots, X_{p-2}\right\}\)</span></p>
+<div id="first-step" class="section level3">
+<h3>First Step</h3>
+<ul>
+<li>Grow a random forest with data <span class="math">\(\left\{Y, T, X \right\}\)</span>.<br /></li>
+<li>Grow a random forest with interaction treatement / covariable, i.e. <span class="math">\(\left\{Y, T, X, XI(T_i=0), XI(T_i=1)\right\}\)</span></li>
+<li>Grow two random forests, one for each treatement.</li>
+</ul>
+<p>From one of these methods you can estimate <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>.</p>
+<p>Related functions/classes in VirtualTwins package : <code>VT.difft()</code>, <code>VT.forest()</code>, <code>VT.forest.one()</code>, <code>VT.forest.double()</code>, <code>VT.forest.fold()</code>.</p>
+</div>
+<div id="second-step" class="section level3">
+<h3>Second Step</h3>
+<p>Define <span class="math">\(Z_i = \hat{P_{1i}} - \hat{P_{0i}}\)</span></p>
+<ul>
+<li>Use regression tree to explain <span class="math">\(Z\)</span> by covariables <span class="math">\(X\)</span>. Then subjects with predicted <span class="math">\(Z_i\)</span> greater than some threshold <span class="math">\(c\)</span> are considered to define a subgroup.</li>
+<li>Use classification tree on new variable <span class="math">\(Z^{*}\)</span> defined by <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.</li>
+</ul>
+<p>The idea is to identify which covariable from <span class="math">\(X\)</span> described variation of <span class="math">\(Z\)</span>.</p>
+<p>Related functions/classes in VirtualTwins package : <code>VT.tree()</code>, <code>VT.tree.class()</code>, <code>VT.tree.reg()</code>.</p>
+</div>
+</div>
+</div>
+<div id="sepsis-dataset" class="section level1">
+<h1>Sepsis dataset</h1>
+<p>See <strong>Introduction</strong>.</p>
+</div>
+<div id="examples" class="section level1">
+<h1>Examples</h1>
+<div id="create-object-virtualtwins" class="section level2">
+<h2>Create object VirtualTwins</h2>
+<p>In order to begin the two steps of <em>VT</em> method, VirtualTwins package need to be initialized with <code>vt.data()</code> function. type <code>?vt.data</code> for more details.</p>
+<p><strong>NOTE:</strong> if running VT with interactions between <span class="math">\(T\)</span> and <span class="math">\(X\)</span>, set <code>interactions = TRUE</code>.</p>
+<p>Code of <code>vt.data()</code> :</p>
+<pre class="sourceCode r"><code class="sourceCode r">vt.data &lt;-<span class="st"> </span>function(dataset, outcome.field, treatment.field, <span class="dt">interactions =</span> <span class="ot">TRUE</span>, ...){
+  data &lt;-<span class="st"> </span><span class="kw">formatRCTDataset</span>(dataset, outcome.field, treatment.field, <span class="dt">interactions =</span> <span class="ot">TRUE</span>)
+  <span class="kw">VT.object</span>(<span class="dt">data =</span> data, ...)
+}</code></pre>
+<p><strong>Example with Sepsis</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load library VT</span>
+<span class="kw">library</span>(VirtualTwins)
+<span class="co"># load data sepsis</span>
+<span class="kw">data</span>(sepsis)
+<span class="co"># initialize VT.object</span>
+vt.o &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis, <span class="st">&quot;survival&quot;</span>, <span class="st">&quot;THERAPY&quot;</span>, <span class="ot">TRUE</span>)</code></pre>
+<pre><code>## &quot;1&quot; will be the favorable outcome</code></pre>
+<p>1 will be the favorable outcome because 1 is the second level of <code>&quot;survival&quot;</code> column. It means that <span class="math">\(P(Y=1)\)</span> is the probability of interest. Anyway, it’s still possible to compute <span class="math">\(P(Y=0)\)</span>.</p>
+<p><strong>Quick example</strong></p>
+<p><em>Sepsis</em> does not have any categorical variable, following example show how <code>vt.data</code> deals with categorical values depending on <code>interactions</code> parameter</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creation of categorical variable</span>
+cat.x &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">5</span>, (<span class="kw">nrow</span>(sepsis))/<span class="dv">5</span>)
+cat.x &lt;-<span class="st"> </span><span class="kw">as.factor</span>(cat.x)
+sepsis.tmp &lt;-<span class="st"> </span><span class="kw">cbind</span>(sepsis, cat.x)
+vt.o.tmp &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis.tmp, <span class="st">&quot;survival&quot;</span>, <span class="st">&quot;THERAPY&quot;</span>, <span class="ot">TRUE</span>)</code></pre>
+<pre><code>## &quot;1&quot; will be the favorable outcome 
+## Creation of dummy variables for cat.x 
+## Dummy variable cat.x_1 created 
+## Dummy variable cat.x_2 created 
+## Dummy variable cat.x_3 created 
+## Dummy variable cat.x_4 created 
+## Dummy variable cat.x_5 created</code></pre>
+<p>Dummies variables are created for each category of <code>cat.x</code> variable. And <code>cat.x</code> is removed from dataset.</p>
+</div>
+<div id="step-1-compute-hatp_1i-and-hatp_0i" class="section level2">
+<h2>Step 1 : compute <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span></h2>
+<p>As described earlier, step 1 can be done via differents ways</p>
+<div id="simple-random-forest" class="section level3">
+<h3>Simple Random Forest</h3>
+<p>Following example used <em>sepsis</em> data created in previous part.</p>
+<p>To perform simple random forest on <code>VT.object</code>, <code>randomForest</code>, <code>caret</code> and <code>party</code> package can be used.</p>
+<p><strong>with <code>randomForest</code></strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use randomForest::randomForest()</span>
+<span class="kw">library</span>(randomForest, <span class="dt">verbose =</span> F)
+<span class="co"># Reproducibility</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+<span class="co"># Fit rf model </span>
+<span class="co"># default params</span>
+<span class="co"># set interactions to TRUE if using interaction between T and X</span>
+model.rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">x =</span> vt.o$<span class="kw">getX</span>(<span class="dt">interactions =</span> T),
+                         <span class="dt">y =</span> vt.o$<span class="kw">getY</span>())
+<span class="co"># initialize VT.forest.one</span>
+vt.f.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o, model.rf)</code></pre>
+<p><strong>with <code>party</code></strong></p>
+<p><code>cforest()</code> can be usefull however computing time is really long. I think there is an issue when giving <em>cforest object</em> in Reference Class parameter. Need to fix it.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># # use randomForest::randomForest()</span>
+<span class="co"># library(party, verbose = F)</span>
+<span class="co"># # Reproducibility</span>
+<span class="co"># set.seed(123)</span>
+<span class="co"># # Fit cforest model </span>
+<span class="co"># # default params</span>
+<span class="co"># # set interactions to TRUE if using interaction between T and X</span>
+<span class="co"># model.cf &lt;- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))</span>
+<span class="co"># # initialize VT.forest.one</span>
+<span class="co"># vt.f.cf &lt;- VT.forest.one(vt.o, model.cf)</span></code></pre>
+<p><strong>with <code>caret</code></strong></p>
+<p>Using <code>caret</code> can be usefull to deal with parallel computing for example.</p>
+<p><strong>NOTE:</strong> For <code>caret</code> levels of outcome can’t be 0, so i’ll change levels name into “n”/“y”</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Copy new object</span>
+vt.o.tr &lt;-<span class="st"> </span>vt.o$<span class="kw">copy</span>()
+<span class="co"># Change levels</span>
+tmp &lt;-<span class="st"> </span><span class="kw">ifelse</span>(vt.o.tr$data$survival ==<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;n&quot;</span>)
+vt.o.tr$data$survival &lt;-<span class="st"> </span><span class="kw">as.factor</span>(tmp)
+<span class="kw">rm</span>(tmp)
+<span class="co"># Check new data to be sure</span>
+<span class="kw">formatRCTDataset</span>(vt.o.tr$data, <span class="st">&quot;survival&quot;</span>, <span class="st">&quot;THERAPY&quot;</span>)</code></pre>
+<pre><code>## &quot;y&quot; will be the favorable outcome</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use caret::train()</span>
+<span class="kw">library</span>(caret, <span class="dt">verbose =</span> F)
+<span class="co"># Reproducibility</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+<span class="co"># fit train model</span>
+fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">classProbs =</span> T, <span class="dt">method =</span> <span class="st">&quot;none&quot;</span>)
+model.tr &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">x =</span> vt.o.tr$<span class="kw">getX</span>(<span class="dt">interactions =</span> T),
+                  <span class="dt">y =</span> vt.o.tr$<span class="kw">getY</span>(),
+                  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,
+                  <span class="dt">tuneGrid =</span> <span class="kw">data.frame</span>(<span class="dt">mtry =</span> <span class="dv">5</span>),
+                  <span class="dt">trControl =</span> fitControl)
+<span class="co"># initialize VT.forest.one</span>
+vt.f.tr &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o.tr, model.tr)</code></pre>
+</div>
+<div id="double-random-forest" class="section level3">
+<h3>Double Random Forest</h3>
+<p>To perform double random forest on <code>VT.object</code>, same packages as simple random forest can be used.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
