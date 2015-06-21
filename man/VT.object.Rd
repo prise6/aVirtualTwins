@@ -40,7 +40,7 @@ treatments.}
 
 \item{\code{getFormula()}}{Return formula : Y~T+X1+...+Xp. Usefull for cforest function.}
 
-\item{\code{getIncidences()}}{Return incidence table of data.}
+\item{\code{getIncidences(rule = NULL)}}{Return incidence table of data if rule set to NULL. Otherwise return incidence for the rule.}
 
 \item{\code{getX(interactions = T, trt = NULL)}}{Return predictors (T,X,X*T,X*(1-T)). Or (T,X) if interactions is FALSE.
 If trt is not NULL, return predictors for T = trt}

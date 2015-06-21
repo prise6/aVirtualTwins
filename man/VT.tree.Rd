@@ -70,7 +70,7 @@ screening field}
 \item{\code{getInfos()}}{Return infos about tree}
 
 \item{\code{getRules(only.leaf = F, only.fav = F, tables = T, verbose = T,
-  compete = F)}}{Retrun subgroups discovered by the tree. See details.}
+  compete = F)}}{Return subgroups discovered by the tree. See details.}
 
 \item{\code{run(...)}}{Compute tree with rpart parameters}
 }}

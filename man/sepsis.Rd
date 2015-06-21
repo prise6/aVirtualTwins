@@ -4,22 +4,17 @@
 \name{sepsis}
 \alias{sepsis}
 \title{Clinical Trial for Sepsis desease}
-\format{454 patients and 13 variables.
-\describe{
- \item{survival}{binary outcome}
- \item{THERAPY}{1 for active treatment, 0 for control treatment}
- \item{TIMFIRST}{Time from first sepsis-organ fail to start drug}
- \item{AGE}{Patient age in years}
- \item{BLLPLAT}{Baseline local platelets}
- \item{blSOFA}{Sum of baselin sofa (cardiovascular, hematology, hepaticrenal, and respiration scores)}
- \item{BLLCREAT}{Base creatinine}
- \item{ORGANNUM}{Number of baseline organ failures}
- \item{PRAPACHE}{Pre-infusion apache-ii score}
- \item{BLGCS}{Base GLASGOW coma scale score}
- \item{BLIL6}{Baseline serum IL-6 concentration}
- \item{BLADL}{Baseline activity of daily living score}
- \item{BLLBILI}{Baseline local bilirubin}
-}}
+\format{470 patients and 13 variables. \describe{ \item{survival}{binary
+  outcome} \item{THERAPY}{1 for active treatment, 0 for control treatment}
+  \item{TIMFIRST}{Time from first sepsis-organ fail to start drug}
+  \item{AGE}{Patient age in years} \item{BLLPLAT}{Baseline local platelets}
+  \item{blSOFA}{Sum of baselin sofa (cardiovascular, hematology,
+  hepaticrenal, and respiration scores)} \item{BLLCREAT}{Base creatinine}
+  \item{ORGANNUM}{Number of baseline organ failures}
+  \item{PRAPACHE}{Pre-infusion apache-ii score} \item{BLGCS}{Base GLASGOW
+  coma scale score} \item{BLIL6}{Baseline serum IL-6 concentration}
+  \item{BLADL}{Baseline activity of daily living score}
+  \item{BLLBILI}{Baseline local bilirubin} }}
 \source{
 \url{http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis}
 }
@@ -27,21 +22,25 @@
 data(sepsis)
 }
 \description{
-Simulated clinical trial with two groups treatment about sepsis desease. See details.
+Simulated clinical trial with two groups treatment about sepsis desease. See
+details.
 }
 \details{
 This dataset is taken from
 \href{http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis}{SIDES
 method}.
 
-\code{Sepsis} contains simulated data on 454 subjects with a binary outcome
+\code{Sepsis} contains simulated data on 470 subjects with a binary outcome
 survival, that stores survival status for patient after 28 days of treatment,
 value of 1 for subjects who died after 28 days and 0 otherwise. There are 11
 covariates, listed below, all of which are numerical variables.
 
 Note that contrary to the original dataset used in SIDES, missing values have
-been imputed by random forest \code{(randomForest::rfImpute())}
+been imputed by random forest \code{(randomForest::rfImpute())}. See file
+data-raw/sepsis.R for more details.
 
-True subgroup is \emph{PRAPACHE <= 26 & AGE <= 49.80}
+True subgroup is \emph{PRAPACHE <= 26 & AGE <= 49.80}. \emph{NOTE:} This
+subgroup is defined with the \emph{lower} event rate (survival = 1) in
+treatement arm.
 }
 

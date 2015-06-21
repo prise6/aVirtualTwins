@@ -22,7 +22,9 @@ sum(is.na(sepsis.csv$survival))
 # For futures computation i need to impute missing values
 # I use random forest imputation with randomForest package with simple parameters
 # I need to make survival field as factor
-sepsis.csv$survival <- factor(sepsis.csv$survival, levels = 0:1) 
+sepsis.csv$survival <- factor(sepsis.csv$survival, levels = 0:1)
+# reproducibility:
+set.seed(123)
 sepsis.imp <- with(sepsis.csv, rfImpute(y = survival, x = sepsis.csv[, -1], iter = 5, ntree = 500))
 str(sepsis.imp)
 
