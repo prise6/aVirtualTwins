@@ -37,7 +37,7 @@ library(VirtualTwins)
 
 * _Vignette is really not finished ..._
 
-See vignettes/full-example.Rmd
+See [full-example](https://github.com/prise6/VirtualTwins/tree/dev/inst/doc/full-example.html)
 or when installed : 
 ``` r
 vignette("full-example", package = "VirtualTwins")
