@@ -12,7 +12,7 @@ Currently this package works for RCT with two treatments groups and binary outco
 
 This is the *dev version 0.0.0.2* and often updated.
 
-Most of the package use Reference Class programing (in R)
+Most of the package use Reference Class programing (in R). Feel free to create your own classes.
 
 I got a *WARNING* when Checking package for "cheking PDF version of manual" because of my version of LaTeX. Need to fix it.
 
@@ -24,7 +24,7 @@ I got a *WARNING* when Checking package for "cheking PDF version of manual" beca
 
 ## Install
 
-```
+``` r
 # use devtools library
 library(devtools)
 # install from github
@@ -37,13 +37,13 @@ library(VirtualTwins)
 
 *Vignette really not finished ... *
 
-See /doc/full-example.Rmd
-or :
-```
+See vignettes/full-example.Rmd
+or when installed : 
+``` r
 vignette("full-example", package = "VirtualTwins")
 ```
 
 ## Few Examples
 
-* Coming...*
+* _Coming..._
 
