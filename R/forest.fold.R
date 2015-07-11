@@ -62,7 +62,7 @@ VT.forest.fold <- setRefClass(
     
     runOneForest = function(group, ...){
       data <- .self$vt.object$getX(interactions = .self$interactions)
-      X <- data[.self$groups != group, ] 
+      X <- data[.self$groups != group, -1] 
       Y <- .self$vt.object$data[.self$groups != group, 1]
       Yeff <- table(Y) # 1 -> levels(Y)[1] & 2 -> levels(Y)[2]
       sampmin <- min(Yeff[1], Yeff[2])
@@ -83,7 +83,8 @@ VT.forest.fold <- setRefClass(
     
     computeTwin1 = function(rfor, group){
       
-      data <- .self$vt.object$data[.self$groups == group, -1]
+      data <- .self$vt.object$getX(interactions = .self$interactions)
+      data <- data[.self$groups == group, -1]
       
       .self$twin1[.self$groups == group] <- VT.predict(rfor = rfor, newdata = data,  type = .self$vt.object$type)
       
