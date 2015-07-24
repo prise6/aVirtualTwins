@@ -28,16 +28,16 @@ I got a *WARNING* when Checking package for "cheking PDF version of manual" beca
 # use devtools library
 library(devtools)
 # install from github
-devtools::install_github("prise6/VirtualTwins@dev")
+devtools::install_github("prise6/aVirtualTwins@dev")
 # load library
-library(VirtualTwins)
+library(aVirtualTwins)
 ```
 
 ## Help
 
 * _Vignette is really not finished ..._
 
-See [full-example](http://htmlpreview.github.io/?https://github.com/prise6/VirtualTwins/blob/dev/inst/doc/full-example.html)
+See [full-example](http://htmlpreview.github.io/?https://github.com/prise6/aVirtualTwins/blob/dev/inst/doc/full-example.html)
 
 or when installed : 
 ``` r
