@@ -305,7 +305,7 @@ VT.tree <- setRefClass(
       "Return Ahat incidence"
       if(sum(.self$Ahat)!=0){
         
-        table.inc <- VT.incidences(.self$vt.difft, select = .self$Ahat)
+        table.inc <- VT.incidences(vt.difft = .self$vt.difft, select = .self$Ahat, F)
         
         table.A <- table.inc$table.selected
         table.A.cmpl <- table.inc$table.not.selected
