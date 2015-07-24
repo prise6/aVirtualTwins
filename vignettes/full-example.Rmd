@@ -278,7 +278,7 @@ This idea is taken from *method 3* of Jared Foster paper :
 
 > A modification of [previous methods] is to obtain $\hat{P_{1i}}$ and $\hat{P_{0i}}$ via cross-validation. In this méthod the specific data for subject $i$ is not used to obtain $\hat{P_{1i}}$ and $\hat{P_{0i}}$. Using k-fold cross-validation, we apply random forest regression approach to $\frac{k-1}{k}$ of the data and use the resulting predictor to obtain estimates of $P_{1i}$ and $P_{0i}$ for the remaining $\frac{1}{k}$ of the observations. This is repeated $k$ times.
 
-To use this approach, type `VirtualTwins:::VT.forest.fold()`. This class takes in argument :
+To use this approach, type `aVirtualTwins:::VT.forest.fold()`. This class takes in argument :
 
 * `vt.object` : return of `vt.data()` function
 * `fold` : number of fold (e.g. $5$)
@@ -289,7 +289,7 @@ __NOTE:__ This function use only `randomForest` package.
 
 ```{r, cache=TRUE}
 # initialize k-fold RF
-model.fold <- VirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
+model.fold <- aVirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
 # grow RF with randomForest package options
 # set do.trace option to see the 5 folds
 model.fold$run(ntree = 500, do.trace = 500)
