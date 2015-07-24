@@ -34,6 +34,8 @@ model.rf <- randomForest(x = vt.o$getX(interactions = T),
                          y = vt.o$getY())
 # initialize VT.forest.one
 vt.f.rf <- VT.forest.one(vt.o, model.rf)
+# Then, use run() to compute probabilities
+vt.f.rf$run()
 
 ## ------------------------------------------------------------------------
 # # use randomForest::randomForest()
@@ -46,6 +48,8 @@ vt.f.rf <- VT.forest.one(vt.o, model.rf)
 # model.cf <- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))
 # # initialize VT.forest.one
 # vt.f.cf <- VT.forest.one(vt.o, model.cf)
+# # Then, use run() to compute probabilities
+# vt.f.cf$run()
 
 ## ------------------------------------------------------------------------
 # Copy new object
@@ -69,4 +73,52 @@ model.tr <- train(x = vt.o.tr$getX(interactions = T),
                   trControl = fitControl)
 # initialize VT.forest.one
 vt.f.tr <- VT.forest.one(vt.o.tr, model.tr)
+# Then, use run() to compute probabilities
+vt.f.tr$run()
+
+## ------------------------------------------------------------------------
+# grow RF for T = 1
+model.rf.trt1 <- randomForest(x = vt.o$getX(trt = 1),
+                              y = vt.o$getY(trt = 1))
+# grow RF for T = 0
+model.rf.trt0 <- randomForest(x = vt.o$getX(trt = 0),
+                              y = vt.o$getY(trt = 0))
+# initialize VT.forest.double()
+vt.doublef.rf <- VT.forest.double(vt.o, model.rf.trt1, model.rf.trt0)
+# Then, use run() to compute probabilities
+vt.doublef.rf$run()
+
+## ---- cache=TRUE---------------------------------------------------------
+# initialize k-fold RF
+model.fold <- VirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
+# grow RF with randomForest package options
+# set do.trace option to see the 5 folds
+model.fold$run(ntree = 500, do.trace = 500)
+
+## ------------------------------------------------------------------------
+# you get twin1 and twin2 by your own method
+# here, i'll use random number between 0 and 1 :
+twin1_random <- runif(470)
+twin2_random <- runif(470)
+
+# then you can initialize VT.difft class : 
+model.difft <- VT.difft(vt.o, twin1 = twin1_random, twin2 = twin2_random, "absolute")
+# compute difference of twins : 
+model.difft$computeDifft()
+# See results
+head(model.difft$difft)
+# Graph :
+# hist(model.difft$difft)
+
+## ------------------------------------------------------------------------
+# initialize classification tree
+tr.class <- VT.tree.class(vt.f.rf, sens = ">", threshold = quantile(vt.f.rf$difft, 0.7))
+# compute tree with rpart option
+tr.class$run(cp = 0, maxdepth = 3, maxcompete = 1)
+
+## ------------------------------------------------------------------------
+# initialize regression tree
+tr.reg <- VT.tree.reg(vt.f.rf, sens = ">", threshold = quantile(vt.f.rf$difft, 0.7))
+# compute tree with rpart option
+tr.reg$run(cp = 0, maxdepth = 3, maxcompete = 1)
 

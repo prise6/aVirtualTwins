@@ -10,7 +10,7 @@
 
 <meta name="author" content="Francois Vieille" />
 
-<meta name="date" content="2015-06-21" />
+<meta name="date" content="2015-07-24" />
 
 <title>Virtual Twins Examples</title>
 
@@ -54,17 +54,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Virtual Twins Examples</h1>
 <h4 class="author"><em>Francois Vieille</em></h4>
-<h4 class="date"><em>2015-06-21</em></h4>
+<h4 class="date"><em>2015-07-24</em></h4>
 </div>
 
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>The goal of this vignette is to show most of all possibilies with <em>VT</em> (for <em>VirtualTwins</em>) package.</p>
+<p>The goal of this vignette is to show most of all possibilies with <em>aVT</em> (for <em>aVirtualTwins</em> meaning <em>a</em>daptation of <em>Virtual Twins</em> method) package.</p>
 <p><em>VT</em> method (Jared Foster and al, 2011) has been created to find subgroup of patients with enhanced treatment effect, if it exists. Theorically, this method can be used for binary and continous outcome. This package only deals with binary outcome in a two arms clinical trial.</p>
 <p><em>VT</em> method is based on random forests and regression/classification trees.</p>
-<p>I decided to use a simulated dataset called <em>sepsis</em> in order to show how <em>VT</em> package can be used. Type <code>?sepsis</code> to know more about this dataset. Anyway, the true subgroup is <code>PRAPACHE &lt;= 26 &amp; AGE &lt;= 49.80</code>.</p>
+<p>I decided to use a simulated dataset called <em>sepsis</em> in order to show how <em>aVT</em> package can be used. Type <code>?sepsis</code> to know more about this dataset. Anyway, the true subgroup is <code>PRAPACHE &lt;= 26 &amp; AGE &lt;= 49.80</code>.</p>
 <p><strong>NOTE:</strong> This true subgroup is defined with the <em>lower</em> event rate (<code>survival = 1</code>) in treatement arm. Therefore in following examples we’ll search the subgroup with the <em>highest</em> event rate, and we know it is <code>PRAPACHE &gt; 26 &amp; AGE &gt; 49.80</code>.</p>
+<hr />
 </div>
 <div id="quick-preview" class="section level1">
 <h1>Quick preview</h1>
@@ -78,7 +79,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p><strong>NOTE:</strong> if you run <em>VT</em> with interactions, categorical covariables must be transformed into binary variables.</p>
 <p>Type <code>?formatRCTDataset</code> for details.</p>
-<p>Related functions/classes in VirtualTwins package : <code>VT.object()</code>, <code>vt.data()</code>, <code>formatRCTDataset</code>.</p>
+<p>Related functions/classes in aVirtualTwins package : <code>VT.object()</code>, <code>vt.data()</code>, <code>formatRCTDataset</code>.</p>
 </div>
 <div id="method" class="section level2">
 <h2>Method</h2>
@@ -89,10 +90,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul>
 <li>Grow a random forest with data <span class="math">\(\left\{Y, T, X \right\}\)</span>.<br /></li>
 <li>Grow a random forest with interaction treatement / covariable, i.e. <span class="math">\(\left\{Y, T, X, XI(T_i=0), XI(T_i=1)\right\}\)</span></li>
-<li>Grow two random forests, one for each treatement.</li>
+<li>Grow two random forests, one for each treatement:
+<ul>
+<li>The first with data <span class="math">\(\left\{Y, X \right\}\)</span> where <span class="math">\(T_i = 0\)</span><br /></li>
+<li>The second with data <span class="math">\(\left\{Y, X \right\}\)</span> where <span class="math">\(T_i = 1\)</span><br /></li>
+</ul></li>
+<li>Build your own model</li>
 </ul>
 <p>From one of these methods you can estimate <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>.</p>
-<p>Related functions/classes in VirtualTwins package : <code>VT.difft()</code>, <code>VT.forest()</code>, <code>VT.forest.one()</code>, <code>VT.forest.double()</code>, <code>VT.forest.fold()</code>.</p>
+<p>Related functions/classes in aVirtualTwins package : <code>VT.difft()</code>, <code>VT.forest()</code>, <code>VT.forest.one()</code>, <code>VT.forest.double()</code>, <code>VT.forest.fold()</code>.</p>
 </div>
 <div id="second-step" class="section level3">
 <h3>Second Step</h3>
@@ -102,19 +108,40 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Use classification tree on new variable <span class="math">\(Z^{*}\)</span> defined by <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.</li>
 </ul>
 <p>The idea is to identify which covariable from <span class="math">\(X\)</span> described variation of <span class="math">\(Z\)</span>.</p>
-<p>Related functions/classes in VirtualTwins package : <code>VT.tree()</code>, <code>VT.tree.class()</code>, <code>VT.tree.reg()</code>.</p>
+<p>Related functions/classes in aVirtualTwins package : <code>VT.tree()</code>, <code>VT.tree.class()</code>, <code>VT.tree.reg()</code>.</p>
+<hr />
 </div>
 </div>
 </div>
 <div id="sepsis-dataset" class="section level1">
 <h1>Sepsis dataset</h1>
 <p>See <strong>Introduction</strong>.</p>
+<p><em>Sepsis</em> dataset is a simulated clinical trial with two groups treatment about sepsis desease. See details. This dataset is taken from <a href="http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis">SIDES method</a></p>
+<p><em>Sepsis</em> contains simulated data on 470 subjects with a binary outcome survival, that stores survival status for patient after 28 days of treatment, value of 1 for subjects who died after 28 days and 0 otherwise. There are 11 covariates, listed below, all of which are numerical variables.</p>
+<p>Note that contrary to the original dataset used in SIDES, missing values have been imputed by random forest <code>randomForest::rfImpute()</code>. See file <em>data-raw/sepsis.R</em> for more details.</p>
+<p>True subgroup is <code>PRAPACHE &lt;= 26 &amp; AGE &lt;= 49.80</code>. <strong>NOTE:</strong> This subgroup is defined with the <em>lower</em> event rate (survival = 1) in treatement arm.</p>
+<p>470 patients and 13 variables:</p>
+<ul>
+<li><code>survival</code> : binary outcome</li>
+<li><code>THERAPY</code> : 1 for active treatment, 0 for control treatment</li>
+<li><code>TIMFIRST</code> : Time from first sepsis-organ fail to start drug</li>
+<li><code>AGE</code> : Patient age in years</li>
+<li><code>BLLPLAT</code> : Baseline local platelets</li>
+<li><code>blSOFA</code> : Sum of baselin sofa (cardiovascular, hematology, hepaticrenal, and respiration scores)</li>
+<li><code>BLLCREAT</code> : Base creatinine</li>
+<li><code>ORGANNUM</code> : Number of baseline organ failures</li>
+<li><code>PRAPACHE</code> : Pre-infusion apache-ii score</li>
+<li><code>BLGCS</code> : Base GLASGOW coma scale score</li>
+<li><code>BLIL6</code> : Baseline serum IL-6 concentration</li>
+<li><code>BLADL</code> : Baseline activity of daily living score</li>
+<li><code>BLLBILI</code> : Baseline local bilirubin</li>
+</ul>
+<p><strong>Source:</strong> <a href="http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis" class="uri">http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis</a></p>
+<hr />
 </div>
-<div id="examples" class="section level1">
-<h1>Examples</h1>
-<div id="create-object-virtualtwins" class="section level2">
-<h2>Create object VirtualTwins</h2>
-<p>In order to begin the two steps of <em>VT</em> method, VirtualTwins package need to be initialized with <code>vt.data()</code> function. type <code>?vt.data</code> for more details.</p>
+<div id="create-object-virtualtwins" class="section level1">
+<h1>Create object VirtualTwins</h1>
+<p>In order to begin the two steps of <em>VT</em> method, aVirtualTwins package needs to be initialized with <code>vt.data()</code> function. type <code>?vt.data</code> for more details.</p>
 <p><strong>NOTE:</strong> if running VT with interactions between <span class="math">\(T\)</span> and <span class="math">\(X\)</span>, set <code>interactions = TRUE</code>.</p>
 <p>Code of <code>vt.data()</code> :</p>
 <pre class="sourceCode r"><code class="sourceCode r">vt.data &lt;-<span class="st"> </span>function(dataset, outcome.field, treatment.field, <span class="dt">interactions =</span> <span class="ot">TRUE</span>, ...){
@@ -145,18 +172,27 @@ vt.o.tmp &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis.tm
 ## Dummy variable cat.x_4 created 
 ## Dummy variable cat.x_5 created</code></pre>
 <p>Dummies variables are created for each category of <code>cat.x</code> variable. And <code>cat.x</code> is removed from dataset.</p>
+<hr />
 </div>
-<div id="step-1-compute-hatp_1i-and-hatp_0i" class="section level2">
-<h2>Step 1 : compute <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span></h2>
+<div id="step-1-compute-hatp_1i-and-hatp_0i" class="section level1">
+<h1>Step 1 : compute <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span></h1>
 <p>As described earlier, step 1 can be done via differents ways</p>
-<div id="simple-random-forest" class="section level3">
-<h3>Simple Random Forest</h3>
+<div id="simple-random-forest" class="section level2">
+<h2>Simple Random Forest</h2>
 <p>Following example used <em>sepsis</em> data created in previous part.</p>
 <p>To perform simple random forest on <code>VT.object</code>, <code>randomForest</code>, <code>caret</code> and <code>party</code> package can be used.</p>
+<p>Class <code>VT.forest.one</code> is used. It takes in arguments :</p>
+<ul>
+<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
+<li><code>model</code> : A random forest model</li>
+<li><code>interactions</code> : logical, <code>TRUE</code> is default value</li>
+</ul>
 <p><strong>with <code>randomForest</code></strong></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use randomForest::randomForest()</span>
-<span class="kw">library</span>(randomForest, <span class="dt">verbose =</span> F)
-<span class="co"># Reproducibility</span>
+<span class="kw">library</span>(randomForest, <span class="dt">verbose =</span> F)</code></pre>
+<pre><code>## randomForest 4.6-10
+## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Reproducibility</span>
 <span class="kw">set.seed</span>(<span class="dv">123</span>)
 <span class="co"># Fit rf model </span>
 <span class="co"># default params</span>
@@ -164,7 +200,9 @@ vt.o.tmp &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis.tm
 model.rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">x =</span> vt.o$<span class="kw">getX</span>(<span class="dt">interactions =</span> T),
                          <span class="dt">y =</span> vt.o$<span class="kw">getY</span>())
 <span class="co"># initialize VT.forest.one</span>
-vt.f.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o, model.rf)</code></pre>
+vt.f.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o, model.rf)
+<span class="co"># Then, use run() to compute probabilities</span>
+vt.f.rf$<span class="kw">run</span>()</code></pre>
 <p><strong>with <code>party</code></strong></p>
 <p><code>cforest()</code> can be usefull however computing time is really long. I think there is an issue when giving <em>cforest object</em> in Reference Class parameter. Need to fix it.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># # use randomForest::randomForest()</span>
@@ -176,7 +214,9 @@ vt.f.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o
 <span class="co"># # set interactions to TRUE if using interaction between T and X</span>
 <span class="co"># model.cf &lt;- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))</span>
 <span class="co"># # initialize VT.forest.one</span>
-<span class="co"># vt.f.cf &lt;- VT.forest.one(vt.o, model.cf)</span></code></pre>
+<span class="co"># vt.f.cf &lt;- VT.forest.one(vt.o, model.cf)</span>
+<span class="co"># # Then, use run() to compute probabilities</span>
+<span class="co"># vt.f.cf$run()</span></code></pre>
 <p><strong>with <code>caret</code></strong></p>
 <p>Using <code>caret</code> can be usefull to deal with parallel computing for example.</p>
 <p><strong>NOTE:</strong> For <code>caret</code> levels of outcome can’t be 0, so i’ll change levels name into “n”/“y”</p>
@@ -190,8 +230,10 @@ vt.o.tr$data$survival &lt;-<span class="st"> </span><span class="kw">as.factor</
 <span class="kw">formatRCTDataset</span>(vt.o.tr$data, <span class="st">&quot;survival&quot;</span>, <span class="st">&quot;THERAPY&quot;</span>)</code></pre>
 <pre><code>## &quot;y&quot; will be the favorable outcome</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use caret::train()</span>
-<span class="kw">library</span>(caret, <span class="dt">verbose =</span> F)
-<span class="co"># Reproducibility</span>
+<span class="kw">library</span>(caret, <span class="dt">verbose =</span> F)</code></pre>
+<pre><code>## Loading required package: lattice
+## Loading required package: ggplot2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Reproducibility</span>
 <span class="kw">set.seed</span>(<span class="dv">123</span>)
 <span class="co"># fit train model</span>
 fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">classProbs =</span> T, <span class="dt">method =</span> <span class="st">&quot;none&quot;</span>)
@@ -201,12 +243,125 @@ model.tr &lt;-<span class="st"> </span><span class="kw">train</span>(<span class
                   <span class="dt">tuneGrid =</span> <span class="kw">data.frame</span>(<span class="dt">mtry =</span> <span class="dv">5</span>),
                   <span class="dt">trControl =</span> fitControl)
 <span class="co"># initialize VT.forest.one</span>
-vt.f.tr &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o.tr, model.tr)</code></pre>
+vt.f.tr &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o.tr, model.tr)
+<span class="co"># Then, use run() to compute probabilities</span>
+vt.f.tr$<span class="kw">run</span>()</code></pre>
 </div>
-<div id="double-random-forest" class="section level3">
-<h3>Double Random Forest</h3>
+<div id="double-random-forest" class="section level2">
+<h2>Double Random Forest</h2>
 <p>To perform double random forest on <code>VT.object</code>, same packages as simple random forest can be used.</p>
+<p>Class <code>VT.forest.double</code> is used. It takes in arguments :</p>
+<ul>
+<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
+<li><code>model_trt1</code> : a random forest model for <span class="math">\(T=1\)</span></li>
+<li><code>model_trt0</code> : a random forest model for <span class="math">\(T=0\)</span></li>
+</ul>
+<p><strong>NOTE:</strong> use <code>trt</code> parameter in <code>VT.object::getX()</code> or <code>VT.object::getY()</code> methods to obtain part of data depending on treatment. See following example.</p>
+<p><strong>with <code>randomForest</code></strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># grow RF for T = 1</span>
+model.rf.trt1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">x =</span> vt.o$<span class="kw">getX</span>(<span class="dt">trt =</span> <span class="dv">1</span>),
+                              <span class="dt">y =</span> vt.o$<span class="kw">getY</span>(<span class="dt">trt =</span> <span class="dv">1</span>))
+<span class="co"># grow RF for T = 0</span>
+model.rf.trt0 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">x =</span> vt.o$<span class="kw">getX</span>(<span class="dt">trt =</span> <span class="dv">0</span>),
+                              <span class="dt">y =</span> vt.o$<span class="kw">getY</span>(<span class="dt">trt =</span> <span class="dv">0</span>))
+<span class="co"># initialize VT.forest.double()</span>
+vt.doublef.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.double</span>(vt.o, model.rf.trt1, model.rf.trt0)
+<span class="co"># Then, use run() to compute probabilities</span>
+vt.doublef.rf$<span class="kw">run</span>()</code></pre>
+<p>Follow the same structure for <code>caret</code> or <code>cforest</code> models.</p>
 </div>
+<div id="k-fold-random-forest" class="section level2">
+<h2>K Fold Random Forest</h2>
+<p>This idea is taken from <em>method 3</em> of Jared Foster paper :</p>
+<blockquote>
+<p>A modification of [previous methods] is to obtain <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span> via cross-validation. In this méthod the specific data for subject <span class="math">\(i\)</span> is not used to obtain <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>. Using k-fold cross-validation, we apply random forest regression approach to <span class="math">\(\frac{k-1}{k}\)</span> of the data and use the resulting predictor to obtain estimates of <span class="math">\(P_{1i}\)</span> and <span class="math">\(P_{0i}\)</span> for the remaining <span class="math">\(\frac{1}{k}\)</span> of the observations. This is repeated <span class="math">\(k\)</span> times.</p>
+</blockquote>
+<p>To use this approach, type <code>VirtualTwins:::VT.forest.fold()</code>. This class takes in argument :</p>
+<ul>
+<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
+<li><code>fold</code> : number of fold (e.g. <span class="math">\(5\)</span>)</li>
+<li><code>ratio</code> : Control of sampsize balance. <code>ratio</code> of <span class="math">\(2\)</span> means that there 2 times le highest level compared to the other. “Highest” means the level with larger observations. It’s in test.</li>
+<li><code>interactions</code> : Logical. If <code>TRUE</code>, interactions between covariables and treatments are used. <code>FALSE</code> otherwise.</li>
+</ul>
+<p><strong>NOTE:</strong> This function use only <code>randomForest</code> package.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize k-fold RF</span>
+model.fold &lt;-<span class="st"> </span>VirtualTwins:::<span class="kw">VT.forest.fold</span>(vt.o, <span class="dt">fold =</span> <span class="dv">5</span>, <span class="dt">ratio =</span> <span class="dv">1</span>, <span class="dt">interactions =</span> T)
+<span class="co"># grow RF with randomForest package options</span>
+<span class="co"># set do.trace option to see the 5 folds</span>
+model.fold$<span class="kw">run</span>(<span class="dt">ntree =</span> <span class="dv">500</span>, <span class="dt">do.trace =</span> <span class="dv">500</span>)</code></pre>
+<pre><code>## ntree      OOB      1      2
+##   500:  32.38% 16.46% 57.72%
+## ntree      OOB      1      2
+##   500:  33.25% 18.50% 55.26%
+## ntree      OOB      1      2
+##   500:  30.03% 16.52% 50.34%
+## ntree      OOB      1      2
+##   500:  29.26% 13.56% 55.71%
+## ntree      OOB      1      2
+##   500:  30.60% 13.79% 59.70%</code></pre>
+</div>
+<div id="build-your-own-model" class="section level2">
+<h2>Build Your Own Model</h2>
+<p>Random Forests are not the only models you can use to compute <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>. Any prediction model can be used, as logitic regression, boosting …</p>
+<p>Anyway, aVirtualTwins package can be used. To do so, you can use <code>VT.difft()</code> class. It is important to note this the parent class of all “forests” classes. It takes in argument :</p>
+<ul>
+<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
+<li><code>twin1</code> : estimate of <span class="math">\(P(Y_{i} = 1 | T = T_{i})\)</span> : meaning response probability under the correct treatment.</li>
+<li><code>twin1</code> : estimate of <span class="math">\(P(Y_{i} = 1 | T = 1-T_{i})\)</span> : meaning response probability under the other treatment.</li>
+<li><code>method</code> : <em>absolute</em> (default), <em>relative</em> or <em>logit</em>. See <code>?VT.difft()</code> for details.</li>
+</ul>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># you get twin1 and twin2 by your own method</span>
+<span class="co"># here, i'll use random number between 0 and 1 :</span>
+twin1_random &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">470</span>)
+twin2_random &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">470</span>)
+
+<span class="co"># then you can initialize VT.difft class : </span>
+model.difft &lt;-<span class="st"> </span><span class="kw">VT.difft</span>(vt.o, <span class="dt">twin1 =</span> twin1_random, <span class="dt">twin2 =</span> twin2_random, <span class="st">&quot;absolute&quot;</span>)
+<span class="co"># compute difference of twins : </span>
+model.difft$<span class="kw">computeDifft</span>()
+<span class="co"># See results</span>
+<span class="kw">head</span>(model.difft$difft)</code></pre>
+<pre><code>## [1]  0.2507360 -0.3905591  0.3102285  0.3986582  0.3747078 -0.2508240</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Graph :</span>
+<span class="co"># hist(model.difft$difft)</span></code></pre>
+<p><strong>NOTE: Also, you can clone repository, write your own child class of <code>VT.difft()</code> AND submit it !</strong></p>
+<hr />
+</div>
+</div>
+<div id="step-2-estimate-a-regression-or-classification-tree" class="section level1">
+<h1>Step 2 : Estimate a Regression or Classification Tree</h1>
+<p>As described in the method, we define <span class="math">\(Z_i = \hat{P_{1i}} - \hat{P_{0i}}\)</span>. It’s the difference in term of response of the active treatments compared to the control treatment. The idea is to try to explain this difference by few covariables.</p>
+<div id="classification" class="section level2">
+<h2>Classification</h2>
+<p>We define a new variable <span class="math">\(Z^{*}\)</span>, <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise. Classification tree’s goal is to explain the value <span class="math">\(Z^*=1\)</span>. <span class="math">\(c\)</span> is a threshold given by the user. It’s the threshold for which the difference is “interesting”. One idea is to use quantiles of the <em>difft</em> distribution.</p>
+<p>To compute a classifiction tree, <code>VT.tree.class()</code> is used. Internally, <code>rpart::rpart()</code> is computed. It takes in argument:</p>
+<ul>
+<li><code>vt.difft</code> : <code>VT.difft</code> object</li>
+<li><code>threshold</code> : <span class="math">\(0.05\)</span> by default, corresponds to <span class="math">\(c\)</span></li>
+<li><code>sens</code> : <code>c(&quot;&gt;&quot;, &quot;&lt;&quot;)</code>. <code>sens</code> corresponds to the way <span class="math">\(Z^{*}\)</span> is defined.
+<ul>
+<li><code>&quot;&gt;&quot;</code> (default) : <span class="math">\(Z^{*}\)</span>, <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.</li>
+<li><code>&quot;&lt;&quot;</code> : <span class="math">\(Z^{*}\)</span>, <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &lt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.<br /></li>
+</ul></li>
+<li><code>screening</code> : <code>NULL</code> is default value. If <code>TRUE</code> only covariables in <code>varimp</code> <code>vt.object</code> ’s field is used.</li>
+</ul>
+<p>See <code>?VT.tree</code> for details.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize classification tree</span>
+tr.class &lt;-<span class="st"> </span><span class="kw">VT.tree.class</span>(vt.f.rf, <span class="dt">sens =</span> <span class="st">&quot;&gt;&quot;</span>, <span class="dt">threshold =</span> <span class="kw">quantile</span>(vt.f.rf$difft, <span class="fl">0.7</span>))
+<span class="co"># compute tree with rpart option</span>
+tr.class$<span class="kw">run</span>(<span class="dt">cp =</span> <span class="dv">0</span>, <span class="dt">maxdepth =</span> <span class="dv">3</span>, <span class="dt">maxcompete =</span> <span class="dv">1</span>)</code></pre>
+</div>
+<div id="regression" class="section level2">
+<h2>Regression</h2>
+<p>Use regression tree to explain <span class="math">\(Z\)</span> by covariables <span class="math">\(X\)</span>. Then some leafs have predicted <span class="math">\(Z_i\)</span> greater than the threshold <span class="math">\(c\)</span> (if <span class="math">\(sens\)</span> is “&gt;”), and it defines which covariables explain <span class="math">\(Z\)</span>.</p>
+<p>The class to use is <code>VT.tree.reg()</code>. It takes same parameters than classification mehod.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize regression tree</span>
+tr.reg &lt;-<span class="st"> </span><span class="kw">VT.tree.reg</span>(vt.f.rf, <span class="dt">sens =</span> <span class="st">&quot;&gt;&quot;</span>, <span class="dt">threshold =</span> <span class="kw">quantile</span>(vt.f.rf$difft, <span class="fl">0.7</span>))
+<span class="co"># compute tree with rpart option</span>
+tr.reg$<span class="kw">run</span>(<span class="dt">cp =</span> <span class="dv">0</span>, <span class="dt">maxdepth =</span> <span class="dv">3</span>, <span class="dt">maxcompete =</span> <span class="dv">1</span>)</code></pre>
+</div>
+<div id="subgroups-and-results" class="section level2">
+<h2>Subgroups and results</h2>
 </div>
 </div>
 
