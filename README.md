@@ -1,4 +1,4 @@
-# VirtualTwins
+# aVirtualTwins
 
 An adaptation of VirtualTwins method from [Foster, J. C., Taylor, J. M.G. and Ruberg, S. J. (2011)](http://onlinelibrary.wiley.com/doi/10.1002/sim.4322/abstract)
 
@@ -41,7 +41,7 @@ See [full-example](http://htmlpreview.github.io/?https://github.com/prise6/Virtu
 
 or when installed : 
 ``` r
-vignette("full-example", package = "VirtualTwins")
+vignette("full-example", package = "aVirtualTwins")
 ```
 
 ## Few Examples
