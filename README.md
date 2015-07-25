@@ -18,16 +18,13 @@ vt.for <- vt.forest("one", vt.obj, T, ntree = 500)
 # Second step : find rules in data 
 vt.trees <- vt.tree("class", vt.for, threshold = quantile(vt.for$difft, seq(.5,.8,.1)), maxdepth = 2)
 # Print results
-(vt.subgroups <- lapply(vt.trees, function(x)x$getRules(only.fav = T, verbose = F)))
+vt.sbgrps <- vt.subgroups(vt.trees)
+knitr::kable(vt.sbgrps)
 ```
-|        |Subgroup                    |Subgroup size |Treatement event rate |Control event rate |Treatment sample size |Control sample size | RR (resub)| RR (snd)|
-|:-------|:---------------------------|:-------------|:---------------------|:------------------|:---------------------|:-------------------|----------:|--------:|
-|tree1   |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
-|tree2   |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
-|tree3.3 |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
-|tree3.7 |PRAPACHE>=26.5 & AGE>=54.88 |111           |0.887                 |0.325              |71                    |40                  |      2.729|    2.026|
-|tree4.3 |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
-|tree4.7 |PRAPACHE>=26.5 & AGE>=54.88 |111           |0.887                 |0.325              |71                    |40                  |      2.729|    2.026|
+|      |Subgroup                    |Subgroup size |Treatement event rate |Control event rate |Treatment sample size |Control sample size | RR (resub)| RR (snd)|
+|:-----|:---------------------------|:-------------|:---------------------|:------------------|:---------------------|:-------------------|----------:|--------:|
+|tree1 |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.856|
+|tree3 |PRAPACHE>=26.5 & AGE>=51.74 |120           |0.897                 |0.31               |78                    |42                  |      2.894|    1.991|
 
 
 
@@ -68,8 +65,4 @@ or when installed :
 ``` r
 vignette("full-example", package = "aVirtualTwins")
 ```
-
-## Few Examples
-
-* _Coming..._
 
