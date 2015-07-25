@@ -10,7 +10,7 @@
 
 <meta name="author" content="Francois Vieille" />
 
-<meta name="date" content="2015-07-24" />
+<meta name="date" content="2015-07-25" />
 
 <title>Virtual Twins Examples</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Virtual Twins Examples</h1>
 <h4 class="author"><em>Francois Vieille</em></h4>
-<h4 class="date"><em>2015-07-24</em></h4>
+<h4 class="date"><em>2015-07-25</em></h4>
 </div>
 
 
@@ -150,7 +150,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 }</code></pre>
 <p><strong>Example with Sepsis</strong></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load library VT</span>
-<span class="kw">library</span>(VirtualTwins)
+<span class="kw">library</span>(aVirtualTwins)
 <span class="co"># load data sepsis</span>
 <span class="kw">data</span>(sepsis)
 <span class="co"># initialize VT.object</span>
@@ -189,10 +189,8 @@ vt.o.tmp &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis.tm
 </ul>
 <p><strong>with <code>randomForest</code></strong></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use randomForest::randomForest()</span>
-<span class="kw">library</span>(randomForest, <span class="dt">verbose =</span> F)</code></pre>
-<pre><code>## randomForest 4.6-10
-## Type rfNews() to see new features/changes/bug fixes.</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Reproducibility</span>
+<span class="kw">library</span>(randomForest, <span class="dt">verbose =</span> F)
+<span class="co"># Reproducibility</span>
 <span class="kw">set.seed</span>(<span class="dv">123</span>)
 <span class="co"># Fit rf model </span>
 <span class="co"># default params</span>
@@ -230,10 +228,8 @@ vt.o.tr$data$survival &lt;-<span class="st"> </span><span class="kw">as.factor</
 <span class="kw">formatRCTDataset</span>(vt.o.tr$data, <span class="st">&quot;survival&quot;</span>, <span class="st">&quot;THERAPY&quot;</span>)</code></pre>
 <pre><code>## &quot;y&quot; will be the favorable outcome</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use caret::train()</span>
-<span class="kw">library</span>(caret, <span class="dt">verbose =</span> F)</code></pre>
-<pre><code>## Loading required package: lattice
-## Loading required package: ggplot2</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Reproducibility</span>
+<span class="kw">library</span>(caret, <span class="dt">verbose =</span> F)
+<span class="co"># Reproducibility</span>
 <span class="kw">set.seed</span>(<span class="dv">123</span>)
 <span class="co"># fit train model</span>
 fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">classProbs =</span> T, <span class="dt">method =</span> <span class="st">&quot;none&quot;</span>)
@@ -276,7 +272,7 @@ vt.doublef.rf$<span class="kw">run</span>()</code></pre>
 <blockquote>
 <p>A modification of [previous methods] is to obtain <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span> via cross-validation. In this méthod the specific data for subject <span class="math">\(i\)</span> is not used to obtain <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>. Using k-fold cross-validation, we apply random forest regression approach to <span class="math">\(\frac{k-1}{k}\)</span> of the data and use the resulting predictor to obtain estimates of <span class="math">\(P_{1i}\)</span> and <span class="math">\(P_{0i}\)</span> for the remaining <span class="math">\(\frac{1}{k}\)</span> of the observations. This is repeated <span class="math">\(k\)</span> times.</p>
 </blockquote>
-<p>To use this approach, type <code>VirtualTwins:::VT.forest.fold()</code>. This class takes in argument :</p>
+<p>To use this approach, type <code>aVirtualTwins:::VT.forest.fold()</code>. This class takes in argument :</p>
 <ul>
 <li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
 <li><code>fold</code> : number of fold (e.g. <span class="math">\(5\)</span>)</li>
@@ -285,7 +281,7 @@ vt.doublef.rf$<span class="kw">run</span>()</code></pre>
 </ul>
 <p><strong>NOTE:</strong> This function use only <code>randomForest</code> package.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize k-fold RF</span>
-model.fold &lt;-<span class="st"> </span>VirtualTwins:::<span class="kw">VT.forest.fold</span>(vt.o, <span class="dt">fold =</span> <span class="dv">5</span>, <span class="dt">ratio =</span> <span class="dv">1</span>, <span class="dt">interactions =</span> T)
+model.fold &lt;-<span class="st"> </span>aVirtualTwins:::<span class="kw">VT.forest.fold</span>(vt.o, <span class="dt">fold =</span> <span class="dv">5</span>, <span class="dt">ratio =</span> <span class="dv">1</span>, <span class="dt">interactions =</span> T)
 <span class="co"># grow RF with randomForest package options</span>
 <span class="co"># set do.trace option to see the 5 folds</span>
 model.fold$<span class="kw">run</span>(<span class="dt">ntree =</span> <span class="dv">500</span>, <span class="dt">do.trace =</span> <span class="dv">500</span>)</code></pre>

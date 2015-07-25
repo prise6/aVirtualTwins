@@ -3,7 +3,7 @@
 \docType{class}
 \name{VT.object}
 \alias{VT.object}
-\title{VirtualTwins.object}
+\title{VT.object}
 \description{
 A Reference Class to deal with RCT dataset
 }

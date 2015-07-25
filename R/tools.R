@@ -1,3 +1,30 @@
+
+#' Visualize subgroups
+#' 
+#' @param vt.trees \code{\link{VT.tree}} object (can be a list)
+#' @param only.leaf logical select only leaf of trees
+#' @param only.fav logical select only favorable subgroup (meaning with favorable label of the tree)
+#' @param tables logical show tables of incidence
+#' @param verbose print tables during computation
+#' 
+#' @return data.frame of rules
+#' 
+#' @export vt.subgroups
+#'
+#' @name vt.subgroups  
+#'  
+
+vt.subgroups <- function(vt.trees, only.leaf = T, only.fav = T, tables = F, verbose = F){
+  
+  if(is.list(vt.trees)){
+    subgroups <- lapply(vt.trees, function(x)x$getRules(only.leaf = only.leaf, only.fav = only.fav, tables = tables, verbose = verbose))
+    unique(do.call(rbind, subgroups))
+  }
+  else{
+    subgroups <- vt.tree$getRules(only.leaf = only.leaf, only.fav = only.fav, tables = tables, verbose = verbose)
+  }
+}
+
 vt.getQAOriginal <- function(response, trt, ahat){
   if(is.factor(response)) response = as.numeric(response) - 1
   
@@ -40,7 +67,6 @@ vt.rr.snd <- function(vt.difft, selected){
            /(sum(vt.difft$twin1*selected*(1-vt.difft$vt.object$data[, 2]))/sum(selected*(1-vt.difft$vt.object$data[, 2]))))
   }
 }
-
 
 
 

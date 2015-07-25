@@ -13,7 +13,11 @@
 #' 
 #' @return \code{VT.object}
 #' 
-#' @export
+#' @include object.R 
+#' 
+#' @name vt.data
+#' 
+#' @export vt.data
 
 vt.data <- function(dataset, outcome.field, treatment.field, interactions = TRUE, ...){
   data <- formatRCTDataset(dataset, outcome.field, treatment.field, interactions = TRUE)

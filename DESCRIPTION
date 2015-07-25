@@ -19,7 +19,7 @@ Depends:
     R (>= 3.2.0),
     methods
 Collate:
-    'VirtualTwins.R'
+    'aVirtualTwins.R'
     'data.R'
     'object.R'
     'difft.R'
@@ -29,6 +29,7 @@ Collate:
     'forest.double.R'
     'forest.fold.R'
     'forest.one.R'
+    'forest.wrapper.R'
     'formatRCTDataset.R'
     'incidences.R'
     'object.wrapper.R'
@@ -36,4 +37,5 @@ Collate:
     'tree.R'
     'tree.class.R'
     'tree.reg.R'
+    'tree.wrapper.R'
 VignetteBuilder: knitr

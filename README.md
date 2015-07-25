@@ -6,6 +6,31 @@ VirtualTwins is a method of subgroup identification from randomized clinical tri
 
 As an intern in a french pharmaceutical group, i worked on this method and develop a package based on Jared Foster and al method.
 
+## (Very) Quick Preview
+
+```r
+# Load data
+data(sepsis)
+# Format data
+vt.obj <- vt.data(sepsis, "survival", "THERAPY", T)
+# First step : create random forest model
+vt.for <- vt.forest("one", vt.obj, T, ntree = 500)
+# Second step : find rules in data 
+vt.trees <- vt.tree("class", vt.for, threshold = quantile(vt.for$difft, seq(.5,.8,.1)), maxdepth = 2)
+# Print results
+(vt.subgroups <- lapply(vt.trees, function(x)x$getRules(only.fav = T, verbose = F)))
+```
+|        |Subgroup                    |Subgroup size |Treatement event rate |Control event rate |Treatment sample size |Control sample size | RR (resub)| RR (snd)|
+|:-------|:---------------------------|:-------------|:---------------------|:------------------|:---------------------|:-------------------|----------:|--------:|
+|tree1   |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
+|tree2   |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
+|tree3.3 |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
+|tree3.7 |PRAPACHE>=26.5 & AGE>=54.88 |111           |0.887                 |0.325              |71                    |40                  |      2.729|    2.026|
+|tree4.3 |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.873|
+|tree4.7 |PRAPACHE>=26.5 & AGE>=54.88 |111           |0.887                 |0.325              |71                    |40                  |      2.729|    2.026|
+
+
+
 ## Infos 
 
 Currently this package works for RCT with two treatments groups and binary outcome.

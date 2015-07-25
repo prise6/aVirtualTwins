@@ -25,6 +25,10 @@
 #'   \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
 #'   
 #' @import methods
+#' 
+#' @export VT.forest.fold
+#' 
+
 VT.forest.fold <- setRefClass(
   Class = "VT.forest.fold",
   

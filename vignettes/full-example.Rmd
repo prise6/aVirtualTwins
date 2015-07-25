@@ -129,7 +129,7 @@ vt.data <- function(dataset, outcome.field, treatment.field, interactions = TRUE
 __Example with Sepsis__
 ```{r}
 # load library VT
-library(VirtualTwins)
+library(aVirtualTwins)
 # load data sepsis
 data(sepsis)
 # initialize VT.object
@@ -287,7 +287,8 @@ To use this approach, type `aVirtualTwins:::VT.forest.fold()`. This class takes 
 
 __NOTE:__ This function use only `randomForest` package.
 
-```{r, cache=TRUE}
+```{r, cache=F}
+
 # initialize k-fold RF
 model.fold <- aVirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
 # grow RF with randomForest package options

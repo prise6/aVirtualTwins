@@ -18,7 +18,7 @@
 #' }
 #'
 #' @docType package
-#' @name VirtualTwins
-#' @aliases VirtualTwins-package
+#' @name aVirtualTwins
+#' @aliases aVirtualTwins-package
 #'
 NULL

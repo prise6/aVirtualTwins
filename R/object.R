@@ -1,6 +1,6 @@
 # VT.OBJECT ---------------------------------------------------------------
 
-#' VirtualTwins.object
+#' VT.object
 #' 
 #' A Reference Class to deal with RCT dataset
 #' 

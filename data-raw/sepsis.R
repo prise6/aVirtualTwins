@@ -2,7 +2,7 @@
 # Create sepsis data ------------------------------------------------------
 
 # Load some libraries
-library(VirtualTwins)
+library(aVirtualTwins)
 library(randomForest) 
 
 # Sepsis is a csv file available in SIDES example to this address: 

@@ -6,7 +6,7 @@
 
 ## ------------------------------------------------------------------------
 # load library VT
-library(VirtualTwins)
+library(aVirtualTwins)
 # load data sepsis
 data(sepsis)
 # initialize VT.object
@@ -88,9 +88,10 @@ vt.doublef.rf <- VT.forest.double(vt.o, model.rf.trt1, model.rf.trt0)
 # Then, use run() to compute probabilities
 vt.doublef.rf$run()
 
-## ---- cache=TRUE---------------------------------------------------------
+## ---- cache=F------------------------------------------------------------
+
 # initialize k-fold RF
-model.fold <- VirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
+model.fold <- aVirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
 # grow RF with randomForest package options
 # set do.trace option to see the 5 folds
 model.fold$run(ntree = 500, do.trace = 500)
