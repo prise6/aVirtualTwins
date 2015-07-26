@@ -59,7 +59,7 @@ let $X = \left\{X_1, \ldots, X_{p-2}\right\}$
 
 From one of these methods you can estimate $\hat{P_{1i}}$ and $\hat{P_{0i}}$.
 
-Related functions/classes in aVirtualTwins package : `VT.difft()`, `VT.forest()`, `VT.forest.one()`, `VT.forest.double()`, `VT.forest.fold()`.
+Related functions/classes in aVirtualTwins package : `VT.difft()`, `vt.forest()`.
 
 ### Second Step
 
@@ -70,7 +70,7 @@ Define $Z_i = \hat{P_{1i}} - \hat{P_{0i}}$
 
 The idea is to identify which covariable from $X$ described variation of $Z$.
 
-Related functions/classes in aVirtualTwins package : `VT.tree()`, `VT.tree.class()`, `VT.tree.reg()`.
+Related function in aVirtualTwins package : `vt.tree()`.
 
 
 -----------
@@ -168,11 +168,13 @@ Following example used *sepsis* data created in previous part.
 
 To perform simple random forest on `VT.object`, `randomForest`, `caret` and `party` package can be used.
 
-Class `VT.forest.one` is used. It takes in arguments :
+Class `vt.forest("one", ...)` is used. It takes in arguments :
 
-* `vt.object` : return of `vt.data()` function
-* `model` : A random forest model
+* `forest.type` : you have to set it to `"one"`
+* `vt.data` : return of `vt.data()` function
+* `model` : a random forest model
 * `interactions` : logical, `TRUE` is default value
+* `...` : options to `randomForest()` function
 
 __with `randomForest`__
 ```{r}
@@ -184,11 +186,12 @@ set.seed(123)
 # default params
 # set interactions to TRUE if using interaction between T and X
 model.rf <- randomForest(x = vt.o$getX(interactions = T),
-                         y = vt.o$getY())
+                         y = vt.o$getY(),
+                         ntree = 500)
 # initialize VT.forest.one
-vt.f.rf <- VT.forest.one(vt.o, model.rf)
-# Then, use run() to compute probabilities
-vt.f.rf$run()
+vt.f.rf <- vt.forest("one", vt.data = vt.o, model = model.rf, interactions = T)
+### or you can use randomForest inside vt.forest()
+vt.f.rf <- vt.forest("one", vt.data = vt.o, interactions = T, ntree = 500)
 ```
 
 __with `party`__
@@ -205,9 +208,7 @@ __with `party`__
 # # set interactions to TRUE if using interaction between T and X
 # model.cf <- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))
 # # initialize VT.forest.one
-# vt.f.cf <- VT.forest.one(vt.o, model.cf)
-# # Then, use run() to compute probabilities
-# vt.f.cf$run()
+# vt.f.cf <- vt.forest("one", vt.data = vt.o, model = model.cf)
 ```
 
 __with `caret`__
@@ -237,9 +238,7 @@ model.tr <- train(x = vt.o.tr$getX(interactions = T),
                   tuneGrid = data.frame(mtry = 5),
                   trControl = fitControl)
 # initialize VT.forest.one
-vt.f.tr <- VT.forest.one(vt.o.tr, model.tr)
-# Then, use run() to compute probabilities
-vt.f.tr$run()
+vt.f.tr <- vt.forest("one", vt.o.tr, model = model.tr)
 ```
 
 
@@ -247,11 +246,12 @@ vt.f.tr$run()
 
 To perform double random forest on `VT.object`, same packages as simple random forest can be used.
 
-Class `VT.forest.double` is used. It takes in arguments :
+Function `vt.forest("double", ...)` is used. It takes in arguments :
 
-* `vt.object` : return of `vt.data()` function
-* `model_trt1` : a random forest model for $T=1$
-* `model_trt0` : a random forest model for $T=0$
+* `forest.type` : You have to set is to `"double"`
+* `vt.data` : return of `vt.data()` function
+* `model_trt1` : a random forest model for $T=1$ (this argument has to be specified)
+* `model_trt0` : a random forest model for $T=0$ (this argument has to be specified)
 
 
 __NOTE:__ use `trt` parameter in `VT.object::getX()` or `VT.object::getY()` methods to obtain part of data depending on treatment. See following example.
@@ -265,9 +265,14 @@ model.rf.trt1 <- randomForest(x = vt.o$getX(trt = 1),
 model.rf.trt0 <- randomForest(x = vt.o$getX(trt = 0),
                               y = vt.o$getY(trt = 0))
 # initialize VT.forest.double()
-vt.doublef.rf <- VT.forest.double(vt.o, model.rf.trt1, model.rf.trt0)
-# Then, use run() to compute probabilities
-vt.doublef.rf$run()
+vt.doublef.rf <- vt.forest("double",
+                           vt.data = vt.o, 
+                           model_trt1 = model.rf.trt1, 
+                           model_trt0 = model.rf.trt0)
+### Or you can use randomForest() inside
+vt.doublef.rf <- vt.forest("double",
+                           vt.data = vt.o,
+                           ntree = 200)
 ```
 
 Follow the same structure for `caret` or `cforest` models.
@@ -278,22 +283,22 @@ This idea is taken from *method 3* of Jared Foster paper :
 
 > A modification of [previous methods] is to obtain $\hat{P_{1i}}$ and $\hat{P_{0i}}$ via cross-validation. In this méthod the specific data for subject $i$ is not used to obtain $\hat{P_{1i}}$ and $\hat{P_{0i}}$. Using k-fold cross-validation, we apply random forest regression approach to $\frac{k-1}{k}$ of the data and use the resulting predictor to obtain estimates of $P_{1i}$ and $P_{0i}$ for the remaining $\frac{1}{k}$ of the observations. This is repeated $k$ times.
 
-To use this approach, type `aVirtualTwins:::VT.forest.fold()`. This class takes in argument :
+To use this approach, use `vt.forest("fold", ...)`. This class takes in argument :
 
-* `vt.object` : return of `vt.data()` function
+* `forest.type` : it has to be set to `"fold"`
+* `vt.data` : return of `vt.data()` function
 * `fold` : number of fold (e.g. $5$)
 * `ratio` : Control of sampsize balance. `ratio` of $2$ means that there 2 times le highest level compared to the other. "Highest" means the level with larger observations. It's in test.
 * `interactions` : Logical. If `TRUE`, interactions between covariables and treatments are used. `FALSE` otherwise.
+* `...` : `randomForest()` function options
 
 __NOTE:__ This function use only `randomForest` package.
 
 ```{r, cache=F}
 
 # initialize k-fold RF
-model.fold <- aVirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
-# grow RF with randomForest package options
-# set do.trace option to see the 5 folds
-model.fold$run(ntree = 500, do.trace = 500)
+# you can use randomForest options
+model.fold <- vt.forest("fold", vt.data = vt.o, fold = 5, ratio = 1, interactions = T, ntree = 200)
 ```
 
 
@@ -306,7 +311,7 @@ Anyway, aVirtualTwins package can be used. To do so, you can use `VT.difft()` cl
 * `vt.object` : return of `vt.data()` function
 * `twin1` : estimate of $P(Y_{i} = 1 | T = T_{i})$ : meaning response probability under the correct treatment.
 * `twin1` : estimate of $P(Y_{i} = 1 | T = 1-T_{i})$ : meaning response probability under the other treatment.
-* `method` : _absolute_ (default), _relative_ or _logit_. See `?VT.difft()` for details.
+* `method` : _absolute_ (default), _relative_ or _logit_. See `?VT.difft` for details.
 
 ```{r}
 # you get twin1 and twin2 by your own method
@@ -338,22 +343,28 @@ As described in the method, we define $Z_i = \hat{P_{1i}} - \hat{P_{0i}}$. It's 
 We define a new variable $Z^{*}$, $Z^{*}_i=1$ if $Z_i > c$ and $Z^{*}_i=0$ otherwise. Classification tree's goal is to explain the value $Z^*=1$. 
 $c$ is a threshold given by the user. It's the threshold for which the difference is "interesting". One idea is to use quantiles of the *difft* distribution.
 
-To compute a classifiction tree, `VT.tree.class()` is used. Internally, `rpart::rpart()` is computed. It takes in argument:
+To compute a classifiction tree, `vt.tree("class", ...)` is used. Internally, `rpart::rpart()` is computed. It takes in argument:
 
-* `vt.difft` : `VT.difft` object
-* `threshold` : $0.05$ by default, corresponds to $c$
+* `tree.type` : it has to be set to `"class"`
+* `vt.difft` : `VT.difft` object (return of `vt.forest()` function)
 * `sens` : `c(">", "<")`. `sens` corresponds to the way $Z^{*}$ is defined.
     * `">"` (default) : $Z^{*}$, $Z^{*}_i=1$ if $Z_i > c$ and $Z^{*}_i=0$ otherwise.
     * `"<"` : $Z^{*}$, $Z^{*}_i=1$ if $Z_i < c$ and $Z^{*}_i=0$ otherwise.  
-* `screening` : `NULL` is default value. If `TRUE` only covariables in `varimp` `vt.object` 's field is used.
+* `threshold` : corresponds to $c$, it can be a vector. $seq(.5, .8, .1)$ by default.
+* `screening` : `NULL` is default value. If `TRUE` only covariables in `varimp` `vt.data` 's field is used.
 
 See `?VT.tree` for details.
 
 ```{r}
 # initialize classification tree
-tr.class <- VT.tree.class(vt.f.rf, sens = ">", threshold = quantile(vt.f.rf$difft, 0.7))
-# compute tree with rpart option
-tr.class$run(cp = 0, maxdepth = 3, maxcompete = 1)
+tr.class <- vt.tree("class",
+                    vt.difft = vt.f.rf,
+                    sens = ">",
+                    threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)))
+# tr.class is a list if threshold is a vectoor
+class(tr.class)
+# acce trees with treeXX
+class(tr.class$tree1)
 ```
 
 
@@ -361,13 +372,18 @@ tr.class$run(cp = 0, maxdepth = 3, maxcompete = 1)
 
 Use regression tree to explain $Z$ by covariables $X$. Then some leafs have predicted $Z_i$ greater than the threshold $c$ (if $sens$ is ">"), and it defines which covariables explain $Z$.
 
-The class to use is `VT.tree.reg()`. It takes same parameters than classification mehod.
+The function to use is `vt.tree("reg", ...)`. It takes same parameters than classification mehod.
 
 ```{r}
 # initialize regression tree
-tr.reg <- VT.tree.reg(vt.f.rf, sens = ">", threshold = quantile(vt.f.rf$difft, 0.7))
-# compute tree with rpart option
-tr.reg$run(cp = 0, maxdepth = 3, maxcompete = 1)
+tr.reg <- vt.tree("reg",
+                  vt.difft = vt.f.rf,
+                  sens = ">",
+                  threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)))
+# tr.class is a list if threshold is a vectoor
+class(tr.reg)
+# acce trees with treeXX
+class(tr.reg$tree1)
 ```
 
 

@@ -10,7 +10,7 @@
 
 <meta name="author" content="Francois Vieille" />
 
-<meta name="date" content="2015-07-25" />
+<meta name="date" content="2015-07-27" />
 
 <title>Virtual Twins Examples</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Virtual Twins Examples</h1>
 <h4 class="author"><em>Francois Vieille</em></h4>
-<h4 class="date"><em>2015-07-25</em></h4>
+<h4 class="date"><em>2015-07-27</em></h4>
 </div>
 
 
@@ -98,7 +98,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Build your own model</li>
 </ul>
 <p>From one of these methods you can estimate <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>.</p>
-<p>Related functions/classes in aVirtualTwins package : <code>VT.difft()</code>, <code>VT.forest()</code>, <code>VT.forest.one()</code>, <code>VT.forest.double()</code>, <code>VT.forest.fold()</code>.</p>
+<p>Related functions/classes in aVirtualTwins package : <code>VT.difft()</code>, <code>vt.forest()</code>.</p>
 </div>
 <div id="second-step" class="section level3">
 <h3>Second Step</h3>
@@ -108,7 +108,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Use classification tree on new variable <span class="math">\(Z^{*}\)</span> defined by <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.</li>
 </ul>
 <p>The idea is to identify which covariable from <span class="math">\(X\)</span> described variation of <span class="math">\(Z\)</span>.</p>
-<p>Related functions/classes in aVirtualTwins package : <code>VT.tree()</code>, <code>VT.tree.class()</code>, <code>VT.tree.reg()</code>.</p>
+<p>Related function in aVirtualTwins package : <code>vt.tree()</code>.</p>
 <hr />
 </div>
 </div>
@@ -181,11 +181,13 @@ vt.o.tmp &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis.tm
 <h2>Simple Random Forest</h2>
 <p>Following example used <em>sepsis</em> data created in previous part.</p>
 <p>To perform simple random forest on <code>VT.object</code>, <code>randomForest</code>, <code>caret</code> and <code>party</code> package can be used.</p>
-<p>Class <code>VT.forest.one</code> is used. It takes in arguments :</p>
+<p>Class <code>vt.forest(&quot;one&quot;, ...)</code> is used. It takes in arguments :</p>
 <ul>
-<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
-<li><code>model</code> : A random forest model</li>
+<li><code>forest.type</code> : you have to set it to <code>&quot;one&quot;</code></li>
+<li><code>vt.data</code> : return of <code>vt.data()</code> function</li>
+<li><code>model</code> : a random forest model</li>
 <li><code>interactions</code> : logical, <code>TRUE</code> is default value</li>
+<li><code>...</code> : options to <code>randomForest()</code> function</li>
 </ul>
 <p><strong>with <code>randomForest</code></strong></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use randomForest::randomForest()</span>
@@ -196,11 +198,12 @@ vt.o.tmp &lt;-<span class="st"> </span><span class="kw">vt.data</span>(sepsis.tm
 <span class="co"># default params</span>
 <span class="co"># set interactions to TRUE if using interaction between T and X</span>
 model.rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">x =</span> vt.o$<span class="kw">getX</span>(<span class="dt">interactions =</span> T),
-                         <span class="dt">y =</span> vt.o$<span class="kw">getY</span>())
+                         <span class="dt">y =</span> vt.o$<span class="kw">getY</span>(),
+                         <span class="dt">ntree =</span> <span class="dv">500</span>)
 <span class="co"># initialize VT.forest.one</span>
-vt.f.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o, model.rf)
-<span class="co"># Then, use run() to compute probabilities</span>
-vt.f.rf$<span class="kw">run</span>()</code></pre>
+vt.f.rf &lt;-<span class="st"> </span><span class="kw">vt.forest</span>(<span class="st">&quot;one&quot;</span>, <span class="dt">vt.data =</span> vt.o, <span class="dt">model =</span> model.rf, <span class="dt">interactions =</span> T)
+### or you can use randomForest inside vt.forest()
+vt.f.rf &lt;-<span class="st"> </span><span class="kw">vt.forest</span>(<span class="st">&quot;one&quot;</span>, <span class="dt">vt.data =</span> vt.o, <span class="dt">interactions =</span> T, <span class="dt">ntree =</span> <span class="dv">500</span>)</code></pre>
 <p><strong>with <code>party</code></strong></p>
 <p><code>cforest()</code> can be usefull however computing time is really long. I think there is an issue when giving <em>cforest object</em> in Reference Class parameter. Need to fix it.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># # use randomForest::randomForest()</span>
@@ -212,9 +215,7 @@ vt.f.rf$<span class="kw">run</span>()</code></pre>
 <span class="co"># # set interactions to TRUE if using interaction between T and X</span>
 <span class="co"># model.cf &lt;- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))</span>
 <span class="co"># # initialize VT.forest.one</span>
-<span class="co"># vt.f.cf &lt;- VT.forest.one(vt.o, model.cf)</span>
-<span class="co"># # Then, use run() to compute probabilities</span>
-<span class="co"># vt.f.cf$run()</span></code></pre>
+<span class="co"># vt.f.cf &lt;- vt.forest(&quot;one&quot;, vt.data = vt.o, model = model.cf)</span></code></pre>
 <p><strong>with <code>caret</code></strong></p>
 <p>Using <code>caret</code> can be usefull to deal with parallel computing for example.</p>
 <p><strong>NOTE:</strong> For <code>caret</code> levels of outcome can’t be 0, so i’ll change levels name into “n”/“y”</p>
@@ -239,18 +240,17 @@ model.tr &lt;-<span class="st"> </span><span class="kw">train</span>(<span class
                   <span class="dt">tuneGrid =</span> <span class="kw">data.frame</span>(<span class="dt">mtry =</span> <span class="dv">5</span>),
                   <span class="dt">trControl =</span> fitControl)
 <span class="co"># initialize VT.forest.one</span>
-vt.f.tr &lt;-<span class="st"> </span><span class="kw">VT.forest.one</span>(vt.o.tr, model.tr)
-<span class="co"># Then, use run() to compute probabilities</span>
-vt.f.tr$<span class="kw">run</span>()</code></pre>
+vt.f.tr &lt;-<span class="st"> </span><span class="kw">vt.forest</span>(<span class="st">&quot;one&quot;</span>, vt.o.tr, <span class="dt">model =</span> model.tr)</code></pre>
 </div>
 <div id="double-random-forest" class="section level2">
 <h2>Double Random Forest</h2>
 <p>To perform double random forest on <code>VT.object</code>, same packages as simple random forest can be used.</p>
-<p>Class <code>VT.forest.double</code> is used. It takes in arguments :</p>
+<p>Function <code>vt.forest(&quot;double&quot;, ...)</code> is used. It takes in arguments :</p>
 <ul>
-<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
-<li><code>model_trt1</code> : a random forest model for <span class="math">\(T=1\)</span></li>
-<li><code>model_trt0</code> : a random forest model for <span class="math">\(T=0\)</span></li>
+<li><code>forest.type</code> : You have to set is to <code>&quot;double&quot;</code></li>
+<li><code>vt.data</code> : return of <code>vt.data()</code> function</li>
+<li><code>model_trt1</code> : a random forest model for <span class="math">\(T=1\)</span> (this argument has to be specified)</li>
+<li><code>model_trt0</code> : a random forest model for <span class="math">\(T=0\)</span> (this argument has to be specified)</li>
 </ul>
 <p><strong>NOTE:</strong> use <code>trt</code> parameter in <code>VT.object::getX()</code> or <code>VT.object::getY()</code> methods to obtain part of data depending on treatment. See following example.</p>
 <p><strong>with <code>randomForest</code></strong></p>
@@ -261,9 +261,14 @@ model.rf.trt1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>
 model.rf.trt0 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">x =</span> vt.o$<span class="kw">getX</span>(<span class="dt">trt =</span> <span class="dv">0</span>),
                               <span class="dt">y =</span> vt.o$<span class="kw">getY</span>(<span class="dt">trt =</span> <span class="dv">0</span>))
 <span class="co"># initialize VT.forest.double()</span>
-vt.doublef.rf &lt;-<span class="st"> </span><span class="kw">VT.forest.double</span>(vt.o, model.rf.trt1, model.rf.trt0)
-<span class="co"># Then, use run() to compute probabilities</span>
-vt.doublef.rf$<span class="kw">run</span>()</code></pre>
+vt.doublef.rf &lt;-<span class="st"> </span><span class="kw">vt.forest</span>(<span class="st">&quot;double&quot;</span>,
+                           <span class="dt">vt.data =</span> vt.o, 
+                           <span class="dt">model_trt1 =</span> model.rf.trt1, 
+                           <span class="dt">model_trt0 =</span> model.rf.trt0)
+### Or you can use randomForest() inside
+vt.doublef.rf &lt;-<span class="st"> </span><span class="kw">vt.forest</span>(<span class="st">&quot;double&quot;</span>,
+                           <span class="dt">vt.data =</span> vt.o,
+                           <span class="dt">ntree =</span> <span class="dv">200</span>)</code></pre>
 <p>Follow the same structure for <code>caret</code> or <code>cforest</code> models.</p>
 </div>
 <div id="k-fold-random-forest" class="section level2">
@@ -272,29 +277,19 @@ vt.doublef.rf$<span class="kw">run</span>()</code></pre>
 <blockquote>
 <p>A modification of [previous methods] is to obtain <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span> via cross-validation. In this méthod the specific data for subject <span class="math">\(i\)</span> is not used to obtain <span class="math">\(\hat{P_{1i}}\)</span> and <span class="math">\(\hat{P_{0i}}\)</span>. Using k-fold cross-validation, we apply random forest regression approach to <span class="math">\(\frac{k-1}{k}\)</span> of the data and use the resulting predictor to obtain estimates of <span class="math">\(P_{1i}\)</span> and <span class="math">\(P_{0i}\)</span> for the remaining <span class="math">\(\frac{1}{k}\)</span> of the observations. This is repeated <span class="math">\(k\)</span> times.</p>
 </blockquote>
-<p>To use this approach, type <code>aVirtualTwins:::VT.forest.fold()</code>. This class takes in argument :</p>
+<p>To use this approach, use <code>vt.forest(&quot;fold&quot;, ...)</code>. This class takes in argument :</p>
 <ul>
-<li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
+<li><code>forest.type</code> : it has to be set to <code>&quot;fold&quot;</code></li>
+<li><code>vt.data</code> : return of <code>vt.data()</code> function</li>
 <li><code>fold</code> : number of fold (e.g. <span class="math">\(5\)</span>)</li>
 <li><code>ratio</code> : Control of sampsize balance. <code>ratio</code> of <span class="math">\(2\)</span> means that there 2 times le highest level compared to the other. “Highest” means the level with larger observations. It’s in test.</li>
 <li><code>interactions</code> : Logical. If <code>TRUE</code>, interactions between covariables and treatments are used. <code>FALSE</code> otherwise.</li>
+<li><code>...</code> : <code>randomForest()</code> function options</li>
 </ul>
 <p><strong>NOTE:</strong> This function use only <code>randomForest</code> package.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize k-fold RF</span>
-model.fold &lt;-<span class="st"> </span>aVirtualTwins:::<span class="kw">VT.forest.fold</span>(vt.o, <span class="dt">fold =</span> <span class="dv">5</span>, <span class="dt">ratio =</span> <span class="dv">1</span>, <span class="dt">interactions =</span> T)
-<span class="co"># grow RF with randomForest package options</span>
-<span class="co"># set do.trace option to see the 5 folds</span>
-model.fold$<span class="kw">run</span>(<span class="dt">ntree =</span> <span class="dv">500</span>, <span class="dt">do.trace =</span> <span class="dv">500</span>)</code></pre>
-<pre><code>## ntree      OOB      1      2
-##   500:  32.38% 16.46% 57.72%
-## ntree      OOB      1      2
-##   500:  33.25% 18.50% 55.26%
-## ntree      OOB      1      2
-##   500:  30.03% 16.52% 50.34%
-## ntree      OOB      1      2
-##   500:  29.26% 13.56% 55.71%
-## ntree      OOB      1      2
-##   500:  30.60% 13.79% 59.70%</code></pre>
+<span class="co"># you can use randomForest options</span>
+model.fold &lt;-<span class="st"> </span><span class="kw">vt.forest</span>(<span class="st">&quot;fold&quot;</span>, <span class="dt">vt.data =</span> vt.o, <span class="dt">fold =</span> <span class="dv">5</span>, <span class="dt">ratio =</span> <span class="dv">1</span>, <span class="dt">interactions =</span> T, <span class="dt">ntree =</span> <span class="dv">200</span>)</code></pre>
 </div>
 <div id="build-your-own-model" class="section level2">
 <h2>Build Your Own Model</h2>
@@ -304,7 +299,7 @@ model.fold$<span class="kw">run</span>(<span class="dt">ntree =</span> <span cla
 <li><code>vt.object</code> : return of <code>vt.data()</code> function</li>
 <li><code>twin1</code> : estimate of <span class="math">\(P(Y_{i} = 1 | T = T_{i})\)</span> : meaning response probability under the correct treatment.</li>
 <li><code>twin1</code> : estimate of <span class="math">\(P(Y_{i} = 1 | T = 1-T_{i})\)</span> : meaning response probability under the other treatment.</li>
-<li><code>method</code> : <em>absolute</em> (default), <em>relative</em> or <em>logit</em>. See <code>?VT.difft()</code> for details.</li>
+<li><code>method</code> : <em>absolute</em> (default), <em>relative</em> or <em>logit</em>. See <code>?VT.difft</code> for details.</li>
 </ul>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># you get twin1 and twin2 by your own method</span>
 <span class="co"># here, i'll use random number between 0 and 1 :</span>
@@ -317,7 +312,7 @@ model.difft &lt;-<span class="st"> </span><span class="kw">VT.difft</span>(vt.o,
 model.difft$<span class="kw">computeDifft</span>()
 <span class="co"># See results</span>
 <span class="kw">head</span>(model.difft$difft)</code></pre>
-<pre><code>## [1]  0.2507360 -0.3905591  0.3102285  0.3986582  0.3747078 -0.2508240</code></pre>
+<pre><code>## [1] -0.03599908 -0.44271883 -0.25458624 -0.64201822  0.29347148 -0.02843780</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Graph :</span>
 <span class="co"># hist(model.difft$difft)</span></code></pre>
 <p><strong>NOTE: Also, you can clone repository, write your own child class of <code>VT.difft()</code> AND submit it !</strong></p>
@@ -330,31 +325,50 @@ model.difft$<span class="kw">computeDifft</span>()
 <div id="classification" class="section level2">
 <h2>Classification</h2>
 <p>We define a new variable <span class="math">\(Z^{*}\)</span>, <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise. Classification tree’s goal is to explain the value <span class="math">\(Z^*=1\)</span>. <span class="math">\(c\)</span> is a threshold given by the user. It’s the threshold for which the difference is “interesting”. One idea is to use quantiles of the <em>difft</em> distribution.</p>
-<p>To compute a classifiction tree, <code>VT.tree.class()</code> is used. Internally, <code>rpart::rpart()</code> is computed. It takes in argument:</p>
+<p>To compute a classifiction tree, <code>vt.tree(&quot;class&quot;, ...)</code> is used. Internally, <code>rpart::rpart()</code> is computed. It takes in argument:</p>
 <ul>
-<li><code>vt.difft</code> : <code>VT.difft</code> object</li>
-<li><code>threshold</code> : <span class="math">\(0.05\)</span> by default, corresponds to <span class="math">\(c\)</span></li>
+<li><code>tree.type</code> : it has to be set to <code>&quot;class&quot;</code></li>
+<li><code>vt.difft</code> : <code>VT.difft</code> object (return of <code>vt.forest()</code> function)</li>
 <li><code>sens</code> : <code>c(&quot;&gt;&quot;, &quot;&lt;&quot;)</code>. <code>sens</code> corresponds to the way <span class="math">\(Z^{*}\)</span> is defined.
 <ul>
 <li><code>&quot;&gt;&quot;</code> (default) : <span class="math">\(Z^{*}\)</span>, <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &gt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.</li>
 <li><code>&quot;&lt;&quot;</code> : <span class="math">\(Z^{*}\)</span>, <span class="math">\(Z^{*}_i=1\)</span> if <span class="math">\(Z_i &lt; c\)</span> and <span class="math">\(Z^{*}_i=0\)</span> otherwise.<br /></li>
 </ul></li>
-<li><code>screening</code> : <code>NULL</code> is default value. If <code>TRUE</code> only covariables in <code>varimp</code> <code>vt.object</code> ’s field is used.</li>
+<li><code>threshold</code> : corresponds to <span class="math">\(c\)</span>, it can be a vector. <span class="math">\(seq(.5, .8, .1)\)</span> by default.</li>
+<li><code>screening</code> : <code>NULL</code> is default value. If <code>TRUE</code> only covariables in <code>varimp</code> <code>vt.data</code> ’s field is used.</li>
 </ul>
 <p>See <code>?VT.tree</code> for details.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize classification tree</span>
-tr.class &lt;-<span class="st"> </span><span class="kw">VT.tree.class</span>(vt.f.rf, <span class="dt">sens =</span> <span class="st">&quot;&gt;&quot;</span>, <span class="dt">threshold =</span> <span class="kw">quantile</span>(vt.f.rf$difft, <span class="fl">0.7</span>))
-<span class="co"># compute tree with rpart option</span>
-tr.class$<span class="kw">run</span>(<span class="dt">cp =</span> <span class="dv">0</span>, <span class="dt">maxdepth =</span> <span class="dv">3</span>, <span class="dt">maxcompete =</span> <span class="dv">1</span>)</code></pre>
+tr.class &lt;-<span class="st"> </span><span class="kw">vt.tree</span>(<span class="st">&quot;class&quot;</span>,
+                    <span class="dt">vt.difft =</span> vt.f.rf,
+                    <span class="dt">sens =</span> <span class="st">&quot;&gt;&quot;</span>,
+                    <span class="dt">threshold =</span> <span class="kw">quantile</span>(vt.f.rf$difft, <span class="kw">seq</span>(.<span class="dv">5</span>, .<span class="dv">8</span>, .<span class="dv">1</span>)))
+<span class="co"># tr.class is a list if threshold is a vectoor</span>
+<span class="kw">class</span>(tr.class)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># acce trees with treeXX</span>
+<span class="kw">class</span>(tr.class$tree1)</code></pre>
+<pre><code>## [1] &quot;VT.tree.class&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;aVirtualTwins&quot;</code></pre>
 </div>
 <div id="regression" class="section level2">
 <h2>Regression</h2>
 <p>Use regression tree to explain <span class="math">\(Z\)</span> by covariables <span class="math">\(X\)</span>. Then some leafs have predicted <span class="math">\(Z_i\)</span> greater than the threshold <span class="math">\(c\)</span> (if <span class="math">\(sens\)</span> is “&gt;”), and it defines which covariables explain <span class="math">\(Z\)</span>.</p>
-<p>The class to use is <code>VT.tree.reg()</code>. It takes same parameters than classification mehod.</p>
+<p>The function to use is <code>vt.tree(&quot;reg&quot;, ...)</code>. It takes same parameters than classification mehod.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># initialize regression tree</span>
-tr.reg &lt;-<span class="st"> </span><span class="kw">VT.tree.reg</span>(vt.f.rf, <span class="dt">sens =</span> <span class="st">&quot;&gt;&quot;</span>, <span class="dt">threshold =</span> <span class="kw">quantile</span>(vt.f.rf$difft, <span class="fl">0.7</span>))
-<span class="co"># compute tree with rpart option</span>
-tr.reg$<span class="kw">run</span>(<span class="dt">cp =</span> <span class="dv">0</span>, <span class="dt">maxdepth =</span> <span class="dv">3</span>, <span class="dt">maxcompete =</span> <span class="dv">1</span>)</code></pre>
+tr.reg &lt;-<span class="st"> </span><span class="kw">vt.tree</span>(<span class="st">&quot;reg&quot;</span>,
+                  <span class="dt">vt.difft =</span> vt.f.rf,
+                  <span class="dt">sens =</span> <span class="st">&quot;&gt;&quot;</span>,
+                  <span class="dt">threshold =</span> <span class="kw">quantile</span>(vt.f.rf$difft, <span class="kw">seq</span>(.<span class="dv">5</span>, .<span class="dv">8</span>, .<span class="dv">1</span>)))
+<span class="co"># tr.class is a list if threshold is a vectoor</span>
+<span class="kw">class</span>(tr.reg)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># acce trees with treeXX</span>
+<span class="kw">class</span>(tr.reg$tree1)</code></pre>
+<pre><code>## [1] &quot;VT.tree.reg&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;aVirtualTwins&quot;</code></pre>
 </div>
 <div id="subgroups-and-results" class="section level2">
 <h2>Subgroups and results</h2>

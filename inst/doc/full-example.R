@@ -31,11 +31,12 @@ set.seed(123)
 # default params
 # set interactions to TRUE if using interaction between T and X
 model.rf <- randomForest(x = vt.o$getX(interactions = T),
-                         y = vt.o$getY())
+                         y = vt.o$getY(),
+                         ntree = 500)
 # initialize VT.forest.one
-vt.f.rf <- VT.forest.one(vt.o, model.rf)
-# Then, use run() to compute probabilities
-vt.f.rf$run()
+vt.f.rf <- vt.forest("one", vt.data = vt.o, model = model.rf, interactions = T)
+### or you can use randomForest inside vt.forest()
+vt.f.rf <- vt.forest("one", vt.data = vt.o, interactions = T, ntree = 500)
 
 ## ------------------------------------------------------------------------
 # # use randomForest::randomForest()
@@ -47,9 +48,7 @@ vt.f.rf$run()
 # # set interactions to TRUE if using interaction between T and X
 # model.cf <- cforest(formula = vt.o$getFormula(), data = vt.o$getData(interactions = T))
 # # initialize VT.forest.one
-# vt.f.cf <- VT.forest.one(vt.o, model.cf)
-# # Then, use run() to compute probabilities
-# vt.f.cf$run()
+# vt.f.cf <- vt.forest("one", vt.data = vt.o, model = model.cf)
 
 ## ------------------------------------------------------------------------
 # Copy new object
@@ -72,9 +71,7 @@ model.tr <- train(x = vt.o.tr$getX(interactions = T),
                   tuneGrid = data.frame(mtry = 5),
                   trControl = fitControl)
 # initialize VT.forest.one
-vt.f.tr <- VT.forest.one(vt.o.tr, model.tr)
-# Then, use run() to compute probabilities
-vt.f.tr$run()
+vt.f.tr <- vt.forest("one", vt.o.tr, model = model.tr)
 
 ## ------------------------------------------------------------------------
 # grow RF for T = 1
@@ -84,17 +81,20 @@ model.rf.trt1 <- randomForest(x = vt.o$getX(trt = 1),
 model.rf.trt0 <- randomForest(x = vt.o$getX(trt = 0),
                               y = vt.o$getY(trt = 0))
 # initialize VT.forest.double()
-vt.doublef.rf <- VT.forest.double(vt.o, model.rf.trt1, model.rf.trt0)
-# Then, use run() to compute probabilities
-vt.doublef.rf$run()
+vt.doublef.rf <- vt.forest("double",
+                           vt.data = vt.o, 
+                           model_trt1 = model.rf.trt1, 
+                           model_trt0 = model.rf.trt0)
+### Or you can use randomForest() inside
+vt.doublef.rf <- vt.forest("double",
+                           vt.data = vt.o,
+                           ntree = 200)
 
 ## ---- cache=F------------------------------------------------------------
 
 # initialize k-fold RF
-model.fold <- aVirtualTwins:::VT.forest.fold(vt.o, fold = 5, ratio = 1, interactions = T)
-# grow RF with randomForest package options
-# set do.trace option to see the 5 folds
-model.fold$run(ntree = 500, do.trace = 500)
+# you can use randomForest options
+model.fold <- vt.forest("fold", vt.data = vt.o, fold = 5, ratio = 1, interactions = T, ntree = 200)
 
 ## ------------------------------------------------------------------------
 # you get twin1 and twin2 by your own method
@@ -113,13 +113,23 @@ head(model.difft$difft)
 
 ## ------------------------------------------------------------------------
 # initialize classification tree
-tr.class <- VT.tree.class(vt.f.rf, sens = ">", threshold = quantile(vt.f.rf$difft, 0.7))
-# compute tree with rpart option
-tr.class$run(cp = 0, maxdepth = 3, maxcompete = 1)
+tr.class <- vt.tree("class",
+                    vt.difft = vt.f.rf,
+                    sens = ">",
+                    threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)))
+# tr.class is a list if threshold is a vectoor
+class(tr.class)
+# acce trees with treeXX
+class(tr.class$tree1)
 
 ## ------------------------------------------------------------------------
 # initialize regression tree
-tr.reg <- VT.tree.reg(vt.f.rf, sens = ">", threshold = quantile(vt.f.rf$difft, 0.7))
-# compute tree with rpart option
-tr.reg$run(cp = 0, maxdepth = 3, maxcompete = 1)
+tr.reg <- vt.tree("reg",
+                  vt.difft = vt.f.rf,
+                  sens = ">",
+                  threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)))
+# tr.class is a list if threshold is a vectoor
+class(tr.reg)
+# acce trees with treeXX
+class(tr.reg$tree1)
 
