@@ -23,6 +23,13 @@ interactions, set to TRUE (default value)}
 }
 \description{
 \code{vt.data} is a wrapper of \code{\link{formatRCTDataset}} and
-\code{\link{VT.object}}.
+\code{\link{VT.object}}. Allows to format your data.frame in order to create
+a VT.object object.
+}
+\examples{
+\dontrun{
+ data(sepsis)
+ formatRCTdataset(sepsis, "survival", "THERAPY", T)
+}
 }
 

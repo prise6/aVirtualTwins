@@ -1,18 +1,38 @@
 
 #' Visualize subgroups
 #' 
-#' @param vt.trees \code{\link{VT.tree}} object (can be a list)
-#' @param only.leaf logical select only leaf of trees
-#' @param only.fav logical select only favorable subgroup (meaning with favorable label of the tree)
-#' @param tables logical show tables of incidence
-#' @param verbose print tables during computation
+#' Function which uses \code{\link{VT.tree}} intern functions. Package
+#' rpart.plot must be loaded. See \code{\link{VT.tree}} for details.
 #' 
+#' @param vt.trees \code{\link{VT.tree}} object. Or return of 
+#'   \code{\link{vt.tree}} function. Can be a list.
+#' @param only.leaf logical to select only leaf of trees. TRUE is default.
+#' @param only.fav logical select only favorable subgroups (meaning with 
+#'   favorable label of the tree). TRUE is default.
+#' @param tables set to TRUE if tables of incidence must be shown. FALSE is 
+#'   default.
+#' @param verbose print infos during computation. FALSE is default.
+#'   
 #' @return data.frame of rules
+#'   
+#' @examples 
+#' \dontrun{ 
+#'  # data(sepsis) 
+#'  vt.o <- vt.data(sepsis, "survival", "THERAPY", T) 
+#'  # inside model : 
+#'  vt.f <- vt.forest("one", vt.o) 
+#'  # use classification tree 
+#'  vt.tr <- vt.tree("class", vt.f, threshold = c(0.01, 0.05)) 
+#'  # show subgroups 
+#'  vt.subgroups(vt.tr) 
+#'  # change options you'll be surprised !
+#'  vt.subgroups(vt.tr, verbose = T, tables = T) 
+#' }
 #' 
 #' @export vt.subgroups
-#'
-#' @name vt.subgroups  
-#'  
+#'   
+#' @name vt.subgroups
+#'   
 
 vt.subgroups <- function(vt.trees, only.leaf = T, only.fav = T, tables = F, verbose = F){
   

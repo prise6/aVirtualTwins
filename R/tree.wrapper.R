@@ -1,22 +1,49 @@
 
 #' Trees to find Subgroups
 #' 
-#' A wrapper of class VT.tree.xxx
-#'
+#' \code{vt.tree} is a wrapper of \code{\link{VT.tree.class}} and 
+#' \code{\link{VT.tree.reg}}. With parameter tree.type, any of these two class 
+#' can be used with its own parameter.
 #' 
-#' See \code{\link{VT.tree}}
+#' See \code{\link{VT.tree}}, \code{\link{VT.tree.class}} and 
+#' \code{\link{VT.tree.reg}} classes.
 #' 
-#' @param tree.type character "class" for classification tree, "reg" for regression tree
-#' @param vt.difft \code{\link{VT.difft}} object
-#' @param sens character c(">","<"). See details.
-#' @param threshold numeric It can be a unique value or a vector
-#' 
-#' @return \code{VT.tree} or a list of \code{VT.tree} depending on threshold dimension
-#' 
+#' @param tree.type must be a character. "class" for classification tree, "reg" 
+#'   for regression tree.
+#' @param vt.difft \code{\link{VT.difft}} object. Or return of 
+#'   \code{\link{vt.forest}} function.
+#' @param sens must be a character c(">","<"). See \code{\link{VT.tree}} for 
+#'   details.
+#' @param threshold must be numeric. It can be a unique value or a vector. If 
+#'   numeric vector, a list is returned. See \code{\link{VT.tree}} for details.
+#' @param screening must be logical. If TRUE, only varimp variables of VT.object
+#'   is used to create the tree.
+#' @param ... rpart() function parameters. Can be used for any tree.type.
+#'   
+#' @return \code{VT.tree} or a list of \code{VT.tree} depending on threshold 
+#'   dimension. See examples.
+#'   
+#' @examples
+#' \dontrun{
+#'  # data(sepsis)
+#'  vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
+#'  # inside model : 
+#'  vt.f <- vt.forest("one", vt.o)
+#'  # use classification tree
+#'  vt.tr <- vt.tree("class", vt.f, threshold = c(0.01, 0.05))
+#'  # return a list
+#'  class(vt.tr)
+#'  # access one of the tree
+#'  vt.tr$tree1
+#'  # return infos
+#'  vt.tr$tree1$getInfos()
+#'  # ...
+#' }
+#'   
 #' @include tree.R
-#' 
+#'   
 #' @name vt.tree
-#' 
+#'   
 #' @export vt.tree
 
 vt.tree <- function(tree.type = "class", vt.difft, sens = ">", threshold = seq(.5, .8, .1), screening = NULL, ...){
