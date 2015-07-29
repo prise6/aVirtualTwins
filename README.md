@@ -13,6 +13,8 @@ As an intern in a french pharmaceutical group, i worked on this method and devel
 data(sepsis)
 # Format data
 vt.obj <- vt.data(sepsis, "survival", "THERAPY", T)
+# Print Incidences of sepsis data
+vt.obj$getIncidences()
 # $table
 #            trt
 # resp        0    1     sum  
