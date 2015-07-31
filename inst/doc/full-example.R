@@ -116,7 +116,10 @@ head(model.difft$difft)
 tr.class <- vt.tree("class",
                     vt.difft = vt.f.rf,
                     sens = ">",
-                    threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)))
+                    threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)),
+                    maxdepth = 3,
+                    cp = 0,
+                    maxcompete = 2) 
 # tr.class is a list if threshold is a vectoor
 class(tr.class)
 # acce trees with treeXX
@@ -130,6 +133,34 @@ tr.reg <- vt.tree("reg",
                   threshold = quantile(vt.f.rf$difft, seq(.5, .8, .1)))
 # tr.class is a list if threshold is a vectoor
 class(tr.reg)
-# acce trees with treeXX
+# access trees with treeXX
 class(tr.reg$tree1)
+
+## ------------------------------------------------------------------------
+# use tr.class computed previously
+vt.sbgrps <- vt.subgroups(tr.class)
+# print tables with knitr package
+library(knitr)
+knitr::kable(vt.sbgrps)
+
+## ---- echo=F, fig.align='center', fig.height=4, fig.width=6--------------
+library(rpart.plot)
+rpart.plot(tr.class$tree2$tree, type = 1, extra = 1)
+
+## ------------------------------------------------------------------------
+tr.class$tree2$createCompetitors()
+head(tr.class$tree2$competitors)
+
+## ------------------------------------------------------------------------
+vt.o$getIncidences("PRAPACHE >= 26 & AGE >= 52")
+# or
+# tr.class$tree2$getIncidences("PRAPACHE >= 26 & AGE >= 52")
+
+## ------------------------------------------------------------------------
+tr.class$tree2$getInfos()
+# access Ahat
+# tr.class$tree2$Ahat
+
+## ------------------------------------------------------------------------
+tr.class$tree2$run(maxdepth = 2)
 

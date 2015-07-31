@@ -20,6 +20,9 @@ favorable label of the tree). TRUE is default.}
 default.}
 
 \item{verbose}{print infos during computation. FALSE is default.}
+
+\item{compete}{print competitors rules thanks to competitors computation of
+  the tree}
 }
 \value{
 data.frame of rules
