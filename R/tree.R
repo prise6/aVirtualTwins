@@ -168,7 +168,7 @@ VT.tree <- setRefClass(
         warning("VT.tree : no rules"); return(invisible(NULL));
       }
       
-      pth <- path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
+      pth <- rpart::path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
       # Delete 'root' node des règles
       pth <- lapply(pth, FUN = function(d) return(d[-1]))
       
