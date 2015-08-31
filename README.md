@@ -37,7 +37,7 @@ vt.trees <- vt.tree("class",
 vt.sbgrps <- vt.subgroups(vt.trees)
 knitr::kable(vt.sbgrps)
 ```
-|      |Subgroup                    |Subgroup size |Treatement \n event rate |Control event rate |Treatment sample size |Control sample size | RR (resub)| RR (snd)|
+|      |Subgroup                    |Subgroup size |Treatement event rate |Control event rate |Treatment sample size |Control sample size | RR (resub)| RR (snd)|
 |:-----|:---------------------------|:-------------|:---------------------|:------------------|:---------------------|:-------------------|----------:|--------:|
 |tree1 |PRAPACHE>=26.5              |157           |0.752                 |0.327              |105                   |52                  |      2.300|    1.856|
 |tree3 |PRAPACHE>=26.5 & AGE>=51.74 |120           |0.897                 |0.31               |78                    |42                  |      2.894|    1.991|
@@ -59,7 +59,7 @@ I got a *WARNING* when Checking package for "cheking PDF version of manual" beca
 
 _Vignette is not finished ..._
 
-See [full-example](http://htmlpreview.github.io/?https://github.com/prise6/aVirtualTwins/blob/dev/inst/doc/full-example.html)
+See <a href="http://htmlpreview.github.io/?https://github.com/prise6/aVirtualTwins/blob/dev/inst/doc/full-example.html" target="_blank">full-example</a>
 
 or when installed : 
 ``` r
