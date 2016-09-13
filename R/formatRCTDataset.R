@@ -95,8 +95,8 @@ formatRCTDataset <- function(dataset, outcome.field, treatment.field, interactio
         }
       }else if(length(levels(var)) == 2){
         cat(sprintf("%s is two-level factor. It has to be transformed into numeric value : \n", i))
-        cat(srpintf("%s becomes 0 \n", levels(var)[1]))
-        cat(srpintf("%s becomes 1 \n", levels(var)[2]))
+        cat(sprintf("%s becomes 0 \n", levels(var)[1]))
+        cat(sprintf("%s becomes 1 \n", levels(var)[2]))
         d[, i] <- ifelse(var == levels(var)[1], 0, 1)
         predictors.next[iter] <- i
       }else{
