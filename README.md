@@ -70,7 +70,7 @@ vignette("full-example", package = "aVirtualTwins")
 
 Or:
 
-Here's a link to my intern dissertation (french version) [La recher de sous-groupes par Virtual Twins](http://upload.timfaitsoncinema.fr/p/2016-09/57e6a8ff.pdf) (parts V & VI).
+Here's a link to my intern dissertation (french version) [La recherche de sous-groupes par Virtual Twins](http://upload.timfaitsoncinema.fr/p/2016-09/57e6a8ff.pdf) (parts V & VI).
 
 
 ## Install
