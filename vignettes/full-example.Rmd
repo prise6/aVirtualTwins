@@ -93,7 +93,7 @@ Related function in aVirtualTwins package : `vt.tree()`.
 See __Introduction__.
 
 *Sepsis* dataset is a simulated clinical trial with two groups treatment about sepsis desease. See details. 
-This dataset is taken from [SIDES method](http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis)
+This dataset is taken from [SIDES method](http://biopharmnet.com/subgroup-analysis-software/)
 
 *Sepsis* contains simulated data on 470 subjects with a binary outcome survival, that stores survival status for patient after 28 days of treatment, value of 1 for subjects who died after 28 days and 0 otherwise. There are 11 covariates, listed below, all of which are numerical variables.
  
@@ -117,7 +117,7 @@ True subgroup is `PRAPACHE <= 26 & AGE <= 49.80`. __NOTE:__ This subgroup is def
 * `BLADL` : Baseline activity of daily living score
 * `BLLBILI` : Baseline local bilirubin
 
-__Source:__  http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis
+__Source:__  http://biopharmnet.com/subgroup-analysis-software/
 
 
 -----------
@@ -131,7 +131,7 @@ type `?vt.data` for more details.
 __NOTE:__ if running VT with interactions between $T$ and $X$, set `interactions = TRUE`.
 
 Code of `vt.data()` : 
-```{r, eval = F}
+```{r, collapse=T, eval = F}
 vt.data <- function(dataset, outcome.field, treatment.field, interactions = TRUE, ...){
   data <- formatRCTDataset(dataset, outcome.field, treatment.field, interactions = TRUE)
   VT.object(data = data, ...)
@@ -139,7 +139,7 @@ vt.data <- function(dataset, outcome.field, treatment.field, interactions = TRUE
 ```
 
 __Example with Sepsis__
-```{r}
+```{r, collapse=T}
 # load library VT
 library(aVirtualTwins)
 # load data sepsis
@@ -152,7 +152,7 @@ vt.o <- vt.data(sepsis, "survival", "THERAPY", TRUE)
 __Quick example__
 
 *Sepsis* does not have any categorical variable, following example show how `vt.data` deals with categorical values depending on `interactions` parameter
-```{r}
+```{r, collapse=T}
 # Creation of categorical variable
 cat.x <- rep(1:5, (nrow(sepsis))/5)
 cat.x <- as.factor(cat.x)
@@ -162,7 +162,7 @@ vt.o.tmp <- vt.data(sepsis.tmp, "survival", "THERAPY", TRUE)
 
 Dummies variables are created for each category of `cat.x` variable. And `cat.x` is removed from dataset. 
 
-```{r, echo = FALSE}
+```{r, collapse=T, echo = FALSE}
 rm(vt.o.tmp, cat.x, sepsis.tmp)
 ```
 
@@ -189,7 +189,7 @@ Class `vt.forest("one", ...)` is used. It takes in arguments :
 * `...` : options to `randomForest()` function
 
 __with `randomForest`__
-```{r}
+```{r, collapse=T}
 # use randomForest::randomForest()
 library(randomForest, verbose = F)
 # Reproducibility
@@ -210,7 +210,7 @@ __with `party`__
 
 `cforest()` can be usefull however computing time is really long. I think there is an issue when giving *cforest object* in Reference Class parameter. Need to fix it.
 
-```{r}
+```{r, collapse=T}
 # # use randomForest::randomForest()
 # library(party, verbose = F)
 # # Reproducibility
@@ -229,7 +229,7 @@ Using `caret` can be usefull to deal with parallel computing for example.
 
 __NOTE:__ For `caret` levels of outcome can't be 0, so i'll change levels name into "n"/"y"
 
-```{r}
+```{r, collapse=T}
 # Copy new object
 vt.o.tr <- vt.o$copy()
 # Change levels
@@ -269,7 +269,7 @@ Function `vt.forest("double", ...)` is used. It takes in arguments :
 __NOTE:__ use `trt` parameter in `VT.object::getX()` or `VT.object::getY()` methods to obtain part of data depending on treatment. See following example.
 
 __with `randomForest`__
-```{r}
+```{r, collapse=T}
 # grow RF for T = 1
 model.rf.trt1 <- randomForest(x = vt.o$getX(trt = 1),
                               y = vt.o$getY(trt = 1))
@@ -306,7 +306,7 @@ To use this approach, use `vt.forest("fold", ...)`. This class takes in argument
 
 __NOTE:__ This function use only `randomForest` package.
 
-```{r, cache=F}
+```{r, collapse=T, cache=F}
 
 # initialize k-fold RF
 # you can use randomForest options
@@ -325,7 +325,7 @@ Anyway, aVirtualTwins package can be used. To do so, you can use `VT.difft()` cl
 * `twin2` : estimate of $P(Y_{i} = 1 | T = 1-T_{i})$ : meaning response probability under the other treatment.
 * `method` : _absolute_ (default), _relative_ or _logit_. See `?VT.difft` for details.
 
-```{r}
+```{r, collapse=T}
 # you get twin1 and twin2 by your own method
 # here, i'll use random number between 0 and 1 :
 twin1_random <- runif(470)
@@ -367,7 +367,7 @@ To compute a classifiction tree, `vt.tree("class", ...)` is used. Internally, `r
 
 See `?VT.tree` for details.
 
-```{r}
+```{r, collapse=T}
 # initialize classification tree
 tr.class <- vt.tree("class",
                     vt.difft = vt.f.rf,
@@ -389,7 +389,7 @@ Use regression tree to explain $Z$ by covariables $X$. Then some leafs have pred
 
 The function to use is `vt.tree("reg", ...)`. It takes same parameters than classification mehod.
 
-```{r}
+```{r, collapse=T}
 # initialize regression tree
 tr.reg <- vt.tree("reg",
                   vt.difft = vt.f.rf,
@@ -418,7 +418,7 @@ This function takes in argument :
 
 If `vt.tree` is a list, unique subgroups are printed.
 
-```{r}
+```{r, collapse=T}
 # use tr.class computed previously
 vt.sbgrps <- vt.subgroups(tr.class)
 # print tables with knitr package
@@ -428,20 +428,20 @@ knitr::kable(vt.sbgrps)
 
 You can plot one tree with package `rpart.plot`
 
-```{r, echo=F, fig.align='center', fig.height=4, fig.width=6}
+```{r, collapse=T, echo=F, fig.align='center', fig.height=4, fig.width=6}
 library(rpart.plot)
 rpart.plot(tr.class$tree2$tree, type = 1, extra = 1)
 ```
 
 If you want to see competitors split : 
 
-```{r}
+```{r, collapse=T}
 tr.class$tree2$createCompetitors()
 head(tr.class$tree2$competitors)
 ```
 
 If you want to print incidence of a subgroup :
-```{r}
+```{r, collapse=T}
 vt.o$getIncidences("PRAPACHE >= 26 & AGE >= 52")
 # or
 # tr.class$tree2$getIncidences("PRAPACHE >= 26 & AGE >= 52")
@@ -449,7 +449,7 @@ vt.o$getIncidences("PRAPACHE >= 26 & AGE >= 52")
 
 If you want to get infos about the tree
 
-```{r}
+```{r, collapse=T}
 tr.class$tree2$getInfos()
 # access Ahat
 # tr.class$tree2$Ahat
@@ -457,7 +457,7 @@ tr.class$tree2$getInfos()
 
 You can re-run rpart computation:  
 
-```{r}
+```{r, collapse=T}
 tr.class$tree2$run(maxdepth = 2)
 ```
 

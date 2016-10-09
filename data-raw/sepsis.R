@@ -6,7 +6,7 @@ library(aVirtualTwins)
 library(randomForest) 
 
 # Sepsis is a csv file available in SIDES example to this address: 
-# http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis
+# http://biopharmnet.com/subgroup-analysis-software/
 # type ?sepsis to see details
 # I downloaded zip file and extract the sepsis.csv in data-raw folder. 
 sepsis.csv <- read.csv(file = "data-raw/sepsis.csv", na.strings = ".")
