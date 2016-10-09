@@ -10,17 +10,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Contents
-
-1. <a href="#introduction">Introduction</a>
-2. <a href="#quick-preview">Quick preview</a>
-3. <a href="#sepsis-dataset">Sepsis dataset</a>
-4. <a href="#create-object-virtualtwins">Create object virtual twins</a>
-5. <a href="#step-1-compute-hatp_1i-and-hatp_0i">Step 1 : compute probabilities</a>
-6. <a href="#step-2-estimate-a-regression-or-classification-tree">Step 2 : Estimate a decision tree</a>
-7. <a href="#subgroups-and-results">Subgroups and results</a>
-8. <a href="#questions">Questions</a>
-
 
 # Introduction
 
