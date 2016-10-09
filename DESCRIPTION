@@ -1,23 +1,26 @@
 Package: aVirtualTwins
 Type: Package
-Title: Adaptation of Virtual Twins method from Jared Foster.
-Version: 0.0.0.2
-Date: 2015-05-31
-Author: Francois Vieille
-Maintainer: <vieille.francois@gmail.com>
-Description: Research of subgroups in random clinical trials with binary
-    outcome and two treatments groups.
-License: MIT
+Title: Adaptation of Virtual Twins Method from Jared Foster
+Version: 1.0.0
+Date: 2016-10-09
+Authors@R: person("Francois", "Vieille", email = "vieille.francois@gmail.com",
+  role = c("aut", "cre"))
+Description: Research of subgroups in random clinical trials with binary outcome and two treatments groups. This is an adaptation of the Jared Foster method.
+License: GPL-3 | file LICENSE
+URL: https://github.com/prise6/aVirtualTwins
+BugReports: https://github.com/prise6/aVirtualTwins/issues
 Imports:
     rpart,
-    party
-Suggests:
+    party,
+    methods,
     randomForest,
+    stats
+Suggests:
     caret,
-    knitr
+    knitr,
+    rpart.plot
 Depends:
     R (>= 3.2.0),
-    methods
 Collate:
     'aVirtualTwins.R'
     'data.R'
@@ -39,3 +42,4 @@ Collate:
     'tree.reg.R'
     'tree.wrapper.R'
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1
