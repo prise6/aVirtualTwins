@@ -60,9 +60,15 @@ Of course, subgroup identification in general with two treatment and severals gr
 
 ## Help & Documentation
 
+See wiki tab.
+
+Or:
+
 ``` r
 vignette("full-example", package = "aVirtualTwins")
 ```
+
+Or:
 
 Here's a link to my intern dissertation (french version) [La recher de sous-groupes par Virtual Twins](http://upload.timfaitsoncinema.fr/p/2016-09/57e6a8ff.pdf) (parts V & VI).
 
