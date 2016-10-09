@@ -10,7 +10,8 @@
 #' 
 #' @export VT.tree.class
 #' 
-#' @import methods
+#' @import methods 
+#' @importFrom rpart rpart
 VT.tree.class <- setRefClass(
   Class = "VT.tree.class",
   

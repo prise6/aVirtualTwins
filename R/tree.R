@@ -43,6 +43,8 @@
 #' @name VT.tree
 #'   
 #' @import methods
+#' 
+#' @rdname VT.tree-abstract
 VT.tree <- setRefClass(
   Class = "VT.tree",
   
@@ -76,7 +78,7 @@ VT.tree <- setRefClass(
       
       if(.self$screening == T){
         d.tmp <- d
-        d <- d.tmp[, colnames(d.tmp) %in% .self$vt.difft$vt.object$varimp] # To see later
+        d <- d.tmp[, colnames(d.tmp) %in% .self$vt.difft$vt.object$varimp]
       }
       
       d <- data.frame(.self$outcome, d)
@@ -112,8 +114,6 @@ VT.tree <- setRefClass(
       cat("\n")
       cat(sprintf("Sens : %s", .self$sens))
       cat("\n")
-      #       cat(sprintf("Bounds = %0.4f", (.self$vt.difft$vt.object$delta + .self$threshold)))
-      #       cat("\n")
       cat(sprintf("Size of Ahat : %i", (sum(.self$Ahat))))
       
       return(invisible(NULL))
@@ -132,7 +132,7 @@ VT.tree <- setRefClass(
         warning("VT.tree : no nodes"); return(invisible(NULL));
       }
       
-      # On supprime le root node, inutile pour les stats d'incidences et autres...
+      # delete root node
       full.frame <- .self$tree$frame[-1, ]
       
       if (only.fav == T){
@@ -163,13 +163,13 @@ VT.tree <- setRefClass(
         frm  <- full.frame
       }
       
-      # Le cas où l'arbre est vide ou n'existe pas:  
+      # in case tree is empty or doesn't exist
       if (ncol(frm) == 0){
         warning("VT.tree : no rules"); return(invisible(NULL));
       }
       
       pth <- rpart::path.rpart(.self$tree, nodes = row.names(frm), print.it = F)
-      # Delete 'root' node des règles
+      # Delete 'root' node of rule
       pth <- lapply(pth, FUN = function(d) return(d[-1]))
       
       nodes <- c()

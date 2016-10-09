@@ -21,7 +21,7 @@
 #'   forest.type = "double". If NULL, a randomForest model is grown inside the 
 #'   function. NULL is default. See \code{\link{VT.forest.double}} for details.
 #' @param model_trt1 see model_trt0 explanation and 
-#'   \code{\link{VT.double.forest}} details.
+#'   \code{\link{VT.forest.double}} details.
 #' @param fold number of fold you want to construct forest with k-fold method. 
 #'   Is only used with forest.type = "fold". Default to 5. See 
 #'   \code{\link{VT.forest.fold}}
@@ -55,7 +55,6 @@
 #' @name vt.forest
 #'   
 #' @export vt.forest
-
 vt.forest <- function(forest.type = "one", vt.data, interactions = T, method = "absolute", 
                       model = NULL, model_trt1 = NULL, model_trt0 = NULL, ratio = 1, fold = 10, ...){
   if(!inherits(vt.data, "VT.object"))
@@ -64,7 +63,7 @@ vt.forest <- function(forest.type = "one", vt.data, interactions = T, method = "
   params <- list(...)
   if (forest.type == "one"){
     if(is.null(model)){
-      model <- randomForest(x = vt.data$getX(interactions = interactions, trt = NULL),
+      model <- randomForest::randomForest(x = vt.data$getX(interactions = interactions, trt = NULL),
                          y = vt.data$getY(), 
                          ...)       
     }
@@ -73,14 +72,14 @@ vt.forest <- function(forest.type = "one", vt.data, interactions = T, method = "
     vt.difft <- VT.forest.one(vt.object = vt.data, model = rf, interactions = interactions, method = method)
   } else if (forest.type == "double"){
     if(is.null(model_trt1)){
-      model_trt1 <- randomForest(x = vt.data$getX(trt = 1),
+      model_trt1 <- randomForest::randomForest(x = vt.data$getX(trt = 1),
                                   y = vt.data$getY(1),
                                  ...)
     }
     rf_trt1 <- model_trt1
     
     if(is.null(model_trt0)){
-      model_trt0 <- randomForest(x = vt.data$getX(trt = 0),
+      model_trt0 <- randomForest::randomForest(x = vt.data$getX(trt = 0),
                                   y = vt.data$getY(0),
                                   ...)
     }
@@ -88,7 +87,7 @@ vt.forest <- function(forest.type = "one", vt.data, interactions = T, method = "
     
     vt.difft  <- VT.forest.double(vt.object = vt.data, model_trt1 = rf_trt1, model_trt0 = rf_trt0, method = method)
   } else if (forest.type == "fold"){
-    vt.difft <- aVirtualTwins:::VT.forest.fold(vt.object = vt.data, fold = fold, ratio = ratio, 
+    vt.difft <- VT.forest.fold(vt.object = vt.data, fold = fold, ratio = ratio, 
                                                interactions = interactions, method = method)
     
   } else

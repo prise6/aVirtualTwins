@@ -9,6 +9,8 @@
 #' @export VT.tree.reg
 #' 
 #' @name VT.tree.reg
+#' 
+#' @importFrom rpart rpart
 
 VT.tree.reg <- setRefClass(
   Class = "VT.tree.reg",
@@ -31,9 +33,9 @@ VT.tree.reg <- setRefClass(
       .self$tree <- rpart::rpart(as.formula(paste(.self$name, ".", sep = "~")), data = data, ...)
       
       if(.self$sens == ">")
-        res <- ifelse(predict(.self$tree) >= (.self$threshold), 1, 0)
+        res <- ifelse(stats::predict(.self$tree) >= (.self$threshold), 1, 0)
       else
-        res <- ifelse(predict(.self$tree) <= (.self$threshold), 1, 0)
+        res <- ifelse(stats::predict(.self$tree) <= (.self$threshold), 1, 0)
       
       .self$Ahat <- res
       #       if(sum(res) != 0) .self$vt.forest$addAhatColumn(name, res)

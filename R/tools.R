@@ -36,7 +36,7 @@
 #' @name vt.subgroups
 #'
 
-vt.subgroups <- function(vt.trees, only.leaf = T, only.fav = T, tables = F, verbose = F){
+vt.subgroups <- function(vt.trees, only.leaf = T, only.fav = T, tables = F, verbose = F, compete = F){
   
   if(is.list(vt.trees)){
     subgroups <- lapply(vt.trees, function(x)x$getRules(only.leaf = only.leaf, only.fav = only.fav, tables = tables, verbose = verbose, compete = F))
@@ -64,8 +64,8 @@ vt.getQAOriginal <- function(response, trt, ahat){
 vt.getTable <- function(table){
   if(is.list(table)) table <-  table[[1]]
   Incidence <- function(X) as.character(round(X[2] / X[3], digits = 3))
-  t <- addmargins(table, margin = c(1,2), FUN = sum, quiet = T)
-  t <- addmargins(t, FUN = Incidence, margin = 1, quiet = T)
+  t <- stats::addmargins(table, margin = c(1,2), FUN = sum, quiet = T)
+  t <- stats::addmargins(t, FUN = Incidence, margin = 1, quiet = T)
   rr <- as.numeric(t["Incidence", "1"]) / as.numeric(t["Incidence", "0"])
   return(list(table = t, rr = rr))
 }

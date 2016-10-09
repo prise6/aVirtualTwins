@@ -81,11 +81,11 @@ VT.object <- setRefClass(
     getX = function(interactions = T, trt = NULL){
       "Return predictors (T,X,X*T,X*(1-T)). Or (T,X) if interactions is FALSE.
         If trt is not NULL, return predictors for T = trt"
-      # retour les prédicteurs si trt n'est pas null
+      # predictors if trt is not null
       if(!is.null(trt)) return(.self$data[.self$data[,2] == trt, -c(1,2)])
-      # retourne les predicteurs*traitement peut importe le traitement si interactions est à TRUE
+      # predictor*treatment no matter trt if interactions is TRUE
       if(interactions == T) return(.self$getXwithInt())
-      # retourne les predicteurs
+      # predictors
       return(.self$data[, -1])
     },
     

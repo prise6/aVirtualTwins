@@ -15,6 +15,8 @@
 #' @seealso \code{\link{VT.difft}}, \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
 #'   
 #' @import methods
+#' 
+#' @rdname VT.forest-abstract
 VT.forest <- setRefClass(
   Class = "VT.forest",
   

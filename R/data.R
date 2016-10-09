@@ -4,7 +4,7 @@
 #' details.
 #' 
 #' This dataset is taken from 
-#' \href{http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis}{SIDES
+#' \href{http://biopharmnet.com/subgroup-analysis-software/}{SIDES
 #' method}.
 #' 
 #' \code{Sepsis} contains simulated data on 470 subjects with a binary outcome 
@@ -35,7 +35,7 @@
 #' @usage data(sepsis)
 #' @docType data
 #' @source 
-#' \url{http://biopharmnet.com/wiki/Software_for_subgroup_identification_and_analysis}
+#' \url{http://biopharmnet.com/subgroup-analysis-software/}
 #' 
 #' @name sepsis
 NULL

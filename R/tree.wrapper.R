@@ -57,9 +57,9 @@ vt.tree <- function(tree.type = "class", vt.difft, sens = ">", threshold = seq(.
       return(res.list)
     }else{
       if(tree.type == "class")
-        tree <- aVirtualTwins:::VT.tree.class(vt.difft = vt.difft, sens = sens, threshold = threshold, screening = screening)
+        tree <- VT.tree.class(vt.difft = vt.difft, sens = sens, threshold = threshold, screening = screening)
       else
-        tree <- aVirtualTwins:::VT.tree.reg(vt.difft = vt.difft, sens = sens, threshold = threshold, screening = screening)
+        tree <- VT.tree.reg(vt.difft = vt.difft, sens = sens, threshold = threshold, screening = screening)
       
       tree$run(...)
       
