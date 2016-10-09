@@ -4,7 +4,7 @@ An adaptation of VirtualTwins method from [Foster, J. C., Taylor, J. M.G. and Ru
 
 VirtualTwins is a method of subgroup identification from randomized clinical trial data.
 
-As an intern in a french pharmaceutical group, i worked on this method and develop a package based on Jared Foster and al method.
+In 2015, as an intern in a french pharmaceutical group, i worked on this method and develop a package based on Jared Foster and al method.
 
 ## (Very) Quick Preview
 
@@ -12,7 +12,10 @@ As an intern in a french pharmaceutical group, i worked on this method and devel
 # Load data
 data(sepsis)
 # Format data
-vt.obj <- vt.data(sepsis, "survival", "THERAPY", T)
+vt.obj <- vt.data(dataset         = sepsis,
+                  outcome.field   = "survival",
+                  treatment.field = "THERAPY",
+                  interactions    = TRUE)
 # Print Incidences of sepsis data
 vt.obj$getIncidences()
 # $table
@@ -27,12 +30,15 @@ vt.obj$getIncidences()
 # [1] 1.197059
 #
 # First step : create random forest model
-vt.for <- vt.forest("one", vt.obj, T, ntree = 500)
+vt.for <- vt.forest(forest.type  = "one",
+                    vt.data      = vt.obj,
+                    interactions = TRUE,
+                    ntree        = 500)
 # Second step : find rules in data 
-vt.trees <- vt.tree("class",
-                    vt.for, 
+vt.trees <- vt.tree(tree.type = "class",
+                    vt.difft  = vt.for, 
                     threshold = quantile(vt.for$difft, seq(.5,.8,.1)),
-                    maxdepth = 2)
+                    maxdepth  = 2)
 # Print results
 vt.sbgrps <- vt.subgroups(vt.trees)
 knitr::kable(vt.sbgrps)
@@ -48,23 +54,18 @@ knitr::kable(vt.sbgrps)
 
 Currently this package works for RCT with two treatments groups and binary outcome.
 
-This is the *dev version 0.0.0.2* and often updated.
-
 Most of the package use Reference Class programing (in R). Feel free to create your own classes.
 
-I got a *WARNING* when Checking package for "cheking PDF version of manual" because of my version of LaTeX. Need to fix it.
-
+Of course, subgroup identification in general with two treatment and severals group can be possible.
 
 ## Help & Documentation
 
-_Vignette is not finished ..._
-
-See <a href="http://htmlpreview.github.io/?https://github.com/prise6/aVirtualTwins/blob/dev/inst/doc/full-example.html" target="_blank">full-example</a>
-
-or when installed : 
 ``` r
 vignette("full-example", package = "aVirtualTwins")
 ```
+
+Here's a link to my intern dissertation (french version) [La recher de sous-groupes par Virtual Twins](http://upload.timfaitsoncinema.fr/p/2016-09/57e6a8ff.pdf) (parts V & VI).
+
 
 ## Install
 
@@ -72,7 +73,7 @@ vignette("full-example", package = "aVirtualTwins")
 # use devtools library
 library(devtools)
 # install from github
-devtools::install_github("prise6/aVirtualTwins@dev")
+devtools::install_github("prise6/aVirtualTwins", build_vignettes = TRUE)
 # load library
 library(aVirtualTwins)
 ```
@@ -80,10 +81,19 @@ library(aVirtualTwins)
 
 ## To-do list
 
-* More description
-* Finish full-example vignette
 * Link to my simulation
-* ...
+* Submit to CRAN
+* Use R6 for perfs issues
+* Vignette on-line
 
+
+## News
+
+See NEWS file
+
+
+## Contact
+
+vieille.francois _at_ gmail.com
 
 
