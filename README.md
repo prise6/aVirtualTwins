@@ -90,9 +90,9 @@ library(aVirtualTwins)
 ## To-do list
 
 * Link to my simulation
-* Submit to CRAN
+* ~~Submit to CRAN~~
 * Use R6 for perfs issues
-* Vignette on-line
+* ~~Vignette on-line~~
 
 
 ## News
