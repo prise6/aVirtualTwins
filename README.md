@@ -1,5 +1,7 @@
 # aVirtualTwins
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/aVirtualTwins)](http://cran.r-project.org/package=aVirtualTwins)
+
 An adaptation of VirtualTwins method from [Foster, J. C., Taylor, J. M.G. and Ruberg, S. J. (2011)](http://onlinelibrary.wiley.com/doi/10.1002/sim.4322/abstract)
 
 VirtualTwins is a method of subgroup identification from randomized clinical trial data.
