@@ -31,6 +31,7 @@ This is what \code{computeTwin2()} does.
 
 \item{\code{...}}{field from parent class : \code{\link{VT.forest}}}
 }}
+
 \section{Methods}{
 
 \describe{
@@ -38,8 +39,8 @@ This is what \code{computeTwin2()} does.
 
 \item{\code{computeTwin2()}}{Compute twin2 by the other part of data in the other forest. See details.}
 }}
+
 \seealso{
 \code{\link{VT.difft}}, \code{\link{VT.forest}},
   \code{\link{VT.forest.one}}
 }
-

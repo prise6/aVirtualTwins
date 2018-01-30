@@ -1,3 +1,10 @@
+aVirtualTwins 1.0.1 (2018-01-30)
+----------------------------------------------------------------
+
+* Fix CRAN warning : CRAN packages using undeclared packages in vignettes
+* waiting for submission approval
+
+
 aVirtualTwins 1.0.0.9000 (2016-10-10)
 ----------------------------------------------------------------
 

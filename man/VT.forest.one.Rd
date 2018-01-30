@@ -24,6 +24,7 @@ what \code{computeTwin1()} and \code{computeTwin2()} functions do.
 
 \item{\code{...}}{field from parent class : \code{\link{VT.forest}}}
 }}
+
 \section{Methods}{
 
 \describe{
@@ -31,7 +32,7 @@ what \code{computeTwin1()} and \code{computeTwin2()} functions do.
 
 \item{\code{computeTwin2()}}{Compute twin2 by switching treatment and applying random forest model}
 }}
+
 \seealso{
 \code{\link{VT.difft}}, \code{\link{VT.forest}}, \code{\link{VT.forest.double}}
 }
-

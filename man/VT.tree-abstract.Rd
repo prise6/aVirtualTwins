@@ -52,6 +52,7 @@ screening field}
 
 \item{\code{Ahat}}{vector Indicator of beglonging to Ahat}
 }}
+
 \section{Methods}{
 
 \describe{
@@ -74,7 +75,7 @@ screening field}
 
 \item{\code{run(...)}}{Compute tree with rpart parameters}
 }}
+
 \seealso{
 \code{\link{VT.tree.reg}}, \code{\link{VT.tree.class}}
 }
-

@@ -56,4 +56,3 @@ See \code{\link{VT.tree}}, \code{\link{VT.tree.class}} and
 }
   
 }
-

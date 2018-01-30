@@ -4,6 +4,7 @@
 \name{aVirtualTwins}
 \alias{aVirtualTwins}
 \alias{aVirtualTwins-package}
+\alias{aVirtualTwins-package}
 \title{aVirtualTwins : An adapation of VirtualTwins method created by Jared Foster.}
 \description{
 aVirtualTwins is written mainly with reference classes. Briefly, there is three kinds of class :

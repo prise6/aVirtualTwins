@@ -43,4 +43,3 @@ data.format <- formatRCTDataset(data, "outcome", "treatment", TRUE)
  
   
 }
-

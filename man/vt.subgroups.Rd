@@ -46,4 +46,3 @@ rpart.plot must be loaded. See \code{\link{VT.tree}} for details.
 }
 
 }
-

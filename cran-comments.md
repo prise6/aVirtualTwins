@@ -1,3 +1,32 @@
+This is the second submission
+
+----------------------------------------------------------------
+
+## v1.0.1 : patch to cran warning:
+
+>CRAN packages using undeclared packages in vignettes
+
+`rmarkdown` seems to be the issue. Added rmarkdown to suggest field.
+
+## Test environments
+
+* Linux, Debian jessie, R 3.4.3
+* win-builder (devel and release)
+
+
+## R CMD check result
+
+Status: OK
+
+R CMD check results
+0 errors | 0 warnings | 0 notes
+
+
+
+
+
+
+
 This is the first submission
 
 ----------------------------------------------------------------

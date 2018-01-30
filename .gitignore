@@ -3,3 +3,4 @@
 .RData
 /drafts/*
 inst/doc
+/revdep/.cache.rds

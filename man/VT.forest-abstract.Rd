@@ -14,6 +14,7 @@ An abstract reference class to compute twin via random forests
 \describe{
 \item{\code{...}}{see fields of \code{\link{VT.difft}}}
 }}
+
 \section{Methods}{
 
 \describe{
@@ -23,7 +24,7 @@ An abstract reference class to compute twin via random forests
 
 \item{\code{run()}}{Compute twin1 and twin2 estimation. Switch treatment if necessary.}
 }}
+
 \seealso{
 \code{\link{VT.difft}}, \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
 }
-
