@@ -6,7 +6,8 @@ This is the second submission
 
 >CRAN packages using undeclared packages in vignettes
 
-`rmarkdown` seems to be the issue. Added rmarkdown to suggest field.
+`rmarkdown` seems to be the issue. Added `rmarkdown` to suggest field.
+`e1071` was added too.
 
 ## Test environments
 

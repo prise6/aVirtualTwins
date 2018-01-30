@@ -19,7 +19,8 @@ Suggests:
     caret,
     knitr,
     rpart.plot,
-    rmarkdown
+    rmarkdown,
+    e1071
 Depends:
     R (>= 3.2.0),
 Collate:
