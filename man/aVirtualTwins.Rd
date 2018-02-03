@@ -16,15 +16,6 @@ aVirtualTwins is written mainly with reference classes. Briefly, there is three 
  \code{\link{vt.tree}} is users function.
 }
 }
-\section{TODO LIST}{
-
-\emph{last update : 27.07.2015}
-\itemize{
- \item More detailed documentation and vignettes 
- \item Write examples
- \item ...
+\details{
+See http://github.com/prise6/aVirtualTwins for last updates.
 }
-
-See github.com/prise6/aVirtualTwins for last updates.
-}
-
