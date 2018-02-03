@@ -248,17 +248,17 @@ VT.tree <- setRefClass(
           
           if(isTRUE(tables)){
             cat("\n")
-            cat(sprintf("Incidence dans la selection \n"))
+            cat(sprintf("Incidence in selection \n"))
             print(incid$table.selected$table)
             cat("\n")
-            cat(sprintf("Risque relatif (resub) : %0.3f \n", incid$table.selected$rr))
-            cat(sprintf("Risque relatif (snd) : %0.3f \n\n", incid$table.selected$rr.snd))
+            cat(sprintf("Relative risk (resub) : %0.3f \n", incid$table.selected$rr))
+            cat(sprintf("Relative risk (snd) : %0.3f \n\n", incid$table.selected$rr.snd))
             
-            cat(sprintf("Incidence dans le complementaire\n"))
+            cat(sprintf("Incidence in complement\n"))
             print(incid$table.not.selected$table)
             cat("\n")
-            cat(sprintf("Risque relatif (resub) : %0.3f \n", incid$table.not.selected$rr))
-            cat(sprintf("Risque relatif (snd) : %0.3f \n\n", incid$table.not.selected$rr.snd))
+            cat(sprintf("Relative risk (resub) : %0.3f \n", incid$table.not.selected$rr))
+            cat(sprintf("Relative risk (snd) : %0.3f \n\n", incid$table.not.selected$rr.snd))
           }
           
           cat("\n\n")
@@ -310,15 +310,15 @@ VT.tree <- setRefClass(
         table.A <- table.inc$table.selected
         table.A.cmpl <- table.inc$table.not.selected
         
-        cat(sprintf("Incidence dans le sous groupe A\n"))
+        cat(sprintf("Incidence in subgroup A\n"))
         print(table.A$table)
         cat("\n")
-        cat(sprintf("Risque relatif : %0.3f \n\n", table.A$risque_relatif))
+        cat(sprintf("Relative risk : %0.3f \n\n", table.A$risque_relatif))
         
-        cat(sprintf("Incidence dans le sous groupe A complementaire\n"))
+        cat(sprintf("Incidence in complement subgroup of A\n"))
         print(table.A.cmpl$table)
         cat("\n")
-        cat(sprintf("Risque relatif : %0.3f \n\n", table.A.cmpl$risque_relatif))
+        cat(sprintf("Relative risk : %0.3f \n\n", table.A.cmpl$risque_relatif))
       }else{
         return("Empty set")
       }
