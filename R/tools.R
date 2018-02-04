@@ -18,18 +18,16 @@
 #' @return data.frame of rules
 #'   
 #' @examples 
-#' \dontrun{
-#'  # data(sepsis)
-#'  vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
-#'  # inside model :
-#'  vt.f <- vt.forest("one", vt.o)
-#'  # use classification tree
-#'  vt.tr <- vt.tree("class", vt.f, threshold = c(0.01, 0.05))
-#'  # show subgroups
-#'  vt.subgroups(vt.tr)
-#'  # change options you'll be surprised !
-#'  vt.subgroups(vt.tr, verbose = T, tables = T) 
-#' }
+#' data(sepsis)
+#' vt.o <- vt.data(sepsis, "survival", "THERAPY", TRUE)
+#' # inside model :
+#' vt.f <- vt.forest("one", vt.o)
+#' # use classification tree
+#' vt.tr <- vt.tree("class", vt.f, threshold = c(0.01, 0.05))
+#' # show subgroups
+#' subgroups <- vt.subgroups(vt.tr)
+#' # change options you'll be surprised !
+#' subgroups <- vt.subgroups(vt.tr, verbose = TRUE, tables = TRUE)
 #' 
 #' @export vt.subgroups
 #'   
@@ -43,7 +41,7 @@ vt.subgroups <- function(vt.trees, only.leaf = T, only.fav = T, tables = F, verb
     unique(do.call(rbind, subgroups))
   }
   else{
-    subgroups <- vt.tree$getRules(only.leaf = only.leaf, only.fav = only.fav, tables = tables, verbose = verbose, compete = compete)
+    subgroups <- vt.trees$getRules(only.leaf = only.leaf, only.fav = only.fav, tables = tables, verbose = verbose, compete = compete)
   }
 }
 
@@ -62,21 +60,27 @@ vt.getQAOriginal <- function(response, trt, ahat){
 }
 
 vt.getTable <- function(table){
-  if(is.list(table)) table <-  table[[1]]
-  Incidence <- function(X) as.character(round(X[2] / X[3], digits = 3))
+  if(is.list(table)) table <- table[[1]]
+  Incidence <- function(X) round(X[2] / X[3], digits = 3)
   t <- stats::addmargins(table, margin = c(1,2), FUN = sum, quiet = T)
   t <- stats::addmargins(t, FUN = Incidence, margin = 1, quiet = T)
-  rr <- as.numeric(t["Incidence", "1"]) / as.numeric(t["Incidence", "0"])
+  rr <- NA_real_
+  if(nrow(t) == 4) rr <- t[4, 2] / t[4, 1]
   return(list(table = t, rr = rr))
 }
 
 vt.getIncidence <- function(df){
   if (nrow(df) == 0) table.res <- NULL
+  if (ncol(df) != 2) table.res <- NULL
   else{
-    table.res <- vt.getTable(table(df[, 1],
-                                   df[, 2],
-                                   deparse.level = 2,
-                                   dnn = c("resp", "trt")))
+    table.res <- vt.getTable(
+      table(
+        factor(df[, 1], levels = c(0, 1)),
+        factor(df[, 2], levels = c(0, 1)),
+        deparse.level = 2,
+        dnn = c("resp", "trt")
+      )
+    )
   }
   return(table.res)
 }

@@ -13,18 +13,19 @@
 #' @param ... parameters of \code{\link{VT.object}}
 #'   
 #' @examples
-#' \dontrun{
-#'  data(sepsis)
-#'  formatRCTdataset(sepsis, "survival", "THERAPY", T)
-#' }
+#' 
+#' data(sepsis)
+#' vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
 #'   
 #' @return \code{VT.object}
 #'   
-#' @include object.R
+#' @include object.R 
 #'   
 #' @name vt.data
 #'   
 #' @export vt.data
+#' 
+#' @seealso \code{\link{formatRCTDataset}}
 
 vt.data <- function(dataset, outcome.field, treatment.field, interactions = TRUE, ...){
   data <- formatRCTDataset(dataset, outcome.field, treatment.field, interactions = TRUE)

@@ -1,3 +1,80 @@
+submission 4
+
+----------------------------------------------------------------
+
+## v1.0.1 : patch to cran fix minor issues:
+
+* make checkable examples : fix subgroups example
+
+## Test environments
+
+* Linux, Debian jessie, R 3.4.3
+* win-builder (devel and release)
+
+
+## R CMD check result
+
+Status: OK
+
+R CMD check results
+0 errors | 0 warnings | 0 notes
+
+
+This is the third submission
+
+----------------------------------------------------------------
+
+## v1.0.1 : patch to cran fix minor issues:
+
+* make checkable examples
+* update version date
+* add reference to Jared Foster article
+
+## Test environments
+
+* Linux, Debian jessie, R 3.4.3
+* win-builder (devel and release)
+
+
+## R CMD check result
+
+Status: OK
+
+R CMD check results
+0 errors | 0 warnings | 0 notes
+
+
+
+This is the second submission
+
+----------------------------------------------------------------
+
+## v1.0.1 : patch to cran warning:
+
+>CRAN packages using undeclared packages in vignettes
+
+`rmarkdown` seems to be the issue. Added `rmarkdown` to suggest field.
+`e1071` was added too.
+
+## Test environments
+
+* Linux, Debian jessie, R 3.4.3
+* win-builder (devel and release)
+
+
+## R CMD check result
+
+Status: OK
+
+R CMD check results
+0 errors | 0 warnings | 0 notes
+
+
+
+
+
+
+
 This is the first submission
 
 ----------------------------------------------------------------

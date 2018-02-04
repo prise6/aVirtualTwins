@@ -25,8 +25,11 @@
 #' 
 #' @examples
 #' \dontrun{
-#' data.format <- formatRCTDataset(data, "outcome", "treatment", TRUE)
-#' } 
+#'     data.format <- formatRCTDataset(data, "outcome", "treatment", TRUE)
+#' }
+#' data(sepsis)
+#' data.format <- formatRCTDataset(sepsis, "survival", "THERAPY", T)
+#'  
 #'
 #'  
 #'   

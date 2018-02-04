@@ -50,23 +50,23 @@ Is only used with forest.type = "fold". Default to 5. See
 parameter forest.type, any of these class can be used with its own parameter.
 }
 \examples{
-\dontrun{
- # data(sepsis)
- vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
- # inside model : 
- vt.f <- vt.forest("one", vt.o)
- # ... 
- # your model : 
- rf <- randomForest(y = vt.o$getY(),
-                     x = vt.o$getX(int = T),
-                     mtry = 3,
-                     nodesize = 15)
- vt.f <- vt.forest("one", vt.o, model = rf)
- # ...
- # Can also use ... parameters
- vt.f <- vt.forest("one", vt.o, mtry = 3, nodesize = 15)
- # ...
-}   
+
+data(sepsis)
+vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
+# inside model :
+vt.f <- vt.forest("one", vt.o)
+# ...
+# your model :
+# library(randomForest)
+# rf <- randomForest(y = vt.o$getY(),
+#                    x = vt.o$getX(int = T),
+#                    mtry = 3,
+#                    nodesize = 15)
+# vt.f <- vt.forest("one", vt.o, model = rf)
+# ...
+# Can also use ... parameters
+vt.f <- vt.forest("one", vt.o, mtry = 3, nodesize = 15)
+# ...
+   
 
 }
-

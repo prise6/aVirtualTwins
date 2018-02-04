@@ -28,13 +28,14 @@ interactions}
 
 \item{\code{...}}{field from parent class : \code{\link{VT.forest}}}
 }}
+
 \section{Methods}{
 
 \describe{
 \item{\code{run()}}{Compute twin1 and twin2 estimation. Switch treatment if necessary.}
 }}
+
 \seealso{
 \code{\link{VT.difft}}, \code{\link{VT.forest}}, 
   \code{\link{VT.forest.one}}, \code{\link{VT.forest.double}}
 }
-

@@ -27,10 +27,11 @@ interactions, set to TRUE (default value)}
 a VT.object object.
 }
 \examples{
-\dontrun{
- data(sepsis)
- formatRCTdataset(sepsis, "survival", "THERAPY", T)
-}
+
+data(sepsis)
+vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
   
 }
-
+\seealso{
+\code{\link{formatRCTDataset}}
+}

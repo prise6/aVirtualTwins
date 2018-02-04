@@ -3,10 +3,10 @@
 \docType{methods}
 \name{VT.predict}
 \alias{VT.predict}
-\alias{VT.predict,RandomForest,data.frame,character-method}
 \alias{VT.predict,RandomForest,missing,character-method}
-\alias{VT.predict,randomForest,data.frame,character-method}
+\alias{VT.predict,RandomForest,data.frame,character-method}
 \alias{VT.predict,randomForest,missing,character-method}
+\alias{VT.predict,randomForest,data.frame,character-method}
 \alias{VT.predict,train,ANY,character-method}
 \alias{VT.predict,train,missing,character-method}
 \title{VT.predict generic function}

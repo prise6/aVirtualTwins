@@ -33,13 +33,14 @@ So \emph{absolute} method is :
 
 \item{\code{difft}}{vector of difference between twin1 and twin2}
 }}
+
 \section{Methods}{
 
 \describe{
 \item{\code{computeDifft()}}{Compute difference between twin1 and twin2. See details.}
 }}
+
 \seealso{
 \code{\link{VT.forest}}, \code{\link{VT.forest.one}},
   \code{\link{VT.forest.double}}
 }
-

@@ -43,4 +43,3 @@ True subgroup is \emph{PRAPACHE <= 26 & AGE <= 49.80}. \emph{NOTE:} This
 subgroup is defined with the \emph{lower} event rate (survival = 1) in
 treatement arm.
 }
-

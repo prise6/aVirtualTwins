@@ -32,18 +32,15 @@ Function which uses \code{\link{VT.tree}} intern functions. Package
 rpart.plot must be loaded. See \code{\link{VT.tree}} for details.
 }
 \examples{
-\dontrun{
- # data(sepsis)
- vt.o <- vt.data(sepsis, "survival", "THERAPY", T)
- # inside model :
- vt.f <- vt.forest("one", vt.o)
- # use classification tree
- vt.tr <- vt.tree("class", vt.f, threshold = c(0.01, 0.05))
- # show subgroups
- vt.subgroups(vt.tr)
- # change options you'll be surprised !
- vt.subgroups(vt.tr, verbose = T, tables = T) 
-}
+data(sepsis)
+vt.o <- vt.data(sepsis, "survival", "THERAPY", TRUE)
+# inside model :
+vt.f <- vt.forest("one", vt.o)
+# use classification tree
+vt.tr <- vt.tree("class", vt.f, threshold = c(0.01, 0.05))
+# show subgroups
+subgroups <- vt.subgroups(vt.tr)
+# change options you'll be surprised !
+subgroups <- vt.subgroups(vt.tr, verbose = TRUE, tables = TRUE)
 
 }
-

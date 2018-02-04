@@ -10,15 +10,8 @@
 #'  \code{\link{vt.tree}} is users function.
 #' }
 #'  
-#' @section TODO LIST:
-#' \emph{last update : 27.07.2015}
-#' \itemize{
-#'  \item More detailed documentation and vignettes 
-#'  \item Write examples
-#'  \item ...
-#' }
 #' 
-#' See github.com/prise6/aVirtualTwins for last updates.
+#' See http://github.com/prise6/aVirtualTwins for last updates.
 #'
 #' @docType package
 #' @name aVirtualTwins

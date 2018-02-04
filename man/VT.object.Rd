@@ -33,6 +33,7 @@ treatments.}
 \item{\code{type}}{Character : binary or continous. Only binary is currently 
 available.}
 }}
+
 \section{Methods}{
 
 \describe{
@@ -53,6 +54,7 @@ If trt is not NULL, return predictors for T = trt}
 
 \item{\code{switchTreatment()}}{Switch treatment value.}
 }}
+
 \examples{
 \dontrun{
 # Default use :
@@ -78,4 +80,3 @@ vt.o$getIncidences()
 \seealso{
 \code{\link{VT.difft}}
 }
-
